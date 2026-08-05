@@ -172,9 +172,11 @@ conv = [
     ("Diferença",
      f'=IF(OR($B${forno_b}="",$B${forno_c}=""),"",($B${forno_c}-$B${forno_b})*1440)',
      '0" min"', f_bodyb),
+    # a diferenca fica na linha 49 (47 + indice 2); referencia derivada para
+    # nao repetir o erro de apontar para a linha de cima
     ("Situação",
-     '=IF($B48="","",IF(ABS($B48)<=10,"Convergem. Ok para assar juntas.",'
-     '"Fora de sincronia. Use uma das duas linhas abaixo."))', "General", f_bodyb),
+     f'=IF($B${47+2}="","",IF(ABS($B${47+2})<=10,"Convergem. Ok para assar juntas.",'
+     f'"Fora de sincronia. Use uma das duas linhas abaixo."))', "General", f_bodyb),
     ("Para C assar junto com B, bata a biga C às",
      f'=IF($B${forno_b}="","",$B${forno_b}-$C$20)', DT, f_bodyb),
     ("Para B assar junto com C, bata a biga B às",
