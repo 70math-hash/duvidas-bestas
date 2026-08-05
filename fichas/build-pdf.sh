@@ -4,8 +4,8 @@
 set -euo pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SRC="$DIR/pre-fermentos-teste-qt.html"
-OUT="$DIR/QT-ensaio-pre-fermentos.pdf"
+SRC="${1:-$DIR/pre-fermentos-teste-qt.html}"
+OUT="${2:-${SRC%.html}.pdf}"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
