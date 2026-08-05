@@ -1,0 +1,420 @@
+<title>QT · Diagnóstico da biga a 50% · Plano de correção</title>
+
+<style>
+  :root{
+    --ground:#EFECEC; --paper:#F8F6F6; --ink:#1A1E1E; --muted:#7E8484; --faint:#A0A5A5;
+    --rule:#C4C8C7; --hair:#DAD7D6; --field:#FFFFFF; --block:#1A1E1E; --blockink:#EFECEC; --shade:#E4E1E0;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ground:#1A1E1E; --paper:#202524; --ink:#EFECEC; --muted:#9BA1A1; --faint:#767C7C;
+      --rule:#3E4544; --hair:#2C3231; --field:#171B1B; --block:#EFECEC; --blockink:#1A1E1E; --shade:#262B2A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#1A1E1E; --paper:#202524; --ink:#EFECEC; --muted:#9BA1A1; --faint:#767C7C;
+    --rule:#3E4544; --hair:#2C3231; --field:#171B1B; --block:#EFECEC; --blockink:#1A1E1E; --shade:#262B2A;
+  }
+  :root[data-theme="light"]{
+    --ground:#EFECEC; --paper:#F8F6F6; --ink:#1A1E1E; --muted:#7E8484; --faint:#A0A5A5;
+    --rule:#C4C8C7; --hair:#DAD7D6; --field:#FFFFFF; --block:#1A1E1E; --blockink:#EFECEC; --shade:#E4E1E0;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size:11.5px; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    font-variant-numeric:tabular-nums;
+  }
+
+  .wrap{ max-width:840px; margin:0 auto; padding:32px 16px 64px; display:flex; flex-direction:column; gap:28px; }
+  .sheet{ background:var(--paper); border:1px solid var(--hair); padding:28px 30px 32px; display:flex; flex-direction:column; gap:20px; }
+
+  /* cabeçalho */
+  .top{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; border-bottom:2px solid var(--ink); padding-bottom:9px; }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .mark{ width:26px; height:26px; display:block; color:var(--ink); flex:none; }
+  .wordmark{ font-weight:700; font-size:12.5px; letter-spacing:.3em; text-transform:uppercase; line-height:1; }
+  .docid{ text-align:right; font-size:8.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; line-height:1.7; color:var(--muted); }
+  .docid b{ color:var(--ink); display:block; }
+
+  /* títulos */
+  .eyebrow{ font-size:9px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+  h1{ font-size:25px; font-weight:700; letter-spacing:-.005em; line-height:1.12; margin:0; text-wrap:balance; }
+  h2{ font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin:0 0 9px; padding-bottom:5px; border-bottom:1px solid var(--ink); }
+  h3{ font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin:0 0 6px; color:var(--muted); }
+  p{ margin:0 0 8px; max-width:68ch; }
+  p:last-child{ margin-bottom:0; }
+  .lede{ font-size:12.5px; line-height:1.55; }
+  .note{ color:var(--muted); font-size:10.5px; }
+
+  /* blocos */
+  .block{ break-inside:avoid; }
+  .cols{ display:grid; gap:20px; }
+  .c-2{ grid-template-columns:1fr 1fr; }
+  .c-38{ grid-template-columns:35fr 65fr; }
+  .c-3{ grid-template-columns:1fr 1fr 1fr; }
+  @media (max-width:640px){ .cols{ grid-template-columns:1fr; } }
+
+  /* identificação */
+  .idrow{ display:flex; align-items:stretch; gap:18px; }
+  .code{ background:var(--block); color:var(--blockink); width:104px; flex:none; padding:12px 12px 11px; display:flex; flex-direction:column; justify-content:space-between; }
+  .code .k{ font-size:8.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; opacity:.75; }
+  .code .v{ font-size:38px; font-weight:700; line-height:.9; letter-spacing:-.03em; }
+  .code .v small{ font-size:16px; font-weight:700; letter-spacing:0; }
+  .idmeta{ flex:1; display:flex; flex-direction:column; gap:6px; justify-content:center; }
+
+  /* tabelas */
+  table{ width:100%; border-collapse:collapse; font-size:11px; }
+  .tw{ overflow-x:auto; }
+  th{ text-align:left; font-size:8.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); padding:0 8px 5px 0; border-bottom:1px solid var(--rule); }
+  td{ padding:5px 8px 5px 0; border-bottom:1px solid var(--hair); vertical-align:top; }
+  td:last-child, th:last-child{ padding-right:0; }
+  .num{ text-align:right; white-space:nowrap; }
+  tr.tot td{ border-top:1.5px solid var(--ink); border-bottom:none; font-weight:700; padding-top:6px; }
+  .sub td{ font-size:8.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink); background:var(--shade); padding:4px 8px 4px 6px; border-bottom:1px solid var(--rule); }
+  .armhead th{ color:var(--ink); font-size:9.5px; }
+
+  /* campos */
+  .ln{ display:inline-block; flex:1; min-width:30px; border-bottom:1px solid var(--rule); height:1.15em; }
+  .rec{ display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:6px; }
+  .rec label{ display:flex; align-items:flex-end; gap:6px; flex:1 1 118px; font-size:8.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .fields{ display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); gap:9px 18px; }
+  .fields label{ display:flex; align-items:flex-end; gap:6px; font-size:8.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .writebox{ border:1px solid var(--rule); background:var(--field); min-height:54px; margin-top:6px; }
+  .writebox.tall{ min-height:80px; }
+
+  /* checkbox e escala */
+  .chk{ display:inline-block; width:9px; height:9px; border:1px solid var(--ink); background:var(--field); margin-right:6px; flex:none; position:relative; top:1px; }
+  .chk.r{ margin-right:0; margin-left:6px; }
+  ul.checks{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:4px 18px; font-size:10.5px; }
+  ul.checks li{ display:flex; align-items:flex-start; }
+  .scale{ display:flex; gap:3px; justify-content:center; }
+  .scale i{ width:11px; height:11px; border:1px solid var(--rule); background:var(--field); display:block; }
+
+  /* linha do tempo */
+  ol.tl{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+  ol.tl li{ display:grid; grid-template-columns:56px 1fr; gap:0 14px; padding:0 0 10px; position:relative; }
+  ol.tl li::before{ content:""; position:absolute; left:61px; top:12px; bottom:0; width:1px; background:var(--rule); }
+  ol.tl li:last-child{ padding-bottom:0; }
+  ol.tl li:last-child::before{ display:none; }
+  .tl-t{ text-align:right; font-size:10px; font-weight:700; padding-top:1px; position:relative; }
+  .tl-t::after{ content:""; position:absolute; right:-10px; top:5px; width:7px; height:7px; background:var(--ink); }
+  .tl-b{ padding-left:8px; }
+  .tl-b b{ font-size:11.5px; font-weight:700; display:block; }
+  .tl-b p{ font-size:10.5px; color:var(--muted); margin:1px 0 0; }
+
+  /* avisos */
+  .callout{ border-left:4px solid var(--ink); padding:8px 0 8px 12px; font-size:10.5px; }
+  .invert{ background:var(--block); color:var(--blockink); padding:12px 14px; }
+  .invert h3{ color:var(--blockink); opacity:.7; }
+  .invert p{ color:var(--blockink); }
+
+  .kv{ display:flex; flex-direction:column; gap:3px; font-size:10.5px; }
+  .kv div{ display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid var(--hair); padding-bottom:2px; }
+  .kv span:first-child{ color:var(--muted); }
+  .kv span:last-child{ font-weight:700; text-align:right; }
+
+  .foot{ border-top:1px solid var(--rule); padding-top:8px; display:flex; justify-content:space-between; gap:12px; font-size:8.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); }
+  .tear{ border:1px dashed var(--rule); padding:10px 12px; font-size:10.5px; }
+
+  ol.rules{ margin:0; padding-left:17px; font-size:10.5px; }
+  ol.rules li{ margin-bottom:6px; padding-left:2px; }
+  ol.rules li:last-child{ margin-bottom:0; }
+
+  /* impressão */
+  @media print{
+    :root{
+      --ground:#FFFFFF; --paper:#FFFFFF; --ink:#000000; --muted:#555B5B; --faint:#8A9090;
+      --rule:#9AA0A0; --hair:#C8CCCC; --field:#FFFFFF; --block:#000000; --blockink:#FFFFFF; --shade:#EDEBEA;
+    }
+    @page{ size:A4 portrait; margin:9mm 11mm; }
+    body{ background:#fff; font-size:8.2pt; line-height:1.34; }
+    .wrap{ max-width:none; padding:0; gap:0; }
+    .sheet{ border:none; padding:0; gap:11px; }
+    .sheet + .sheet{ break-before:page; }
+    .block{ break-inside:avoid; }
+    .code, .invert, .sub td, .tl-t::after, .armhead th{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+    /* densidade de bancada: uma folha do caderno = uma página A4 */
+    .top{ padding-bottom:6px; }
+    .mark{ width:24px; height:24px; }
+    .wordmark{ font-size:10.5px; }
+    .docid{ font-size:7.5px; line-height:1.55; }
+    h1{ font-size:19px; }
+    h2{ font-size:9.5px; margin-bottom:6px; padding-bottom:3px; }
+    h3{ font-size:9px; margin-bottom:4px; }
+    p{ margin-bottom:5px; }
+    .lede{ font-size:10.5px; line-height:1.42; }
+    .note{ font-size:9px; }
+    .eyebrow{ font-size:8px; }
+    .cols{ gap:14px; }
+    .idrow{ gap:14px; }
+    .code{ width:88px; padding:9px 10px 8px; }
+    .code .v{ font-size:30px; }
+    .code .v small{ font-size:13px; }
+    .code .k{ font-size:7.5px; }
+    table{ font-size:9.2px; }
+    th{ font-size:7.5px; padding-bottom:3px; }
+    td{ padding:2.8px 7px 2.8px 0; }
+    .sub td{ font-size:7.5px; padding:2.4px 7px 2.4px 5px; }
+    .armhead th{ font-size:8.5px; }
+    tr.tot td{ padding-top:4px; }
+    .rec{ gap:4px 12px; margin-top:4px; }
+    .rec label{ font-size:7.5px; flex-basis:100px; }
+    .fields{ gap:6px 14px; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); }
+    .fields label{ font-size:7.5px; }
+    .writebox{ min-height:38px; margin-top:4px; }
+    .writebox.tall{ min-height:56px; }
+    ul.checks{ font-size:9px; gap:2px 14px; }
+    .chk{ width:8px; height:8px; margin-right:5px; }
+    .chk.r{ margin-left:5px; }
+    .scale i{ width:9.5px; height:9.5px; }
+    ol.tl li{ grid-template-columns:48px 1fr; padding-bottom:5.5px; gap:0 11px; }
+    ol.tl li::before{ left:53px; top:10px; }
+    .tl-t{ font-size:8.8px; }
+    .tl-t::after{ width:6px; height:6px; right:-9px; top:4px; }
+    .tl-b b{ font-size:9.8px; }
+    .tl-b p{ font-size:8.8px; }
+    ol.rules{ font-size:9px; padding-left:15px; }
+    ol.rules li{ margin-bottom:4px; }
+    .callout{ font-size:9px; padding:5px 0 5px 10px; }
+    .invert{ padding:9px 11px; }
+    .kv{ font-size:9px; }
+    .tear{ padding:8px 10px; font-size:9px; }
+    .foot{ font-size:7.5px; padding-top:6px; }
+  }
+</style>
+
+<div class="wrap">
+
+<!-- ============ FOLHA 1 · DIAGNÓSTICO ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Diagnóstico · Biga a 50%</b>Folha 1 de 2 · Leitura do lote</div>
+  </div>
+
+  <div class="idrow block">
+    <div class="code"><span class="k">pH medido<br>na quarta</span><span class="v">4,9</span></div>
+    <div class="idmeta">
+      <div class="eyebrow">Lote de terça · 19h30 de fermentação a 17 °C</div>
+      <h1>Não foi fermento nem tempo</h1>
+      <p class="note">Foi a temperatura real da massa, que nunca foi 17 °C. As duas coisas que você observou, o pH baixo e a variação entre as partes, têm a mesma causa e se explicam juntas.</p>
+    </div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>O que foi registrado</h2>
+      <div class="kv">
+        <div><span>Batida</span><span>terça, 14h00</span></div>
+        <div><span>Medição</span><span>quarta, 09h30</span></div>
+        <div><span>Tempo total</span><span>19h30</span></div>
+        <div><span>Hidratação da biga</span><span>50%</span></div>
+        <div><span>Fermento fresco</span><span>0,8%</span></div>
+        <div><span>Temperatura do ambiente</span><span>17 °C</span></div>
+        <div><span>pH</span><span>4,9 a 5,0, varia por parte</span></div>
+      </div>
+      <h3 style="margin-top:12px">Referência de janela</h3>
+      <div class="kv">
+        <div><span>Farinha em água fresca</span><span>~6,0</span></div>
+        <div><span>Biga no ponto</span><span>5,0 a 5,2</span></div>
+        <div><span>Piso, glúten comprometido</span><span>4,8</span></div>
+      </div>
+      <p class="note" style="margin-top:6px">Você está madura de verdade, encostada na borda inferior, sem margem sobrando. Não é biga perdida. É biga que se usa agora, não daqui a três horas.</p>
+    </div>
+
+    <div class="block">
+      <h2>Contra a biga canônica</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th style="width:28%">&nbsp;</th><th style="width:26%">Canônica</th><th style="width:24%">Sua</th><th style="width:22%">Efeito</th></tr></thead>
+          <tbody>
+            <tr><td>Fermento</td><td>1,0%</td><td>0,8%</td><td>freia</td></tr>
+            <tr><td>Temperatura</td><td>18 °C</td><td>17 °C</td><td>freia</td></tr>
+            <tr><td>Tempo</td><td>16 a 18 h</td><td>19h30</td><td>acelera</td></tr>
+            <tr><td>Hidratação</td><td>44 a 48%</td><td>50%</td><td>acelera</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:8px">Os quatro parâmetros estão a um passo do centro e os desvios quase se cancelam. Chegar em 4,9 com essa receita não é erro de dosagem. É sinal de que a fermentação andou mais rápido do que os números na folha sugerem, e o único parâmetro que sobra para explicar isso é o que você não mediu.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>A cadeia de causa</h2>
+    <ol class="tl">
+      <li><span class="tl-t">1</span><div class="tl-b"><b>Água na temperatura da torneira</b><p>Sem cálculo, a água entra perto de 24 a 26 °C.</p></div></li>
+      <li><span class="tl-t">2</span><div class="tl-b"><b>A biga sai da masseira entre 20 e 23 °C</b><p>Farinha na temperatura da sala mais água morna mais fricção. Não 17 °C.</p></div></li>
+      <li><span class="tl-t">3</span><div class="tl-b"><b>A descida até 17 °C leva horas</b><p>E as primeiras horas são as mais produtivas de toda a fermentação. Elas aconteceram bem acima do alvo.</p></div></li>
+      <li><span class="tl-t">4</span><div class="tl-b"><b>O núcleo se auto-aquece e não desce</b><p>Massa fermentando é exotérmica e bloco de biga é péssimo condutor de calor. O miolo fica acima do ambiente quase todo o processo.</p></div></li>
+      <li><span class="tl-t">5</span><div class="tl-b"><b>As 19h30 valeram como umas 25 h</b><p>De 15 a 30 °C a velocidade dobra a cada 8 a 10 °C, ou perto de 8% por grau. Média efetiva de 20 °C em vez de 17 já entrega esse acréscimo.</p></div></li>
+      <li><span class="tl-t">6</span><div class="tl-b"><b>Resultado: pH 4,9 e gradiente entre as partes</b><p>O mesmo auto-aquecimento que adiantou a maturação é o que deixou o núcleo mais ácido que a borda. As duas medições contam a mesma história, e é isso que sustenta o diagnóstico.</p></div></li>
+    </ol>
+  </div>
+
+  <div class="block invert">
+    <h3>Leitura final</h3>
+    <p>O pH sozinho nunca fecha o diagnóstico. Cheiro de álcool, avelã e iogurte leve significa que você só tem uma biga no lado ácido, e ela faz pizza boa. Cheiro de acetona, massa que solta fiapos ao puxar e cúpula sem alvéolo definido significam que o número deixou de ser a questão. <b>Confira o nariz e a mão antes de decidir qualquer coisa pelo número.</b></p>
+  </div>
+
+  <div class="foot"><span>Diagnóstico · biga 50% · 0,8% · 19h30 a 17 °C · pH 4,9</span><span>Folha 1 de 2</span></div>
+</section>
+
+<!-- ============ FOLHA 2 · PLANO ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Plano de correção</b>Folha 2 de 2 · Ação e motivação</div>
+  </div>
+
+  <div class="block">
+    <div class="eyebrow">Cada ação com o seu porquê e o seu critério de verificação</div>
+    <h1>O que fazer na próxima rodada</h1>
+  </div>
+
+  <div class="block">
+    <div class="tw">
+      <table>
+        <thead><tr class="armhead"><th style="width:24%">Ação</th><th style="width:40%">Por quê</th><th style="width:30%">Como saber se funcionou</th><th style="width:6%">Ok</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>Medir a temperatura da massa, não a da sala</b></td>
+            <td>Enquanto o registro for da sala, você reconstrói o passado por dedução. O que fermenta é a massa. Espeto na saída da masseira e no núcleo do bloco depois de 4 h.</td>
+            <td>Você passa a ter dois números novos na ficha que hoje não existem.</td>
+            <td><span class="chk"></span></td>
+          </tr>
+          <tr>
+            <td><b>Calcular a água em vez de usar a da torneira</b></td>
+            <td>A saída a 20 ou 23 °C consome as horas mais produtivas da fermentação antes de o bloco chegar ao ambiente. É a raiz da cadeia inteira.</td>
+            <td>Saída entre 18 e 20 °C, medida no espeto e não estimada.</td>
+            <td><span class="chk"></span></td>
+          </tr>
+          <tr>
+            <td><b>Fermento de 0,8% para 0,6%</b></td>
+            <td>Corta perto de 25% da velocidade e é a única alavanca que preserva o seu horário de bater terça às 14h e medir quarta às 9h30. Repetível porque não depende de você estar na cozinha numa hora específica.</td>
+            <td>pH entre 5,0 e 5,2 na quarta às 9h30, com todo o resto igual.</td>
+            <td><span class="chk"></span></td>
+          </tr>
+          <tr>
+            <td><b>Bloco de no máximo 10 cm, caixa larga e rasa, sem empilhar</b></td>
+            <td>Não muda a velocidade média, muda a uniformidade. É o que elimina a diferença entre as partes e o que faz o núcleo parar de correr na frente da borda.</td>
+            <td>Núcleo e borda dentro de 0,05 na mesma medição em suspensão.</td>
+            <td><span class="chk"></span></td>
+          </tr>
+          <tr>
+            <td><b>Medir o pH em suspensão, não com espeto na massa</b></td>
+            <td>Em massa a 50% o eletrodo faz contato ruim e o pH ainda varia com a temperatura do ponto medido. 0,1 direto na massa é ruído. 0,1 em suspensão é sinal.</td>
+            <td>Duas leituras do mesmo ponto dão o mesmo número.</td>
+            <td><span class="chk"></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>As duas contas</h2>
+      <h3>Água para acertar a saída</h3>
+      <p class="note" style="margin-bottom:4px">Em biga a fricção é baixa, porque a mistura é curta. Use 3 °C.</p>
+      <div class="kv">
+        <div><span>Fórmula</span><span>(3 × TA alvo) − T farinha − T sala − 3</span></div>
+        <div><span>Exemplo do seu caso</span><span>57 − 22 − 17 − 3</span></div>
+        <div><span>Água</span><span>15 °C</span></div>
+      </div>
+      <h3 style="margin-top:12px">Medição em suspensão</h3>
+      <div class="kv">
+        <div><span>Proporção</span><span>10 g de biga : 100 mL</span></div>
+        <div><span>Água</span><span>destilada, a 20 °C</span></div>
+        <div><span>Preparo</span><span>amassar 1 min, descansar 2</span></div>
+        <div><span>Calibração antes</span><span>soluções 4,01 e 7,00</span></div>
+      </div>
+      <p class="note" style="margin-top:6px">Sempre a mesma proporção e a mesma temperatura, senão a série de medições não é comparável com ela mesma.</p>
+    </div>
+
+    <div class="block">
+      <h2>Alternativas descartadas, e por quê</h2>
+      <ol class="rules">
+        <li><b>Tirar 4 a 5 h mais cedo.</b> Cai por volta das 5h da manhã de quarta. Funciona e é ruim de viver. Foi justamente isso que fez o fermento ser a alavanca escolhida.</li>
+        <li><b>Baixar a hidratação para 45 a 46%.</b> Funciona e ainda alarga a janela de ponto, mas muda a massa que você já escolheu. Guarde como plano B se 0,6% não resolver.</li>
+        <li><b>Baixar o ambiente abaixo de 17 °C.</b> Você não tem câmara a 15 °C, e a geladeira a 4 °C é outro processo, não um ajuste deste.</li>
+      </ol>
+      <div class="callout" style="margin-top:10px"><b>Uma alavanca por rodada.</b> Se você mexer em fermento, água e altura do bloco na mesma batida e o resultado melhorar, você não vai saber qual das três resolveu, e na batida seguinte volta a chutar. A água e o espeto são medição, pode entrar já. O fermento é a alavanca desta rodada.</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Registro da próxima rodada</h2>
+    <div class="fields">
+      <label>data e hora da batida<span class="ln"></span></label>
+      <label>fermento %<span class="ln"></span></label>
+      <label>T farinha<span class="ln"></span></label>
+      <label>T sala<span class="ln"></span></label>
+      <label>T água calculada<span class="ln"></span></label>
+      <label>T saída real<span class="ln"></span></label>
+      <label>altura do bloco<span class="ln"></span></label>
+      <label>T núcleo 4 h<span class="ln"></span></label>
+      <label>T núcleo 12 h<span class="ln"></span></label>
+      <label>hora da medição<span class="ln"></span></label>
+      <label>pH suspensão núcleo<span class="ln"></span></label>
+      <label>pH suspensão borda<span class="ln"></span></label>
+      <label>aroma<span class="ln"></span></label>
+      <label>cúpula<span class="ln"></span></label>
+      <label>fiapos ao puxar<span class="ln"></span></label>
+      <label>decisão<span class="ln"></span></label>
+    </div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>Se vier ácida outra vez, ajuste o rinfresco</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th style="width:46%">Parâmetro</th><th style="width:26%">Normal</th><th style="width:28%">Biga ácida</th></tr></thead>
+          <tbody>
+            <tr><td>Sal</td><td>2,8%</td><td><b>3,0%</b></td></tr>
+            <tr><td>TA final da massa</td><td>24 a 26 °C</td><td><b>23 a 24 °C</b></td></tr>
+            <tr><td>Água final</td><td>cheia</td><td><b>segure 3 a 5 pontos</b></td></tr>
+            <tr><td>Puntata</td><td>1h30</td><td><b>45 a 60 min</b></td></tr>
+            <tr><td>Appretto</td><td>pelo relógio</td><td><b>pela bola</b></td></tr>
+            <tr><td>Fermento no rinfresco</td><td>nenhum</td><td><b>nenhum</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:6px">Sal um pouco acima aperta o glúten e tampona. Biga ácida absorve pior do que parece na primeira olhada, então devolva a água retida só se a massa aceitar.</p>
+    </div>
+    <div class="block invert">
+      <h3>A ressalva que fecha a ficha</h3>
+      <p>5,0 a 5,2 é faixa de referência, não lei. Se a pizza dessa biga saiu com o cornicione, o aroma e a mordida que você quer, então <b>4,9 é o seu alvo</b> e não há desvio a corrigir. Nesse caso o plano inteiro desta folha muda de objetivo: em vez de subir o pH, ele passa a servir para estreitar a janela de decisão e conseguir repetir 4,9 de propósito, o que hoje você não consegue.</p>
+      <p style="margin-top:6px">Decida isso depois de assar, não antes. Anote como ela assou no campo abaixo e é isso que define se a próxima rodada corrige um desvio ou persegue um número que não é o seu.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Como a biga de terça assou</h2>
+    <div class="writebox tall"></div>
+  </div>
+
+  <div class="foot"><span>QT Pizza Bar · plano de correção</span><span>Folha 2 de 2</span></div>
+</section>
+
+</div>
