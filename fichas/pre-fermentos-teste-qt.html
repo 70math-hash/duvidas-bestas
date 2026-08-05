@@ -1,356 +1,115 @@
-<title>QT · Fichas de Teste · Pré-fermentos</title>
+<title>QT · Ensaio de Pré-fermentos · Ficha e Cronograma</title>
 
 <style>
   :root{
-    --ground:#EFECEC;
-    --paper:#F8F6F6;
-    --ink:#1A1E1E;
-    --muted:#7E8484;
-    --faint:#A0A5A5;
-    --rule:#C4C8C7;
-    --hair:#DAD7D6;
-    --field:#FFFFFF;
-    --block:#1A1E1E;
-    --blockink:#EFECEC;
-    --shade:#E4E1E0;
+    --ground:#EFECEC; --paper:#F8F6F6; --ink:#1A1E1E; --muted:#7E8484; --faint:#A0A5A5;
+    --rule:#C4C8C7; --hair:#DAD7D6; --field:#FFFFFF; --block:#1A1E1E; --blockink:#EFECEC; --shade:#E4E1E0;
   }
   @media (prefers-color-scheme: dark){
     :root{
-      --ground:#1A1E1E;
-      --paper:#202524;
-      --ink:#EFECEC;
-      --muted:#9BA1A1;
-      --faint:#767C7C;
-      --rule:#3E4544;
-      --hair:#2C3231;
-      --field:#171B1B;
-      --block:#EFECEC;
-      --blockink:#1A1E1E;
-      --shade:#262B2A;
+      --ground:#1A1E1E; --paper:#202524; --ink:#EFECEC; --muted:#9BA1A1; --faint:#767C7C;
+      --rule:#3E4544; --hair:#2C3231; --field:#171B1B; --block:#EFECEC; --blockink:#1A1E1E; --shade:#262B2A;
     }
   }
   :root[data-theme="dark"]{
-    --ground:#1A1E1E;
-    --paper:#202524;
-    --ink:#EFECEC;
-    --muted:#9BA1A1;
-    --faint:#767C7C;
-    --rule:#3E4544;
-    --hair:#2C3231;
-    --field:#171B1B;
-    --block:#EFECEC;
-    --blockink:#1A1E1E;
-    --shade:#262B2A;
+    --ground:#1A1E1E; --paper:#202524; --ink:#EFECEC; --muted:#9BA1A1; --faint:#767C7C;
+    --rule:#3E4544; --hair:#2C3231; --field:#171B1B; --block:#EFECEC; --blockink:#1A1E1E; --shade:#262B2A;
   }
   :root[data-theme="light"]{
-    --ground:#EFECEC;
-    --paper:#F8F6F6;
-    --ink:#1A1E1E;
-    --muted:#7E8484;
-    --faint:#A0A5A5;
-    --rule:#C4C8C7;
-    --hair:#DAD7D6;
-    --field:#FFFFFF;
-    --block:#1A1E1E;
-    --blockink:#EFECEC;
-    --shade:#E4E1E0;
+    --ground:#EFECEC; --paper:#F8F6F6; --ink:#1A1E1E; --muted:#7E8484; --faint:#A0A5A5;
+    --rule:#C4C8C7; --hair:#DAD7D6; --field:#FFFFFF; --block:#1A1E1E; --blockink:#EFECEC; --shade:#E4E1E0;
   }
 
   *{ box-sizing:border-box; }
 
   body{
-    background:var(--ground);
-    color:var(--ink);
+    background:var(--ground); color:var(--ink);
     font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size:11.5px;
-    line-height:1.5;
+    font-size:11.5px; line-height:1.5;
     -webkit-font-smoothing:antialiased;
     font-variant-numeric:tabular-nums;
   }
 
-  .wrap{
-    max-width:840px;
-    margin:0 auto;
-    padding:32px 16px 64px;
-    display:flex;
-    flex-direction:column;
-    gap:28px;
-  }
+  .wrap{ max-width:840px; margin:0 auto; padding:32px 16px 64px; display:flex; flex-direction:column; gap:28px; }
+  .sheet{ background:var(--paper); border:1px solid var(--hair); padding:28px 30px 32px; display:flex; flex-direction:column; gap:20px; }
 
-  .sheet{
-    background:var(--paper);
-    border:1px solid var(--hair);
-    padding:28px 30px 32px;
-    display:flex;
-    flex-direction:column;
-    gap:22px;
-  }
-
-  /* ---------- cabeçalho ---------- */
-  .top{
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:16px;
-    border-bottom:2px solid var(--ink);
-    padding-bottom:9px;
-  }
+  /* cabeçalho */
+  .top{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; border-bottom:2px solid var(--ink); padding-bottom:9px; }
   .brand{ display:flex; align-items:center; gap:10px; }
   .mark{ width:26px; height:26px; display:block; color:var(--ink); flex:none; }
-  .wordmark{
-    font-weight:700;
-    font-size:12.5px;
-    letter-spacing:.3em;
-    text-transform:uppercase;
-    line-height:1;
-  }
-  .docid{
-    text-align:right;
-    font-size:8.5px;
-    font-weight:700;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    line-height:1.7;
-    color:var(--muted);
-  }
+  .wordmark{ font-weight:700; font-size:12.5px; letter-spacing:.3em; text-transform:uppercase; line-height:1; }
+  .docid{ text-align:right; font-size:8.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; line-height:1.7; color:var(--muted); }
   .docid b{ color:var(--ink); display:block; }
 
-  /* ---------- títulos ---------- */
-  .eyebrow{
-    font-size:9px;
-    font-weight:700;
-    letter-spacing:.2em;
-    text-transform:uppercase;
-    color:var(--muted);
-  }
-  h1{
-    font-size:25px;
-    font-weight:700;
-    letter-spacing:-.005em;
-    line-height:1.12;
-    margin:0;
-    text-wrap:balance;
-  }
-  h2{
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    margin:0 0 9px;
-    padding-bottom:5px;
-    border-bottom:1px solid var(--ink);
-  }
-  h3{
-    font-size:10px;
-    font-weight:700;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    margin:0 0 6px;
-    color:var(--muted);
-  }
-  p{ margin:0 0 8px; max-width:66ch; }
+  /* títulos */
+  .eyebrow{ font-size:9px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+  h1{ font-size:25px; font-weight:700; letter-spacing:-.005em; line-height:1.12; margin:0; text-wrap:balance; }
+  h2{ font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin:0 0 9px; padding-bottom:5px; border-bottom:1px solid var(--ink); }
+  h3{ font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin:0 0 6px; color:var(--muted); }
+  p{ margin:0 0 8px; max-width:68ch; }
   p:last-child{ margin-bottom:0; }
-  .lede{ font-size:12.5px; line-height:1.55; color:var(--ink); }
+  .lede{ font-size:12.5px; line-height:1.55; }
   .note{ color:var(--muted); font-size:10.5px; }
 
-  /* ---------- blocos e grids ---------- */
+  /* blocos */
   .block{ break-inside:avoid; }
-  .cols{ display:grid; gap:22px; }
+  .cols{ display:grid; gap:20px; }
   .c-2{ grid-template-columns:1fr 1fr; }
   .c-38{ grid-template-columns:35fr 65fr; }
+  .c-3{ grid-template-columns:1fr 1fr 1fr; }
   @media (max-width:640px){ .cols{ grid-template-columns:1fr; } }
 
-  /* ---------- identificação do teste ---------- */
+  /* identificação */
   .idrow{ display:flex; align-items:stretch; gap:18px; }
-  .code{
-    background:var(--block);
-    color:var(--blockink);
-    width:104px;
-    flex:none;
-    padding:12px 12px 11px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-  }
-  .code .k{
-    font-size:8.5px;
-    font-weight:700;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    opacity:.75;
-  }
-  .code .v{
-    font-size:38px;
-    font-weight:700;
-    line-height:.9;
-    letter-spacing:-.03em;
-  }
+  .code{ background:var(--block); color:var(--blockink); width:104px; flex:none; padding:12px 12px 11px; display:flex; flex-direction:column; justify-content:space-between; }
+  .code .k{ font-size:8.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; opacity:.75; }
+  .code .v{ font-size:38px; font-weight:700; line-height:.9; letter-spacing:-.03em; }
   .code .v small{ font-size:16px; font-weight:700; letter-spacing:0; }
   .idmeta{ flex:1; display:flex; flex-direction:column; gap:6px; justify-content:center; }
 
-  /* ---------- tabelas ---------- */
+  /* tabelas */
   table{ width:100%; border-collapse:collapse; font-size:11px; }
   .tw{ overflow-x:auto; }
-  th{
-    text-align:left;
-    font-size:8.5px;
-    font-weight:700;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--muted);
-    padding:0 8px 5px 0;
-    border-bottom:1px solid var(--rule);
-    white-space:nowrap;
-  }
-  td{
-    padding:5px 8px 5px 0;
-    border-bottom:1px solid var(--hair);
-    vertical-align:top;
-  }
+  th{ text-align:left; font-size:8.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); padding:0 8px 5px 0; border-bottom:1px solid var(--rule); }
+  td{ padding:5px 8px 5px 0; border-bottom:1px solid var(--hair); vertical-align:top; }
   td:last-child, th:last-child{ padding-right:0; }
   .num{ text-align:right; white-space:nowrap; }
-  tr.tot td{
-    border-top:1.5px solid var(--ink);
-    border-bottom:none;
-    font-weight:700;
-    padding-top:6px;
-  }
-  .sub td{
-    font-size:8.5px;
-    font-weight:700;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--ink);
-    background:var(--shade);
-    padding:4px 8px 4px 6px;
-    border-bottom:1px solid var(--rule);
-  }
+  tr.tot td{ border-top:1.5px solid var(--ink); border-bottom:none; font-weight:700; padding-top:6px; }
+  .sub td{ font-size:8.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink); background:var(--shade); padding:4px 8px 4px 6px; border-bottom:1px solid var(--rule); }
+  .armhead th{ color:var(--ink); font-size:9.5px; }
 
-  /* ---------- campos de preenchimento ---------- */
-  .ln{
-    display:inline-block;
-    flex:1;
-    min-width:34px;
-    border-bottom:1px solid var(--rule);
-    height:1.15em;
-  }
-  .rec{
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px 16px;
-    margin-top:6px;
-  }
-  .rec label{
-    display:flex;
-    align-items:flex-end;
-    gap:6px;
-    flex:1 1 120px;
-    font-size:8.5px;
-    font-weight:700;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--muted);
-  }
-  .fields{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-    gap:9px 18px;
-  }
-  .fields label{
-    display:flex;
-    align-items:flex-end;
-    gap:6px;
-    font-size:8.5px;
-    font-weight:700;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--muted);
-  }
-  .writebox{
-    border:1px solid var(--rule);
-    background:var(--field);
-    min-height:56px;
-    margin-top:6px;
-  }
-  .writebox.tall{ min-height:82px; }
+  /* campos */
+  .ln{ display:inline-block; flex:1; min-width:30px; border-bottom:1px solid var(--rule); height:1.15em; }
+  .rec{ display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:6px; }
+  .rec label{ display:flex; align-items:flex-end; gap:6px; flex:1 1 118px; font-size:8.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .fields{ display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); gap:9px 18px; }
+  .fields label{ display:flex; align-items:flex-end; gap:6px; font-size:8.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .writebox{ border:1px solid var(--rule); background:var(--field); min-height:54px; margin-top:6px; }
+  .writebox.tall{ min-height:80px; }
 
-  /* ---------- checkbox e escala ---------- */
-  .chk{
-    display:inline-block;
-    width:9px; height:9px;
-    border:1px solid var(--ink);
-    background:var(--field);
-    margin-right:6px;
-    flex:none;
-    position:relative;
-    top:1px;
-  }
-  ul.checks{
-    list-style:none;
-    margin:0; padding:0;
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
-    gap:4px 18px;
-    font-size:10.5px;
-  }
+  /* checkbox e escala */
+  .chk{ display:inline-block; width:9px; height:9px; border:1px solid var(--ink); background:var(--field); margin-right:6px; flex:none; position:relative; top:1px; }
+  .chk.r{ margin-right:0; margin-left:6px; }
+  ul.checks{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:4px 18px; font-size:10.5px; }
   ul.checks li{ display:flex; align-items:flex-start; }
   .scale{ display:flex; gap:3px; justify-content:center; }
-  .scale i{
-    width:11px; height:11px;
-    border:1px solid var(--rule);
-    background:var(--field);
-    display:block;
-  }
+  .scale i{ width:11px; height:11px; border:1px solid var(--rule); background:var(--field); display:block; }
 
-  /* ---------- linha do tempo ---------- */
+  /* linha do tempo */
   ol.tl{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
-  ol.tl li{
-    display:grid;
-    grid-template-columns:56px 1fr;
-    gap:0 14px;
-    padding:0 0 11px;
-    position:relative;
-  }
-  ol.tl li::before{
-    content:"";
-    position:absolute;
-    left:61px; top:12px; bottom:0;
-    width:1px;
-    background:var(--rule);
-  }
+  ol.tl li{ display:grid; grid-template-columns:56px 1fr; gap:0 14px; padding:0 0 10px; position:relative; }
+  ol.tl li::before{ content:""; position:absolute; left:61px; top:12px; bottom:0; width:1px; background:var(--rule); }
   ol.tl li:last-child{ padding-bottom:0; }
   ol.tl li:last-child::before{ display:none; }
-  .tl-t{
-    text-align:right;
-    font-size:10px;
-    font-weight:700;
-    letter-spacing:.02em;
-    padding-top:1px;
-    position:relative;
-  }
-  .tl-t::after{
-    content:"";
-    position:absolute;
-    right:-10px; top:5px;
-    width:7px; height:7px;
-    background:var(--ink);
-  }
+  .tl-t{ text-align:right; font-size:10px; font-weight:700; padding-top:1px; position:relative; }
+  .tl-t::after{ content:""; position:absolute; right:-10px; top:5px; width:7px; height:7px; background:var(--ink); }
   .tl-b{ padding-left:8px; }
   .tl-b b{ font-size:11.5px; font-weight:700; display:block; }
   .tl-b p{ font-size:10.5px; color:var(--muted); margin:1px 0 0; }
 
-  /* ---------- avisos ---------- */
-  .callout{
-    border-left:4px solid var(--ink);
-    padding:8px 0 8px 12px;
-    font-size:10.5px;
-  }
-  .callout b{ font-weight:700; }
-  .invert{
-    background:var(--block);
-    color:var(--blockink);
-    padding:12px 14px;
-  }
+  /* avisos */
+  .callout{ border-left:4px solid var(--ink); padding:8px 0 8px 12px; font-size:10.5px; }
+  .invert{ background:var(--block); color:var(--blockink); padding:12px 14px; }
   .invert h3{ color:var(--blockink); opacity:.7; }
   .invert p{ color:var(--blockink); }
 
@@ -359,93 +118,113 @@
   .kv span:first-child{ color:var(--muted); }
   .kv span:last-child{ font-weight:700; text-align:right; }
 
-  .foot{
-    border-top:1px solid var(--rule);
-    padding-top:8px;
-    display:flex;
-    justify-content:space-between;
-    gap:12px;
-    font-size:8.5px;
-    font-weight:700;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-    color:var(--faint);
-  }
+  .foot{ border-top:1px solid var(--rule); padding-top:8px; display:flex; justify-content:space-between; gap:12px; font-size:8.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); }
+  .tear{ border:1px dashed var(--rule); padding:10px 12px; font-size:10.5px; }
 
-  .tear{
-    border:1px dashed var(--rule);
-    padding:10px 12px;
-    font-size:10.5px;
-  }
+  ol.rules{ margin:0; padding-left:17px; font-size:10.5px; }
+  ol.rules li{ margin-bottom:6px; padding-left:2px; }
+  ol.rules li:last-child{ margin-bottom:0; }
 
-  /* ---------- impressão ---------- */
+  /* impressão */
   @media print{
     :root{
-      --ground:#FFFFFF; --paper:#FFFFFF; --ink:#000000; --muted:#555B5B;
-      --faint:#8A9090; --rule:#9AA0A0; --hair:#C8CCCC; --field:#FFFFFF;
-      --block:#000000; --blockink:#FFFFFF; --shade:#EDEBEA;
+      --ground:#FFFFFF; --paper:#FFFFFF; --ink:#000000; --muted:#555B5B; --faint:#8A9090;
+      --rule:#9AA0A0; --hair:#C8CCCC; --field:#FFFFFF; --block:#000000; --blockink:#FFFFFF; --shade:#EDEBEA;
     }
-    @page{ size:A4 portrait; margin:11mm 12mm; }
-    body{ background:#fff; font-size:9.6pt; }
+    @page{ size:A4 portrait; margin:9mm 11mm; }
+    body{ background:#fff; font-size:8.2pt; line-height:1.34; }
     .wrap{ max-width:none; padding:0; gap:0; }
-    .sheet{ border:none; padding:0; break-inside:avoid; }
-    .sheet + .sheet{ break-before:page; padding-top:0; }
+    .sheet{ border:none; padding:0; gap:11px; }
+    .sheet + .sheet{ break-before:page; }
     .block{ break-inside:avoid; }
-    .code{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-    .invert, .sub td, .tl-t::after{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-    .noprint{ display:none; }
+    .code, .invert, .sub td, .tl-t::after, .armhead th{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+    /* densidade de bancada: uma folha do caderno = uma página A4 */
+    .top{ padding-bottom:6px; }
+    .mark{ width:24px; height:24px; }
+    .wordmark{ font-size:10.5px; }
+    .docid{ font-size:7.5px; line-height:1.55; }
+    h1{ font-size:19px; }
+    h2{ font-size:9.5px; margin-bottom:6px; padding-bottom:3px; }
+    h3{ font-size:9px; margin-bottom:4px; }
+    p{ margin-bottom:5px; }
+    .lede{ font-size:10.5px; line-height:1.42; }
+    .note{ font-size:9px; }
+    .eyebrow{ font-size:8px; }
+    .cols{ gap:14px; }
+    .idrow{ gap:14px; }
+    .code{ width:88px; padding:9px 10px 8px; }
+    .code .v{ font-size:30px; }
+    .code .v small{ font-size:13px; }
+    .code .k{ font-size:7.5px; }
+    table{ font-size:9.2px; }
+    th{ font-size:7.5px; padding-bottom:3px; }
+    td{ padding:2.8px 7px 2.8px 0; }
+    .sub td{ font-size:7.5px; padding:2.4px 7px 2.4px 5px; }
+    .armhead th{ font-size:8.5px; }
+    tr.tot td{ padding-top:4px; }
+    .rec{ gap:4px 12px; margin-top:4px; }
+    .rec label{ font-size:7.5px; flex-basis:100px; }
+    .fields{ gap:6px 14px; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); }
+    .fields label{ font-size:7.5px; }
+    .writebox{ min-height:38px; margin-top:4px; }
+    .writebox.tall{ min-height:56px; }
+    ul.checks{ font-size:9px; gap:2px 14px; }
+    .chk{ width:8px; height:8px; margin-right:5px; }
+    .chk.r{ margin-left:5px; }
+    .scale i{ width:9.5px; height:9.5px; }
+    ol.tl li{ grid-template-columns:48px 1fr; padding-bottom:5.5px; gap:0 11px; }
+    ol.tl li::before{ left:53px; top:10px; }
+    .tl-t{ font-size:8.8px; }
+    .tl-t::after{ width:6px; height:6px; right:-9px; top:4px; }
+    .tl-b b{ font-size:9.8px; }
+    .tl-b p{ font-size:8.8px; }
+    ol.rules{ font-size:9px; padding-left:15px; }
+    ol.rules li{ margin-bottom:4px; }
+    .callout{ font-size:9px; padding:5px 0 5px 10px; }
+    .invert{ padding:9px 11px; }
+    .kv{ font-size:9px; }
+    .tear{ padding:8px 10px; font-size:9px; }
+    .foot{ font-size:7.5px; padding-top:6px; }
   }
 </style>
 
 <div class="wrap">
 
-<!-- ================= FOLHA 0 ================= -->
+<!-- ============ FOLHA 0 · PROTOCOLO ============ -->
 <section class="sheet">
   <div class="top">
     <div class="brand">
       <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
         <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
-        <rect x="9" y="12.4" width="22" height="3.2" fill="var(--paper)"></rect>
-        <rect x="18.4" y="12.4" width="3.2" height="18" fill="var(--paper)"></rect>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
       </svg>
       <span class="wordmark">QT Pizza Bar</span>
     </div>
-    <div class="docid">
-      <b>Ficha de teste · Pré-fermentos</b>
-      Folha 0 de 5 · Protocolo comum
-    </div>
+    <div class="docid"><b>Ensaio de pré-fermentos</b>Folha 1 de 8 · Protocolo</div>
   </div>
 
   <div class="block">
     <div class="eyebrow">Ensaio controlado · Hidratação do pré-fermento</div>
-    <h1>Três bigas, uma variável</h1>
-    <p class="lede">Biga a 45%, 55% e 65%, todas a 4 °C, todas com o mesmo 1,0% de fermento. A hidratação é a única coisa que muda. O tempo é o que se ajusta para que as três cheguem ao mesmo grau de maturação.</p>
+    <h1>Três bigas, um forno, um horário</h1>
+    <p class="lede">Biga a 45%, 55% e 65%, todas a 4 °C, todas chegando ao mesmo ponto de maturação na mesma manhã para assarem com minutos de diferença. A hidratação é a variável. O fermento e o tempo de câmara são calibrados por braço justamente para que os três convirjam.</p>
   </div>
 
   <div class="block invert">
     <h3>Regra número um</h3>
-    <p><b>O relógio é estimativa. O ponto é o critério.</b> As horas de câmara em cada ficha são previsão, não instrução. A biga sai quando atinge o ponto, e as três precisam sair no mesmo ponto. Se você comparar bigas em graus de maturação diferentes, o teste não mede hidratação, mede desatenção.</p>
+    <p><b>O relógio é previsão. O ponto é o critério.</b> As horas de câmara deste caderno foram calculadas para cair em horários civilizados de cozinha, não para serem obedecidas cegamente. A biga sai quando atinge pH 5,0 a 5,2, e as três precisam sair no mesmo ponto. É melhor as três chegarem juntas um pouco imaturas do que uma no ponto e duas fora: o ensaio compara braços, não pizzas isoladas.</p>
   </div>
 
   <div class="cols c-2">
     <div class="block">
       <h2>Hipótese</h2>
-      <p>Quanto mais água no pré-fermento, maior a atividade de água: a levedura e as proteases trabalham mais soltas, a fração acética cai em favor da lática e o glúten chega menos pré-condicionado à massa final.</p>
-      <p><b>Previsão.</b> A mais cortante, mais forte, alvéolo grande e irregular. C mais doce, mais extensível, alvéolo fino e regular. B no meio, com a melhor operação das três.</p>
-      <p class="note">Regra de conversão usada para calibrar os tempos: cada 5 pontos de hidratação a mais encurta o tempo em cerca de um terço. É ponto de partida, não lei.</p>
+      <p>Mais água no pré-fermento significa maior atividade de água: levedura e proteases trabalham mais soltas, a fração acética cai em favor da lática e o glúten chega menos condicionado à massa final.</p>
+      <p><b>Previsão.</b> A mais cortante, mais forte, alvéolo grande e irregular. C mais doce, mais extensível, miolo mais regular. B entre as duas, com a melhor operação das três.</p>
     </div>
     <div class="block">
       <h2>Por que marinara</h2>
-      <p>Muçarela e molho pesado mascaram justamente o que se está medindo. A leitura do pré-fermento se faz na borda e no miolo, então a pizza de prova de cada braço é <b>marinara</b>, ou branca com azeite e sal.</p>
-      <h3 style="margin-top:12px">Material necessário</h3>
-      <ul class="checks">
-        <li><span class="chk"></span>pHmetro ou fita 4,0 a 7,0</li>
-        <li><span class="chk"></span>Termômetro espeto</li>
-        <li><span class="chk"></span>Balança 0,1 g</li>
-        <li><span class="chk"></span>3 caixas idênticas</li>
-        <li><span class="chk"></span>Régua para altura da massa</li>
-        <li><span class="chk"></span>Etiquetas e cronômetro</li>
-      </ul>
+      <p>Muçarela e molho pesado mascaram exatamente o que se está medindo. A pizza de prova de cada braço é <b>marinara padronizada</b>: 80 g de pelado triturado, 6 g de alho laminado, 0,4 g de orégano, 8 g de azeite, 0,8 g de sal. Mesma gramatura nas três, pesada na balança.</p>
     </div>
   </div>
 
@@ -453,24 +232,20 @@
     <h2>Constantes · o que não pode variar entre A, B e C</h2>
     <div class="tw">
       <table>
-        <thead>
-          <tr><th style="width:32%">Parâmetro</th><th style="width:38%">Valor fixo</th><th>Registro do dia</th></tr>
-        </thead>
+        <thead><tr><th style="width:30%">Parâmetro</th><th style="width:40%">Valor fixo</th><th>Registro do dia</th></tr></thead>
         <tbody>
-          <tr><td>Farinha</td><td>Mesma marca e <b>mesmo lote</b>, W 320 a 360</td><td><span class="ln"></span></td></tr>
-          <tr><td>Farinha por teste</td><td>1000 g</td><td><span class="ln"></span></td></tr>
+          <tr><td>Farinha</td><td>Mesma marca e <b>mesmo lote</b> nos três braços</td><td><span class="ln"></span></td></tr>
+          <tr><td>Farinha por braço</td><td>1000 g (ou 500 g em meia escala)</td><td><span class="ln"></span></td></tr>
           <tr><td>Fração em biga</td><td>100% da farinha</td><td><span class="ln"></span></td></tr>
-          <tr><td>Fermento fresco</td><td>1,0% = 10 g, só na biga</td><td><span class="ln"></span></td></tr>
           <tr><td>Sal</td><td>2,8% = 28 g, só no rinfresco</td><td><span class="ln"></span></td></tr>
           <tr><td>Hidratação final</td><td>75% = 750 g de água no total</td><td><span class="ln"></span></td></tr>
           <tr><td>Água da biga</td><td>Mesma fonte, gelada a 2 a 4 °C</td><td><span class="ln"></span></td></tr>
           <tr><td>Câmara fria</td><td>4 °C, mesma geladeira, mesma prateleira</td><td><span class="ln"></span></td></tr>
-          <tr><td>Altura da massa na caixa</td><td>10 cm nas três</td><td><span class="ln"></span></td></tr>
+          <tr><td>Altura da massa na caixa</td><td>10 cm nas três, caixas idênticas</td><td><span class="ln"></span></td></tr>
           <tr><td>Masseira</td><td>Mesma espiral, velocidade 1</td><td><span class="ln"></span></td></tr>
           <tr><td>Temperatura de saída da biga</td><td>18 a 20 °C</td><td><span class="ln"></span></td></tr>
-          <tr><td>Bolas</td><td>6 × 290 g</td><td><span class="ln"></span></td></tr>
-          <tr><td>Appretto</td><td>Igual nos três braços</td><td><span class="ln"></span></td></tr>
-          <tr><td>Forno e pizza de prova</td><td>Mesmo forno, marinara</td><td><span class="ln"></span></td></tr>
+          <tr><td>Puntata e bolas</td><td>1h30 · 6 × 290 g (ou 3 × 290 g)</td><td><span class="ln"></span></td></tr>
+          <tr><td>Forno e pizza de prova</td><td>Mesmo forno, marinara padronizada</td><td><span class="ln"></span></td></tr>
         </tbody>
       </table>
     </div>
@@ -485,611 +260,608 @@
         <div><span>Aroma</span><span>álcool, avelã, iogurte leve</span></div>
         <div><span>Estrutura</span><span>cúpula cedeu, alvéolos na seção</span></div>
       </div>
-      <p class="note" style="margin-top:8px">Em C, a 65%, não se forma cúpula. Leia pela superfície, que passa de lisa a rendilhada, e pelo toque, que afunda sem voltar. Nesse braço confie mais no pH do que nos outros dois.</p>
-    </div>
-    <div class="block">
-      <h2>Ponto passado · aborte e registre</h2>
+      <p class="note" style="margin-top:8px">Em C, a 65%, não se forma cúpula. A superfície passa de lisa a rendilhada e o toque afunda sem voltar. Nesse braço o pH é soberano.</p>
+      <h3 style="margin-top:12px">Ponto passado · aborte e registre a hora</h3>
       <ul class="checks" style="grid-template-columns:1fr">
         <li><span class="chk"></span>Cheiro de acetona ou esmalte</li>
         <li><span class="chk"></span>Massa pegajosa, com fiapos ao puxar</li>
         <li><span class="chk"></span>pH abaixo de 4,8</li>
-        <li><span class="chk"></span>Perdeu volume e não recupera no risveglio</li>
       </ul>
-      <div class="callout" style="margin-top:10px"><b>O erro que invalida o teste:</b> caixas de alturas diferentes. O núcleo de um bloco alto fermenta quente por horas enquanto a borda já está fria, e você tira duas bigas diferentes da mesma caixa. Iguale a <b>altura</b> da massa, não o peso.</div>
-    </div>
-  </div>
-
-  <div class="foot"><span>QT Pizza Bar · Ficha de teste</span><span>Folha 0 · Protocolo comum</span></div>
-</section>
-
-<!-- ================= FOLHA A ================= -->
-<section class="sheet">
-  <div class="top">
-    <div class="brand">
-      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
-        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
-        <rect x="9" y="12.4" width="22" height="3.2" fill="var(--paper)"></rect>
-        <rect x="18.4" y="12.4" width="3.2" height="18" fill="var(--paper)"></rect>
-      </svg>
-      <span class="wordmark">QT Pizza Bar</span>
-    </div>
-    <div class="docid">
-      <b>Braço A · Biga Fredda</b>
-      Folha 1 de 5 · Biga a 45%
-    </div>
-  </div>
-
-  <div class="idrow block">
-    <div class="code">
-      <span class="k">Hidratação<br>da biga</span>
-      <span class="v">45<small>%</small></span>
-    </div>
-    <div class="idmeta">
-      <div class="eyebrow">Braço A</div>
-      <h1>Biga Fredda</h1>
-      <p class="note">A biga clássica levada ao frio. Menor atividade de água das três, portanto a mais acética, a mais estruturante e a mais difícil de dissolver no rinfresco.</p>
-      <div class="rec">
-        <label>Data<span class="ln"></span></label>
-        <label>Responsável<span class="ln"></span></label>
-        <label>Lote farinha<span class="ln"></span></label>
-      </div>
-    </div>
-  </div>
-
-  <div class="cols c-38">
-    <div class="block">
-      <h2>Fórmula</h2>
-      <div class="tw">
-        <table>
-          <thead><tr><th>Item</th><th class="num">g</th><th class="num">%</th></tr></thead>
-          <tbody>
-            <tr class="sub"><td colspan="3">Biga</td></tr>
-            <tr><td>Farinha</td><td class="num">1000</td><td class="num">100</td></tr>
-            <tr><td>Água 2 a 4 °C</td><td class="num">450</td><td class="num">45,0</td></tr>
-            <tr><td>Fermento fresco</td><td class="num">10</td><td class="num">1,0</td></tr>
-            <tr class="sub"><td colspan="3">Rinfresco</td></tr>
-            <tr><td>Biga inteira</td><td class="num">1460</td><td class="num">—</td></tr>
-            <tr><td>Água</td><td class="num">300</td><td class="num">30,0</td></tr>
-            <tr><td>Sal</td><td class="num">28</td><td class="num">2,8</td></tr>
-            <tr class="tot"><td>Massa total</td><td class="num">1788</td><td class="num">75% hid.</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="note" style="margin-top:8px">6 bolas de 290 g, sobra técnica de 48 g.</p>
-
-      <h2 style="margin-top:16px">Aspecto alvo da biga</h2>
-      <p>Farofa grossa, com farinha seca ainda visível. Se saiu lisa, você fez outra coisa. Mistura de 3 a 4 min em velocidade 1, saída entre 18 e 20 °C.</p>
-    </div>
-
-    <div class="block">
-      <h2>Linha do tempo</h2>
-      <ol class="tl">
-        <li>
-          <span class="tl-t">0h00</span>
-          <div class="tl-b"><b>Mistura da biga</b>
-            <p>3 a 4 min, velocidade 1. Fermento dissolvido na água gelada.</p>
-            <div class="rec"><label>hora real<span class="ln"></span></label><label>T saída<span class="ln"></span></label><label>altura cx<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">1h30</span>
-          <div class="tl-b"><b>Arranque a 20 °C</b>
-            <p>Não pule. É esta etapa que dá o impulso antes de a levedura travar no frio.</p>
-            <div class="rec"><label>hora real<span class="ln"></span></label><label>T ambiente<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">~48h</span>
-          <div class="tl-b"><b>Câmara a 4 °C</b>
-            <p>Previsão. Comece a checar o ponto a partir de 40 h, de 4 em 4 h.</p>
-            <div class="rec"><label>entrada<span class="ln"></span></label><label>T núcleo 2h<span class="ln"></span></label><label>T núcleo 12h<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">Ponto</span>
-          <div class="tl-b"><b>Leitura e saída</b>
-            <p>pH 5,0 a 5,2. Cúpula cedida, alvéolos na seção, aroma de álcool e avelã.</p>
-            <div class="rec"><label>tempo real câmara<span class="ln"></span></label><label>pH<span class="ln"></span></label><label>T núcleo<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">3h00</span>
-          <div class="tl-b"><b>Risveglio a 21 °C</b>
-            <p>O braço mais frio precisa do risveglio mais longo. Sem ele a puntata arrasta e você compensa com fermento, que estraga tudo que veio antes.</p>
-            <div class="rec"><label>início<span class="ln"></span></label><label>T massa ao fim<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">Mix</span>
-          <div class="tl-b"><b>Rinfresco</b>
-            <p>Quebre a biga em pedaços de punho, rode 2 min com 45 g da água só para soltar. Resto da água a fio em 3 adições, sal na última. TA final 24 a 26 °C.</p>
-            <div class="rec"><label>tempo total mix<span class="ln"></span></label><label>TA final<span class="ln"></span></label><label>pH massa<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">60–90'</span>
-          <div class="tl-b"><b>Puntata</b>
-            <div class="rec"><label>tempo real<span class="ln"></span></label><label>T ambiente<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">Staglio</span>
-          <div class="tl-b"><b>6 × 290 g e appretto</b>
-            <div class="rec"><label>appretto h<span class="ln"></span></label><label>T appretto<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">Forno</span>
-          <div class="tl-b"><b>Marinara de prova</b>
-            <div class="rec"><label>T piso<span class="ln"></span></label><label>T teto<span class="ln"></span></label><label>tempo<span class="ln"></span></label></div>
-          </div>
-        </li>
-      </ol>
-    </div>
-  </div>
-
-  <div class="block">
-    <div class="callout"><b>Risco específico deste braço.</b> Biga a 45% saída do frio é um tijolo. Se ela não dissolver por completo, aparecem pontos brancos no miolo da pizza e você vai achar que o problema foi a farinha. Não foi. Foi aqui.</div>
-  </div>
-
-  <div class="cols c-2">
-    <div class="block">
-      <h2>Registro objetivo</h2>
-      <div class="fields">
-        <label>peso biga montagem<span class="ln"></span></label>
-        <label>peso biga saída<span class="ln"></span></label>
-        <label>perda %<span class="ln"></span></label>
-        <label>pH biga<span class="ln"></span></label>
-        <label>pH massa final<span class="ln"></span></label>
-        <label>peso bola crua<span class="ln"></span></label>
-        <label>peso pós forno<span class="ln"></span></label>
-        <label>perda de assamento %<span class="ln"></span></label>
-      </div>
     </div>
     <div class="block">
-      <h2>Defeitos observados</h2>
+      <h2>Material</h2>
       <ul class="checks" style="grid-template-columns:1fr 1fr">
-        <li><span class="chk"></span>Pontos brancos de biga</li>
-        <li><span class="chk"></span>Cheiro de acetona</li>
-        <li><span class="chk"></span>Massa com fiapos</li>
-        <li><span class="chk"></span>Colapso na abertura</li>
-        <li><span class="chk"></span>Cornicione pálido</li>
-        <li><span class="chk"></span>Bolha gigante única</li>
-        <li><span class="chk"></span>Resistiu, não abriu</li>
-        <li><span class="chk"></span>Base mole ao sair</li>
+        <li><span class="chk"></span>pHmetro ou fita 4,0–7,0</li>
+        <li><span class="chk"></span>Termômetro espeto</li>
+        <li><span class="chk"></span>Balança 0,1 g</li>
+        <li><span class="chk"></span>3 caixas idênticas</li>
+        <li><span class="chk"></span>Régua</li>
+        <li><span class="chk"></span>Etiquetas</li>
+        <li><span class="chk"></span>Cronômetro</li>
+        <li><span class="chk"></span>3 potes de 200 g</li>
       </ul>
-      <div class="writebox"></div>
+      <div class="callout" style="margin-top:10px"><b>Amostra testemunha.</b> Separe 200 g de cada biga num pote pequeno, na mesma prateleira. Cheque o ponto no testemunho em vez de abrir e revolver o bloco principal a cada leitura.</div>
+      <div class="callout" style="margin-top:8px"><b>O erro que invalida o ensaio:</b> caixas de alturas diferentes. O núcleo de um bloco alto fermenta quente por horas enquanto a borda já está fria. Iguale a <b>altura</b>, não o peso.</div>
     </div>
   </div>
 
-  <div class="foot"><span>Braço A · Biga Fredda 45% · 4 °C</span><span>Folha 1 de 5</span></div>
+  <div class="foot"><span>QT Pizza Bar · Ensaio de pré-fermentos</span><span>Folha 1 de 8</span></div>
 </section>
 
-<!-- ================= FOLHA B ================= -->
+<!-- ============ FOLHA 1 · FARINHA E FERMENTO ============ -->
 <section class="sheet">
   <div class="top">
     <div class="brand">
       <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
         <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
-        <rect x="9" y="12.4" width="22" height="3.2" fill="var(--paper)"></rect>
-        <rect x="18.4" y="12.4" width="3.2" height="18" fill="var(--paper)"></rect>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
       </svg>
       <span class="wordmark">QT Pizza Bar</span>
     </div>
-    <div class="docid">
-      <b>Braço B · Biga Morbida</b>
-      Folha 2 de 5 · Biga a 55%
-    </div>
-  </div>
-
-  <div class="idrow block">
-    <div class="code">
-      <span class="k">Hidratação<br>da biga</span>
-      <span class="v">55<small>%</small></span>
-    </div>
-    <div class="idmeta">
-      <div class="eyebrow">Braço B</div>
-      <h1>Biga Morbida</h1>
-      <p class="note">Deixa de ser farofa e vira massa. É o braço que resolve o problema operacional de A: sai da câmara manejável e incorpora na metade do tempo, com menos oxidação da massa final.</p>
-      <div class="rec">
-        <label>Data<span class="ln"></span></label>
-        <label>Responsável<span class="ln"></span></label>
-        <label>Lote farinha<span class="ln"></span></label>
-      </div>
-    </div>
-  </div>
-
-  <div class="cols c-38">
-    <div class="block">
-      <h2>Fórmula</h2>
-      <div class="tw">
-        <table>
-          <thead><tr><th>Item</th><th class="num">g</th><th class="num">%</th></tr></thead>
-          <tbody>
-            <tr class="sub"><td colspan="3">Biga</td></tr>
-            <tr><td>Farinha</td><td class="num">1000</td><td class="num">100</td></tr>
-            <tr><td>Água 2 a 4 °C</td><td class="num">550</td><td class="num">55,0</td></tr>
-            <tr><td>Fermento fresco</td><td class="num">10</td><td class="num">1,0</td></tr>
-            <tr class="sub"><td colspan="3">Rinfresco</td></tr>
-            <tr><td>Biga inteira</td><td class="num">1560</td><td class="num">—</td></tr>
-            <tr><td>Água</td><td class="num">200</td><td class="num">20,0</td></tr>
-            <tr><td>Sal</td><td class="num">28</td><td class="num">2,8</td></tr>
-            <tr class="tot"><td>Massa total</td><td class="num">1788</td><td class="num">75% hid.</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="note" style="margin-top:8px">6 bolas de 290 g, sobra técnica de 48 g.</p>
-
-      <h2 style="margin-top:16px">Aspecto alvo da biga</h2>
-      <p>Massa grosseira e coesa, superfície irregular, sem véu de glúten. Mistura de 4 a 5 min em velocidade 1, saída entre 18 e 20 °C. Ela vai querer virar massa lisa: pare antes.</p>
-    </div>
-
-    <div class="block">
-      <h2>Linha do tempo</h2>
-      <ol class="tl">
-        <li>
-          <span class="tl-t">0h00</span>
-          <div class="tl-b"><b>Mistura da biga</b>
-            <p>4 a 5 min, velocidade 1. Fermento dissolvido na água gelada.</p>
-            <div class="rec"><label>hora real<span class="ln"></span></label><label>T saída<span class="ln"></span></label><label>altura cx<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">1h00</span>
-          <div class="tl-b"><b>Arranque a 20 °C</b>
-            <p>Mais curto que A: com mais água a levedura arranca mais rápido.</p>
-            <div class="rec"><label>hora real<span class="ln"></span></label><label>T ambiente<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">~30h</span>
-          <div class="tl-b"><b>Câmara a 4 °C</b>
-            <p>Previsão. Comece a checar o ponto a partir de 24 h, de 3 em 3 h.</p>
-            <div class="rec"><label>entrada<span class="ln"></span></label><label>T núcleo 2h<span class="ln"></span></label><label>T núcleo 12h<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">Ponto</span>
-          <div class="tl-b"><b>Leitura e saída</b>
-            <p>pH 5,0 a 5,2. A cúpula ainda se forma, mas cede mais cedo e mais fundo que em A.</p>
-            <div class="rec"><label>tempo real câmara<span class="ln"></span></label><label>pH<span class="ln"></span></label><label>T núcleo<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">2h00</span>
-          <div class="tl-b"><b>Risveglio a 21 °C</b>
-            <div class="rec"><label>início<span class="ln"></span></label><label>T massa ao fim<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">Mix</span>
-          <div class="tl-b"><b>Rinfresco</b>
-            <p>A biga já entra dócil. 1 min para soltar, depois os 200 g de água a fio em 2 adições, sal na última. TA final 24 a 26 °C.</p>
-            <div class="rec"><label>tempo total mix<span class="ln"></span></label><label>TA final<span class="ln"></span></label><label>pH massa<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">60–90'</span>
-          <div class="tl-b"><b>Puntata</b>
-            <div class="rec"><label>tempo real<span class="ln"></span></label><label>T ambiente<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">Staglio</span>
-          <div class="tl-b"><b>6 × 290 g e appretto</b>
-            <div class="rec"><label>appretto h<span class="ln"></span></label><label>T appretto<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">Forno</span>
-          <div class="tl-b"><b>Marinara de prova</b>
-            <div class="rec"><label>T piso<span class="ln"></span></label><label>T teto<span class="ln"></span></label><label>tempo<span class="ln"></span></label></div>
-          </div>
-        </li>
-      </ol>
-    </div>
+    <div class="docid"><b>Farinha e fermento</b>Folha 2 de 8 · Especificação</div>
   </div>
 
   <div class="block">
-    <div class="callout"><b>O que observar de perto neste braço.</b> Se B entregar quase o mesmo perfil de A com metade da dor de cabeça no rinfresco, ela é a candidata real para o serviço. Compare o tempo total de mistura da massa final entre A e B e anote a diferença: é o ganho operacional que justifica a troca.</div>
+    <div class="eyebrow">As duas variáveis que você precisa acertar antes de começar</div>
+    <h1>Qual W e quanto fermento em cada braço</h1>
   </div>
 
-  <div class="cols c-2">
-    <div class="block">
-      <h2>Registro objetivo</h2>
-      <div class="fields">
-        <label>peso biga montagem<span class="ln"></span></label>
-        <label>peso biga saída<span class="ln"></span></label>
-        <label>perda %<span class="ln"></span></label>
-        <label>pH biga<span class="ln"></span></label>
-        <label>pH massa final<span class="ln"></span></label>
-        <label>peso bola crua<span class="ln"></span></label>
-        <label>peso pós forno<span class="ln"></span></label>
-        <label>perda de assamento %<span class="ln"></span></label>
-      </div>
-    </div>
-    <div class="block">
-      <h2>Defeitos observados</h2>
-      <ul class="checks" style="grid-template-columns:1fr 1fr">
-        <li><span class="chk"></span>Pontos brancos de biga</li>
-        <li><span class="chk"></span>Cheiro de acetona</li>
-        <li><span class="chk"></span>Massa com fiapos</li>
-        <li><span class="chk"></span>Colapso na abertura</li>
-        <li><span class="chk"></span>Cornicione pálido</li>
-        <li><span class="chk"></span>Bolha gigante única</li>
-        <li><span class="chk"></span>Resistiu, não abriu</li>
-        <li><span class="chk"></span>Base mole ao sair</li>
-      </ul>
-      <div class="writebox"></div>
-    </div>
-  </div>
-
-  <div class="foot"><span>Braço B · Biga Morbida 55% · 4 °C</span><span>Folha 2 de 5</span></div>
-</section>
-
-<!-- ================= FOLHA C ================= -->
-<section class="sheet">
-  <div class="top">
-    <div class="brand">
-      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
-        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
-        <rect x="9" y="12.4" width="22" height="3.2" fill="var(--paper)"></rect>
-        <rect x="18.4" y="12.4" width="3.2" height="18" fill="var(--paper)"></rect>
-      </svg>
-      <span class="wordmark">QT Pizza Bar</span>
-    </div>
-    <div class="docid">
-      <b>Braço C · Biga Umida</b>
-      Folha 3 de 5 · Biga a 65%
-    </div>
-  </div>
-
-  <div class="idrow block">
-    <div class="code">
-      <span class="k">Hidratação<br>da biga</span>
-      <span class="v">65<small>%</small></span>
-    </div>
-    <div class="idmeta">
-      <div class="eyebrow">Braço C</div>
-      <h1>Biga Umida</h1>
-      <p class="note">Território semissólido, sem nome consagrado e sem padronização. Segura parte da estruturação de glúten da biga e já pega parte da suavidade lática do poolish. É o braço mais experimental e o de janela de ponto mais estreita.</p>
-      <div class="rec">
-        <label>Data<span class="ln"></span></label>
-        <label>Responsável<span class="ln"></span></label>
-        <label>Lote farinha<span class="ln"></span></label>
-      </div>
-    </div>
-  </div>
-
-  <div class="cols c-38">
-    <div class="block">
-      <h2>Fórmula</h2>
-      <div class="tw">
-        <table>
-          <thead><tr><th>Item</th><th class="num">g</th><th class="num">%</th></tr></thead>
-          <tbody>
-            <tr class="sub"><td colspan="3">Biga</td></tr>
-            <tr><td>Farinha</td><td class="num">1000</td><td class="num">100</td></tr>
-            <tr><td>Água 2 a 4 °C</td><td class="num">650</td><td class="num">65,0</td></tr>
-            <tr><td>Fermento fresco</td><td class="num">10</td><td class="num">1,0</td></tr>
-            <tr class="sub"><td colspan="3">Rinfresco</td></tr>
-            <tr><td>Biga inteira</td><td class="num">1660</td><td class="num">—</td></tr>
-            <tr><td>Água com o sal dissolvido</td><td class="num">100</td><td class="num">10,0</td></tr>
-            <tr><td>Sal</td><td class="num">28</td><td class="num">2,8</td></tr>
-            <tr class="tot"><td>Massa total</td><td class="num">1788</td><td class="num">75% hid.</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="note" style="margin-top:8px">6 bolas de 290 g, sobra técnica de 48 g.</p>
-
-      <h2 style="margin-top:16px">Aspecto alvo da biga</h2>
-      <p>Massa mole que escorre devagar e não segura forma. Mistura de 4 a 5 min em velocidade 1, saída entre 18 e 20 °C. Não tente dar estrutura: aqui ela vem sozinha na câmara.</p>
-    </div>
-
-    <div class="block">
-      <h2>Linha do tempo</h2>
-      <ol class="tl">
-        <li>
-          <span class="tl-t">0h00</span>
-          <div class="tl-b"><b>Mistura da biga</b>
-            <p>4 a 5 min, velocidade 1. Fermento dissolvido na água gelada.</p>
-            <div class="rec"><label>hora real<span class="ln"></span></label><label>T saída<span class="ln"></span></label><label>altura cx<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">0h45</span>
-          <div class="tl-b"><b>Arranque a 20 °C</b>
-            <p>O mais curto dos três. Passou disso, você já perdeu controle da janela.</p>
-            <div class="rec"><label>hora real<span class="ln"></span></label><label>T ambiente<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">~18h</span>
-          <div class="tl-b"><b>Câmara a 4 °C</b>
-            <p>Previsão. Comece a checar o ponto a partir de 14 h, de 2 em 2 h.</p>
-            <div class="rec"><label>entrada<span class="ln"></span></label><label>T núcleo 2h<span class="ln"></span></label><label>T núcleo 8h<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">Ponto</span>
-          <div class="tl-b"><b>Leitura e saída</b>
-            <p>pH 5,0 a 5,2, e aqui o pH é soberano. Não há cúpula: a superfície passa de lisa a rendilhada e o toque afunda sem voltar.</p>
-            <div class="rec"><label>tempo real câmara<span class="ln"></span></label><label>pH<span class="ln"></span></label><label>T núcleo<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">1h00</span>
-          <div class="tl-b"><b>Risveglio a 21 °C</b>
-            <div class="rec"><label>início<span class="ln"></span></label><label>T massa ao fim<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">Mix</span>
-          <div class="tl-b"><b>Rinfresco</b>
-            <p>Só 100 g de água entram. <b>Dissolva o sal nessa água antes</b>, senão ele cai seco sobre glúten já formado e não distribui. Mix curto, TA final 24 a 26 °C.</p>
-            <div class="rec"><label>tempo total mix<span class="ln"></span></label><label>TA final<span class="ln"></span></label><label>pH massa<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">60–90'</span>
-          <div class="tl-b"><b>Puntata</b>
-            <div class="rec"><label>tempo real<span class="ln"></span></label><label>T ambiente<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">Staglio</span>
-          <div class="tl-b"><b>6 × 290 g e appretto</b>
-            <div class="rec"><label>appretto h<span class="ln"></span></label><label>T appretto<span class="ln"></span></label></div>
-          </div>
-        </li>
-        <li>
-          <span class="tl-t">Forno</span>
-          <div class="tl-b"><b>Marinara de prova</b>
-            <div class="rec"><label>T piso<span class="ln"></span></label><label>T teto<span class="ln"></span></label><label>tempo<span class="ln"></span></label></div>
-          </div>
-        </li>
-      </ol>
-    </div>
+  <div class="block invert">
+    <h3>Decisão de partida</h3>
+    <p><b>Rode o ensaio com uma farinha só, W 320 a 340, P/L em torno de 0,55, mesmo lote nos três braços.</b> É a faixa de sobreposição onde os três funcionam. Se cada braço usar a farinha ideal dele, você passa a comparar farinha e hidratação ao mesmo tempo e perde a leitura. As faixas por braço da tabela abaixo servem para depois, quando o braço vencedor virar produção e você for especificar o saco certo.</p>
   </div>
 
   <div class="block">
-    <div class="callout"><b>Risco específico deste braço.</b> A janela de ponto é a mais curta das três e passa rápido. Não deixe para checar de manhã. Se este for o braço que passar do ponto, não descarte a informação: anote em quantas horas passou, porque esse número é o dado mais útil que C tem a dar.</div>
-  </div>
-
-  <div class="cols c-2">
-    <div class="block">
-      <h2>Registro objetivo</h2>
-      <div class="fields">
-        <label>peso biga montagem<span class="ln"></span></label>
-        <label>peso biga saída<span class="ln"></span></label>
-        <label>perda %<span class="ln"></span></label>
-        <label>pH biga<span class="ln"></span></label>
-        <label>pH massa final<span class="ln"></span></label>
-        <label>peso bola crua<span class="ln"></span></label>
-        <label>peso pós forno<span class="ln"></span></label>
-        <label>perda de assamento %<span class="ln"></span></label>
-      </div>
-    </div>
-    <div class="block">
-      <h2>Defeitos observados</h2>
-      <ul class="checks" style="grid-template-columns:1fr 1fr">
-        <li><span class="chk"></span>Pontos brancos de biga</li>
-        <li><span class="chk"></span>Cheiro de acetona</li>
-        <li><span class="chk"></span>Massa com fiapos</li>
-        <li><span class="chk"></span>Colapso na abertura</li>
-        <li><span class="chk"></span>Cornicione pálido</li>
-        <li><span class="chk"></span>Bolha gigante única</li>
-        <li><span class="chk"></span>Resistiu, não abriu</li>
-        <li><span class="chk"></span>Base mole ao sair</li>
-      </ul>
-      <div class="writebox"></div>
-    </div>
-  </div>
-
-  <div class="foot"><span>Braço C · Biga Umida 65% · 4 °C</span><span>Folha 3 de 5</span></div>
-</section>
-
-<!-- ================= FOLHA D ================= -->
-<section class="sheet">
-  <div class="top">
-    <div class="brand">
-      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
-        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
-        <rect x="9" y="12.4" width="22" height="3.2" fill="var(--paper)"></rect>
-        <rect x="18.4" y="12.4" width="3.2" height="18" fill="var(--paper)"></rect>
-      </svg>
-      <span class="wordmark">QT Pizza Bar</span>
-    </div>
-    <div class="docid">
-      <b>Painel sensorial</b>
-      Folha 4 de 5 · Prova cega
-    </div>
-  </div>
-
-  <div class="block">
-    <div class="eyebrow">Avaliação comparativa</div>
-    <h1>Prova cega dos três braços</h1>
-    <p class="lede">Asse as três marinaras na mesma sequência e corte fatias iguais. Outra pessoa serve em pratos marcados 1, 2 e 3, e guarda a chave no destacável no pé desta folha. Mínimo de três provadores, cada um preenche sua coluna sem comentar em voz alta.</p>
-  </div>
-
-  <div class="block">
-    <h2>Escala · preencha 1 a 5 quadrados</h2>
+    <h2>Farinha indicada por braço · especificação de produção</h2>
     <div class="tw">
       <table>
-        <thead>
-          <tr>
-            <th style="width:26%">Atributo</th>
-            <th style="width:20%">Âncora 1 · Âncora 5</th>
-            <th class="num" style="width:18%">Amostra 1</th>
-            <th class="num" style="width:18%">Amostra 2</th>
-            <th class="num" style="width:18%">Amostra 3</th>
-          </tr>
-        </thead>
+        <thead><tr class="armhead"><th style="width:22%">&nbsp;</th><th style="width:26%">A · Fredda 45%</th><th style="width:26%">B · Morbida 55%</th><th style="width:26%">C · Umida 65%</th></tr></thead>
+        <tbody>
+          <tr><td>Tempo em câmara</td><td>~47h40</td><td>~26h</td><td>~19h20</td></tr>
+          <tr><td><b>W indicado</b></td><td><b>330 a 360</b></td><td><b>300 a 330</b></td><td><b>290 a 320</b></td></tr>
+          <tr><td>P/L</td><td>0,50 a 0,60</td><td>0,50 a 0,60</td><td>0,45 a 0,55</td></tr>
+          <tr><td>Piso absoluto</td><td>W 300, e a 300 não passe de 36 h</td><td>W 280</td><td>W 270</td></tr>
+          <tr><td>Por quê</td><td>É a biga mais longa. Mesmo com a atividade de água baixa segurando a protease, 48 h cobram estrutura.</td><td>Tempo quase pela metade compensa os 10 pontos de água a mais. Fica no meio.</td><td>Curta demais para degradar. Precisa de W só para a massa final carregar 75%.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cols c-2" style="margin-top:12px">
+      <div>
+        <h3>Regra para transpor a outros tempos</h3>
+        <div class="kv">
+          <div><span>+10 pontos de hidratação, tempo igual</span><span>+20 a 30 de W</span></div>
+          <div><span>−12 h de câmara a 4 °C, hidratação igual</span><span>−20 a 30 de W</span></div>
+        </div>
+        <p class="note" style="margin-top:6px">Os dois termos puxam em sentidos opostos. C ganha 20 pontos de hidratação mas perde 28 h de câmara, então no líquido ela pede <b>menos</b> W que A. É por isso que a biga muito hidratada e curta é a saída de quem não tem farinha forte na casa.</p>
+      </div>
+      <div>
+        <h3>O que o W não conta</h3>
+        <p class="note">Duas farinhas W 330 não se comportam igual. Olhe o P/L, o falling number e as cinzas. O W da ficha é do <b>lote</b>, não da marca: peça a ficha do lote ao moinho e anote abaixo. Se a farinha for pobre em amilase, 0,3 a 0,5% de malte diastásico no rinfresco.</p>
+        <div class="fields" style="margin-top:8px">
+          <label>marca<span class="ln"></span></label>
+          <label>lote<span class="ln"></span></label>
+          <label>W do lote<span class="ln"></span></label>
+          <label>P/L<span class="ln"></span></label>
+          <label>proteína %<span class="ln"></span></label>
+          <label>malte usado<span class="ln"></span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Fermento por braço · dose calculada para os três convergirem</h2>
+    <div class="tw">
+      <table>
+        <thead><tr class="armhead"><th style="width:22%">&nbsp;</th><th style="width:26%">A · Fredda 45%</th><th style="width:26%">B · Morbida 55%</th><th style="width:26%">C · Umida 65%</th></tr></thead>
+        <tbody>
+          <tr><td><b>Fresco, % da farinha</b></td><td><b>1,00%</b></td><td><b>0,90%</b></td><td><b>0,55%</b></td></tr>
+          <tr><td>Fresco, escala 1000 g</td><td>10,0 g</td><td>9,0 g</td><td>5,5 g</td></tr>
+          <tr><td>Fresco, escala 500 g</td><td>5,0 g</td><td>4,5 g</td><td>2,8 g</td></tr>
+          <tr><td>Seco instantâneo, 1000 g</td><td>3,3 g</td><td>3,0 g</td><td>1,8 g</td></tr>
+          <tr><td>Seco instantâneo, 500 g</td><td>1,7 g</td><td>1,5 g</td><td>0,9 g</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cols c-2" style="margin-top:12px">
+      <div>
+        <h3>A lógica da dose</h3>
+        <p class="note"><b>A leva a maior dose</b> porque passa quase todas as 48 h com a levedura praticamente parada a 4 °C. A fermentação real acontece no arranque e no aquecimento, não na câmara, então o tempo longo não desconta fermento como desconta numa fermentação a 18 °C.</p>
+        <p class="note"><b>B corta o tempo quase pela metade</b> mas ganha 10 pontos de atividade de água, e os dois efeitos quase se cancelam. A dose cai pouco.</p>
+        <p class="note"><b>C cai de verdade</b> porque a 65% a mesma população de levedura trabalha muito mais rápido e a janela de ponto fica estreita. Baixar o fermento é o que devolve largura à janela e torna o braço gerenciável.</p>
+      </div>
+      <div>
+        <h3>Manuseio</h3>
+        <ul class="checks" style="grid-template-columns:1fr">
+          <li><span class="chk"></span>Fermento sempre dissolvido na água gelada da biga, nunca seco sobre a farinha</li>
+          <li><span class="chk"></span>Pesar na balança de 0,1 g, não estimar</li>
+          <li><span class="chk"></span>Fresco dentro da validade e sem cheiro ácido</li>
+          <li><span class="chk"></span>Conversões: fresco × 0,33 = seco instantâneo; fresco × 0,40 = seco ativo, reidratado antes</li>
+          <li><span class="chk"></span>Seco ativo pede 15 min em água a 35 °C antes de entrar, o que muda a temperatura de saída: compense na água</li>
+        </ul>
+        <div class="callout" style="margin-top:10px">Se você trocar de tipo de fermento no meio do ensaio, o ensaio acabou. Use o mesmo tipo e o mesmo tablete nos três braços.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Farinha e fermento</span><span>Folha 2 de 8</span></div>
+</section>
+
+<!-- ============ FOLHA 2 · CRONOGRAMA ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Cronograma mestre</b>Folha 3 de 8 · Convergência</div>
+  </div>
+
+  <div class="block">
+    <div class="eyebrow">Tudo ancorado em H, o momento da primeira infornata</div>
+    <h1>Cronograma de convergência</h1>
+    <p class="lede">A coluna <b>H−</b> é o cronograma verdadeiro e serve para qualquer horário de forno. As colunas de dia e hora são o exemplo trabalhado com <b>H = sábado, 20h00</b>, escolhido porque coloca as três misturas e todas as checagens em horário de cozinha aberta.</p>
+  </div>
+
+  <div class="block">
+    <h2>Linha mestra · marque cada etapa cumprida</h2>
+    <div class="tw">
+      <table>
+        <thead><tr class="armhead"><th style="width:19%">Etapa</th><th style="width:10%">Offset H−</th><th style="width:17%">A · 45%</th><th style="width:17%">B · 55%</th><th style="width:17%">C · 65%</th><th style="width:20%">Anotação</th></tr></thead>
+        <tbody>
+          <tr><td>Mistura da biga</td><td class="note">H−60h30</td><td>Qui 07h30 <span class="chk r"></span></td><td>Sex 07h00 <span class="chk r"></span></td><td>Sex 15h15 <span class="chk r"></span></td><td><span class="ln"></span></td></tr>
+          <tr><td>Arranque a 20 °C</td><td class="note">1h30 / 1h / 45'</td><td>até 09h00 <span class="chk r"></span></td><td>até 08h00 <span class="chk r"></span></td><td>até 16h00 <span class="chk r"></span></td><td><span class="ln"></span></td></tr>
+          <tr><td>Entra na câmara 4 °C</td><td class="note">H−59h</td><td>Qui 09h00 <span class="chk r"></span></td><td>Sex 08h00 <span class="chk r"></span></td><td>Sex 16h00 <span class="chk r"></span></td><td><span class="ln"></span></td></tr>
+          <tr><td>Checagem conjunta 1</td><td class="note">sexta à noite</td><td>Sex 21h00 · 36 h</td><td>Sex 22h00 · 14 h</td><td>Sex 22h00 · 6 h</td><td>pH <span class="ln"></span></td></tr>
+          <tr><td>Checagem conjunta 2</td><td class="note">sábado cedo</td><td>Sáb 07h00 · 46 h</td><td>Sáb 09h00 · 25 h</td><td>Sáb 07h00 · 15 h</td><td>pH <span class="ln"></span></td></tr>
+          <tr><td>Checagem final C</td><td class="note">—</td><td>—</td><td>—</td><td>Sáb 10h00 · 18 h</td><td>pH <span class="ln"></span></td></tr>
+          <tr><td><b>Sai da câmara</b></td><td class="note">H−11h20 / 10h / 8h40</td><td><b>Sáb 08h40</b> <span class="chk r"></span></td><td><b>Sáb 10h00</b> <span class="chk r"></span></td><td><b>Sáb 11h20</b> <span class="chk r"></span></td><td><span class="ln"></span></td></tr>
+          <tr><td>Tempo total de câmara</td><td class="note">—</td><td>47h40</td><td>26h00</td><td>19h20</td><td>real <span class="ln"></span></td></tr>
+          <tr><td>Risveglio a 21 °C</td><td class="note">3h / 2h / 1h</td><td>08h40–11h40 <span class="chk r"></span></td><td>10h00–12h00 <span class="chk r"></span></td><td>11h20–12h20 <span class="chk r"></span></td><td><span class="ln"></span></td></tr>
+          <tr><td>Rinfresco</td><td class="note">H−8h20 / 8h / 7h40</td><td>Sáb 11h40 <span class="chk r"></span></td><td>Sáb 12h00 <span class="chk r"></span></td><td>Sáb 12h20 <span class="chk r"></span></td><td>TA <span class="ln"></span></td></tr>
+          <tr><td>Puntata 1h30</td><td class="note">—</td><td>12h00–13h30</td><td>12h20–13h50</td><td>12h40–14h10</td><td><span class="ln"></span></td></tr>
+          <tr><td>Staglio</td><td class="note">H−6h30 / 6h10 / 5h50</td><td>Sáb 13h30 <span class="chk r"></span></td><td>Sáb 13h50 <span class="chk r"></span></td><td>Sáb 14h10 <span class="chk r"></span></td><td><span class="ln"></span></td></tr>
+          <tr><td>Appretto a 20 °C</td><td class="note">—</td><td>6h30</td><td>6h15</td><td>6h00</td><td><span class="ln"></span></td></tr>
+          <tr><td>Forno estabilizado</td><td class="note">H−1h</td><td colspan="3" style="text-align:center">Sáb 19h00 <span class="chk r"></span></td><td>T piso <span class="ln"></span></td></tr>
+          <tr class="tot"><td>Infornata</td><td class="note">H / H+4' / H+8'</td><td>Sáb 20h00</td><td>Sáb 20h04</td><td>Sáb 20h08</td><td><span class="ln"></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" style="margin-top:8px">O appretto varia 30 min entre os braços, o que está dentro do ruído. Se você preferir igualá-lo, mova o staglio e aceite a diferença no rinfresco: um é o amortecedor do outro.</p>
+  </div>
+
+  <div class="block">
+    <div class="callout"><b>Por que só duas rodadas de checagem.</b> Os tempos de câmara foram escolhidos para que as janelas dos três braços se cruzem na sexta à noite e no sábado de manhã. Uma biga fredda de 48 h começada em outro horário coloca as leituras críticas às três da madrugada. Se você mudar H, recalcule pelo offset e confira onde caem as checagens antes de fechar o dia.</p></div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>Regras de deriva · o cronograma vai escorregar</h2>
+      <ol class="rules">
+        <li><b>Chegou até 3 h cedo.</b> Baixe a câmara para 2 °C e desça a caixa para a prateleira mais fria. Segurar biga madura no frio custa um pouco de acidez a mais e é a manobra mais barata que existe.</li>
+        <li><b>Chegou mais de 6 h cedo.</b> Faça o rinfresco na hora e leve o <b>appretto para o frio</b>. Bolas a 4 °C seguram de 6 a 12 h. Tire 2h30 antes do forno para recuperar. O appretto é o amortecedor de todo o cronograma.</li>
+        <li><b>Está atrasada.</b> Não encurte o risveglio, ele é o que acorda a levedura. Suba o risveglio de 21 °C para 24 a 26 °C e estique. Cada 3 °C a mais corta perto de um terço do tempo.</li>
+        <li><b>Passou do ponto.</b> Não tente salvar. Registre a hora exata em que passou: esse número vale mais que a pizza perdida.</li>
+        <li><b>Duas chegaram e uma não.</b> Segure as duas prontas a 2 °C e espere. Comparar braços em pontos diferentes é pior do que atrasar o forno em duas horas.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h2>Checagem conjunta · sexta 21h–22h</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th>&nbsp;</th><th class="num">A</th><th class="num">B</th><th class="num">C</th></tr></thead>
+          <tbody>
+            <tr><td>Hora real</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr><td>pH</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr><td>T núcleo</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr><td>Cúpula</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr><td>Aroma</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h2 style="margin-top:14px">Checagem conjunta · sábado 07h–10h</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th>&nbsp;</th><th class="num">A</th><th class="num">B</th><th class="num">C</th></tr></thead>
+          <tbody>
+            <tr><td>Hora real</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr><td>pH</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr><td>T núcleo</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr><td>Decisão</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Cronograma mestre · H = primeira infornata</span><span>Folha 3 de 8</span></div>
+</section>
+
+<!-- ============ FOLHA 3 · BRAÇO A ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Braço A · Biga Fredda</b>Folha 4 de 8 · Biga a 45%</div>
+  </div>
+
+  <div class="idrow block">
+    <div class="code"><span class="k">Hidratação<br>da biga</span><span class="v">45<small>%</small></span></div>
+    <div class="idmeta">
+      <div class="eyebrow">Braço A · fermento 1,0% · W 330 a 360</div>
+      <h1>Biga Fredda</h1>
+      <p class="note">A biga clássica levada ao frio. Menor atividade de água das três, portanto a mais acética, a mais estruturante e a mais difícil de dissolver no rinfresco.</p>
+      <div class="rec"><label>Data<span class="ln"></span></label><label>Responsável<span class="ln"></span></label><label>Lote farinha<span class="ln"></span></label></div>
+    </div>
+  </div>
+
+  <div class="cols c-38">
+    <div class="block">
+      <h2>Fórmula</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Item</th><th class="num">1000 g</th><th class="num">500 g</th><th class="num">%</th></tr></thead>
+          <tbody>
+            <tr class="sub"><td colspan="4">Biga</td></tr>
+            <tr><td>Farinha</td><td class="num">1000</td><td class="num">500</td><td class="num">100</td></tr>
+            <tr><td>Água 2–4 °C</td><td class="num">450</td><td class="num">225</td><td class="num">45,0</td></tr>
+            <tr><td>Fermento fresco</td><td class="num">10,0</td><td class="num">5,0</td><td class="num">1,00</td></tr>
+            <tr class="sub"><td colspan="4">Rinfresco</td></tr>
+            <tr><td>Biga inteira</td><td class="num">1460</td><td class="num">730</td><td class="num">—</td></tr>
+            <tr><td>Água</td><td class="num">300</td><td class="num">150</td><td class="num">30,0</td></tr>
+            <tr><td>Sal</td><td class="num">28</td><td class="num">14</td><td class="num">2,8</td></tr>
+            <tr class="tot"><td>Massa total</td><td class="num">1788</td><td class="num">894</td><td class="num">75%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:8px">6 × 290 g, sobra 48 g. Em meia escala, 3 × 290 g.</p>
+      <h2 style="margin-top:14px">Aspecto alvo</h2>
+      <p>Farofa grossa, farinha seca ainda visível. Se saiu lisa, virou outra coisa. Mistura de 3 a 4 min em velocidade 1.</p>
+    </div>
+
+    <div class="block">
+      <h2>Linha do tempo · H = sábado 20h00</h2>
+      <ol class="tl">
+        <li><span class="tl-t">Qui<br>07h30</span><div class="tl-b"><b>Mistura da biga</b><p>3 a 4 min, v1. Fermento dissolvido na água gelada.</p><div class="rec"><label>hora real<span class="ln"></span></label><label>T saída<span class="ln"></span></label><label>altura cx<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Qui<br>09h00</span><div class="tl-b"><b>Entra na câmara a 4 °C</b><p>1h30 de arranque a 20 °C antes. Não pule: é ela que dá o impulso antes de a levedura travar.</p><div class="rec"><label>hora real<span class="ln"></span></label><label>T núcleo 2h<span class="ln"></span></label><label>T núcleo 12h<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sex<br>21h00</span><div class="tl-b"><b>Checagem 1 · 36 h</b><p>No testemunho de 200 g. Ainda deve estar aquém do ponto.</p><div class="rec"><label>pH<span class="ln"></span></label><label>aroma<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>07h00</span><div class="tl-b"><b>Checagem 2 · 46 h</b><div class="rec"><label>pH<span class="ln"></span></label><label>cúpula<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>08h40</span><div class="tl-b"><b>Sai da câmara · 47h40</b><p>pH 5,0 a 5,2, cúpula cedida, alvéolos na seção, aroma de álcool e avelã.</p><div class="rec"><label>tempo real<span class="ln"></span></label><label>pH<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>08h40</span><div class="tl-b"><b>Risveglio a 21 °C · 3h00</b><p>O braço mais frio precisa do risveglio mais longo. Sem ele a puntata arrasta e você compensa com fermento, que estraga tudo que veio antes.</p><div class="rec"><label>T massa ao fim<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>11h40</span><div class="tl-b"><b>Rinfresco</b><p>Quebre em pedaços de punho, rode 2 min com 45 g da água só para soltar. Resto a fio em 3 adições, sal na última. TA final 24 a 26 °C.</p><div class="rec"><label>tempo mix<span class="ln"></span></label><label>TA final<span class="ln"></span></label><label>pH massa<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>13h30</span><div class="tl-b"><b>Staglio · 6 × 290 g</b><p>Puntata de 1h30 antes. Appretto de 6h30 a 20 °C.</p><div class="rec"><label>T appretto<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>20h00</span><div class="tl-b"><b>Infornata · primeira do rodízio</b><div class="rec"><label>T piso<span class="ln"></span></label><label>T teto<span class="ln"></span></label><label>tempo<span class="ln"></span></label></div></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="block"><div class="callout"><b>Risco deste braço.</b> Biga a 45% saída do frio é um tijolo. Se não dissolver por completo, aparecem pontos brancos no miolo e você vai culpar a farinha. Não foi a farinha, foi aqui.</div></div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>Registro objetivo</h2>
+      <div class="fields">
+        <label>peso biga montagem<span class="ln"></span></label><label>peso biga saída<span class="ln"></span></label>
+        <label>perda %<span class="ln"></span></label><label>pH biga<span class="ln"></span></label>
+        <label>pH massa final<span class="ln"></span></label><label>peso bola crua<span class="ln"></span></label>
+        <label>peso pós forno<span class="ln"></span></label><label>perda assamento %<span class="ln"></span></label>
+      </div>
+    </div>
+    <div class="block">
+      <h2>Defeitos observados</h2>
+      <ul class="checks" style="grid-template-columns:1fr 1fr">
+        <li><span class="chk"></span>Pontos brancos de biga</li><li><span class="chk"></span>Cheiro de acetona</li>
+        <li><span class="chk"></span>Massa com fiapos</li><li><span class="chk"></span>Colapso na abertura</li>
+        <li><span class="chk"></span>Cornicione pálido</li><li><span class="chk"></span>Bolha gigante única</li>
+        <li><span class="chk"></span>Resistiu, não abriu</li><li><span class="chk"></span>Base mole ao sair</li>
+      </ul>
+      <div class="writebox"></div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Braço A · 45% · 4 °C · 47h40 · fermento 1,0%</span><span>Folha 4 de 8</span></div>
+</section>
+
+<!-- ============ FOLHA 4 · BRAÇO B ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Braço B · Biga Morbida</b>Folha 5 de 8 · Biga a 55%</div>
+  </div>
+
+  <div class="idrow block">
+    <div class="code"><span class="k">Hidratação<br>da biga</span><span class="v">55<small>%</small></span></div>
+    <div class="idmeta">
+      <div class="eyebrow">Braço B · fermento 0,9% · W 300 a 330</div>
+      <h1>Biga Morbida</h1>
+      <p class="note">Deixa de ser farofa e vira massa. Resolve o problema operacional de A: sai da câmara manejável e incorpora na metade do tempo, com menos oxidação da massa final.</p>
+      <div class="rec"><label>Data<span class="ln"></span></label><label>Responsável<span class="ln"></span></label><label>Lote farinha<span class="ln"></span></label></div>
+    </div>
+  </div>
+
+  <div class="cols c-38">
+    <div class="block">
+      <h2>Fórmula</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Item</th><th class="num">1000 g</th><th class="num">500 g</th><th class="num">%</th></tr></thead>
+          <tbody>
+            <tr class="sub"><td colspan="4">Biga</td></tr>
+            <tr><td>Farinha</td><td class="num">1000</td><td class="num">500</td><td class="num">100</td></tr>
+            <tr><td>Água 2–4 °C</td><td class="num">550</td><td class="num">275</td><td class="num">55,0</td></tr>
+            <tr><td>Fermento fresco</td><td class="num">9,0</td><td class="num">4,5</td><td class="num">0,90</td></tr>
+            <tr class="sub"><td colspan="4">Rinfresco</td></tr>
+            <tr><td>Biga inteira</td><td class="num">1559</td><td class="num">780</td><td class="num">—</td></tr>
+            <tr><td>Água</td><td class="num">200</td><td class="num">100</td><td class="num">20,0</td></tr>
+            <tr><td>Sal</td><td class="num">28</td><td class="num">14</td><td class="num">2,8</td></tr>
+            <tr class="tot"><td>Massa total</td><td class="num">1787</td><td class="num">894</td><td class="num">75%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:8px">6 × 290 g, sobra 47 g. Em meia escala, 3 × 290 g.</p>
+      <h2 style="margin-top:14px">Aspecto alvo</h2>
+      <p>Massa grosseira e coesa, superfície irregular, sem véu de glúten. 4 a 5 min em v1. Ela vai querer virar massa lisa: pare antes.</p>
+    </div>
+
+    <div class="block">
+      <h2>Linha do tempo · H = sábado 20h00</h2>
+      <ol class="tl">
+        <li><span class="tl-t">Sex<br>07h00</span><div class="tl-b"><b>Mistura da biga</b><p>4 a 5 min, v1. Fermento dissolvido na água gelada.</p><div class="rec"><label>hora real<span class="ln"></span></label><label>T saída<span class="ln"></span></label><label>altura cx<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sex<br>08h00</span><div class="tl-b"><b>Entra na câmara a 4 °C</b><p>1h00 de arranque a 20 °C antes. Mais curto que A: com mais água a levedura arranca mais rápido.</p><div class="rec"><label>hora real<span class="ln"></span></label><label>T núcleo 2h<span class="ln"></span></label><label>T núcleo 12h<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sex<br>22h00</span><div class="tl-b"><b>Checagem 1 · 14 h</b><div class="rec"><label>pH<span class="ln"></span></label><label>aroma<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>09h00</span><div class="tl-b"><b>Checagem 2 · 25 h</b><p>A cúpula ainda se forma, mas cede mais cedo e mais fundo que em A.</p><div class="rec"><label>pH<span class="ln"></span></label><label>cúpula<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>10h00</span><div class="tl-b"><b>Sai da câmara · 26h00</b><div class="rec"><label>tempo real<span class="ln"></span></label><label>pH<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>10h00</span><div class="tl-b"><b>Risveglio a 21 °C · 2h00</b><div class="rec"><label>T massa ao fim<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>12h00</span><div class="tl-b"><b>Rinfresco</b><p>A biga já entra dócil. 1 min para soltar, depois os 200 g de água a fio em 2 adições, sal na última. TA final 24 a 26 °C.</p><div class="rec"><label>tempo mix<span class="ln"></span></label><label>TA final<span class="ln"></span></label><label>pH massa<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>13h50</span><div class="tl-b"><b>Staglio · 6 × 290 g</b><p>Puntata de 1h30 antes. Appretto de 6h15 a 20 °C.</p><div class="rec"><label>T appretto<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>20h04</span><div class="tl-b"><b>Infornata · segunda do rodízio</b><div class="rec"><label>T piso<span class="ln"></span></label><label>T teto<span class="ln"></span></label><label>tempo<span class="ln"></span></label></div></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="block"><div class="callout"><b>O que medir de perto neste braço.</b> Cronometre o tempo total de mistura da massa final em A e em B e anote a diferença. Se B entregar quase o mesmo perfil de A com metade da dor de cabeça no rinfresco, esse número é o argumento que coloca ela no serviço.</div></div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>Registro objetivo</h2>
+      <div class="fields">
+        <label>peso biga montagem<span class="ln"></span></label><label>peso biga saída<span class="ln"></span></label>
+        <label>perda %<span class="ln"></span></label><label>pH biga<span class="ln"></span></label>
+        <label>pH massa final<span class="ln"></span></label><label>peso bola crua<span class="ln"></span></label>
+        <label>peso pós forno<span class="ln"></span></label><label>perda assamento %<span class="ln"></span></label>
+      </div>
+    </div>
+    <div class="block">
+      <h2>Defeitos observados</h2>
+      <ul class="checks" style="grid-template-columns:1fr 1fr">
+        <li><span class="chk"></span>Pontos brancos de biga</li><li><span class="chk"></span>Cheiro de acetona</li>
+        <li><span class="chk"></span>Massa com fiapos</li><li><span class="chk"></span>Colapso na abertura</li>
+        <li><span class="chk"></span>Cornicione pálido</li><li><span class="chk"></span>Bolha gigante única</li>
+        <li><span class="chk"></span>Resistiu, não abriu</li><li><span class="chk"></span>Base mole ao sair</li>
+      </ul>
+      <div class="writebox"></div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Braço B · 55% · 4 °C · 26h · fermento 0,9%</span><span>Folha 5 de 8</span></div>
+</section>
+
+<!-- ============ FOLHA 5 · BRAÇO C ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Braço C · Biga Umida</b>Folha 6 de 8 · Biga a 65%</div>
+  </div>
+
+  <div class="idrow block">
+    <div class="code"><span class="k">Hidratação<br>da biga</span><span class="v">65<small>%</small></span></div>
+    <div class="idmeta">
+      <div class="eyebrow">Braço C · fermento 0,55% · W 290 a 320</div>
+      <h1>Biga Umida</h1>
+      <p class="note">Território semissólido, sem nome consagrado e sem padronização. Segura parte da estruturação da biga e já pega parte da suavidade lática do poolish. O braço mais experimental e o de janela mais estreita.</p>
+      <div class="rec"><label>Data<span class="ln"></span></label><label>Responsável<span class="ln"></span></label><label>Lote farinha<span class="ln"></span></label></div>
+    </div>
+  </div>
+
+  <div class="cols c-38">
+    <div class="block">
+      <h2>Fórmula</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Item</th><th class="num">1000 g</th><th class="num">500 g</th><th class="num">%</th></tr></thead>
+          <tbody>
+            <tr class="sub"><td colspan="4">Biga</td></tr>
+            <tr><td>Farinha</td><td class="num">1000</td><td class="num">500</td><td class="num">100</td></tr>
+            <tr><td>Água 2–4 °C</td><td class="num">650</td><td class="num">325</td><td class="num">65,0</td></tr>
+            <tr><td>Fermento fresco</td><td class="num">5,5</td><td class="num">2,8</td><td class="num">0,55</td></tr>
+            <tr class="sub"><td colspan="4">Rinfresco</td></tr>
+            <tr><td>Biga inteira</td><td class="num">1656</td><td class="num">828</td><td class="num">—</td></tr>
+            <tr><td>Água com o sal</td><td class="num">100</td><td class="num">50</td><td class="num">10,0</td></tr>
+            <tr><td>Sal</td><td class="num">28</td><td class="num">14</td><td class="num">2,8</td></tr>
+            <tr class="tot"><td>Massa total</td><td class="num">1784</td><td class="num">892</td><td class="num">75%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:8px">6 × 290 g, sobra 44 g. Em meia escala, 3 × 290 g.</p>
+      <h2 style="margin-top:14px">Aspecto alvo</h2>
+      <p>Massa mole que escorre devagar e não segura forma. 4 a 5 min em v1. Não tente dar estrutura: aqui ela vem sozinha na câmara.</p>
+    </div>
+
+    <div class="block">
+      <h2>Linha do tempo · H = sábado 20h00</h2>
+      <ol class="tl">
+        <li><span class="tl-t">Sex<br>15h15</span><div class="tl-b"><b>Mistura da biga</b><p>4 a 5 min, v1. Fermento dissolvido na água gelada.</p><div class="rec"><label>hora real<span class="ln"></span></label><label>T saída<span class="ln"></span></label><label>altura cx<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sex<br>16h00</span><div class="tl-b"><b>Entra na câmara a 4 °C</b><p>45 min de arranque a 20 °C antes. O mais curto dos três: passou disso, você perdeu o controle da janela.</p><div class="rec"><label>hora real<span class="ln"></span></label><label>T núcleo 2h<span class="ln"></span></label><label>T núcleo 8h<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sex<br>22h00</span><div class="tl-b"><b>Checagem 1 · 6 h</b><div class="rec"><label>pH<span class="ln"></span></label><label>aroma<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>07h00</span><div class="tl-b"><b>Checagem 2 · 15 h</b><p>Sem cúpula. A superfície passa de lisa a rendilhada e o toque afunda sem voltar.</p><div class="rec"><label>pH<span class="ln"></span></label><label>superfície<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>10h00</span><div class="tl-b"><b>Checagem 3 · 18 h</b><p>Aqui o pH é soberano. Se já estiver em 5,0, tire e segure a 2 °C.</p><div class="rec"><label>pH<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>11h20</span><div class="tl-b"><b>Sai da câmara · 19h20 · risveglio 1h00</b><div class="rec"><label>tempo real<span class="ln"></span></label><label>pH<span class="ln"></span></label><label>T ao fim<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>12h20</span><div class="tl-b"><b>Rinfresco</b><p>Só 100 g de água entram. <b>Dissolva o sal nessa água antes</b>, senão ele cai seco sobre glúten já formado e não distribui. Mix curto. TA final 24 a 26 °C.</p><div class="rec"><label>tempo mix<span class="ln"></span></label><label>TA final<span class="ln"></span></label><label>pH massa<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>14h10</span><div class="tl-b"><b>Staglio · 6 × 290 g</b><p>Puntata de 1h30 antes. Appretto de 6h00 a 20 °C.</p><div class="rec"><label>T appretto<span class="ln"></span></label></div></div></li>
+        <li><span class="tl-t">Sáb<br>20h08</span><div class="tl-b"><b>Infornata · terceira do rodízio</b><div class="rec"><label>T piso<span class="ln"></span></label><label>T teto<span class="ln"></span></label><label>tempo<span class="ln"></span></label></div></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="block"><div class="callout"><b>Risco deste braço.</b> A janela é a mais curta das três e passa rápido, por isso a dose de fermento é quase metade da de A. Se este for o braço que passar do ponto, não jogue a informação fora: anote em quantas horas passou, porque esse número é o dado mais útil que C tem a dar.</div></div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>Registro objetivo</h2>
+      <div class="fields">
+        <label>peso biga montagem<span class="ln"></span></label><label>peso biga saída<span class="ln"></span></label>
+        <label>perda %<span class="ln"></span></label><label>pH biga<span class="ln"></span></label>
+        <label>pH massa final<span class="ln"></span></label><label>peso bola crua<span class="ln"></span></label>
+        <label>peso pós forno<span class="ln"></span></label><label>perda assamento %<span class="ln"></span></label>
+      </div>
+    </div>
+    <div class="block">
+      <h2>Defeitos observados</h2>
+      <ul class="checks" style="grid-template-columns:1fr 1fr">
+        <li><span class="chk"></span>Pontos brancos de biga</li><li><span class="chk"></span>Cheiro de acetona</li>
+        <li><span class="chk"></span>Massa com fiapos</li><li><span class="chk"></span>Colapso na abertura</li>
+        <li><span class="chk"></span>Cornicione pálido</li><li><span class="chk"></span>Bolha gigante única</li>
+        <li><span class="chk"></span>Resistiu, não abriu</li><li><span class="chk"></span>Base mole ao sair</li>
+      </ul>
+      <div class="writebox"></div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Braço C · 65% · 4 °C · 19h20 · fermento 0,55%</span><span>Folha 6 de 8</span></div>
+</section>
+
+<!-- ============ FOLHA 6 · FORNO E PROVA ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Forno e painel</b>Folha 7 de 8 · Infornata e prova cega</div>
+  </div>
+
+  <div class="block">
+    <div class="eyebrow">Um piso, três massas</div>
+    <h1>Sequência de infornata</h1>
+    <p class="lede">Três pizzas não entram juntas no mesmo piso. O que o cronograma entrega é melhor do que isso: as três massas no mesmo ponto, na mesma janela, saindo do forno em oito minutos e sendo provadas quentes lado a lado. Duas rodadas com a ordem invertida para que a deriva do piso não vire resultado.</p>
+  </div>
+
+  <div class="block">
+    <h2>Protocolo de forno</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th style="width:14%">Hora</th><th style="width:44%">Ação</th><th style="width:20%">T piso</th><th style="width:22%">Observação</th></tr></thead>
+        <tbody>
+          <tr><td>19h00</td><td>Forno em regime, piso estabilizado</td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+          <tr><td>19h45</td><td>Pizza sacrificial, nivela o piso e queima resíduo</td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+          <tr><td>19h55</td><td>Aferir piso e teto, anotar antes de começar</td><td><span class="ln"></span></td><td>teto <span class="ln"></span></td></tr>
+          <tr class="sub"><td colspan="4">Rodada 1 · ordem A, B, C</td></tr>
+          <tr><td>20h00</td><td><b>A</b> · marinara padronizada</td><td><span class="ln"></span></td><td>tempo <span class="ln"></span></td></tr>
+          <tr><td>20h04</td><td><b>B</b> · marinara padronizada</td><td><span class="ln"></span></td><td>tempo <span class="ln"></span></td></tr>
+          <tr><td>20h08</td><td><b>C</b> · marinara padronizada</td><td><span class="ln"></span></td><td>tempo <span class="ln"></span></td></tr>
+          <tr><td>20h12</td><td>Corte e serviço às cegas, dentro de 90 segundos</td><td>—</td><td><span class="ln"></span></td></tr>
+          <tr class="sub"><td colspan="4">Rodada 2 · ordem invertida C, B, A</td></tr>
+          <tr><td>20h25</td><td><b>C</b></td><td><span class="ln"></span></td><td>tempo <span class="ln"></span></td></tr>
+          <tr><td>20h29</td><td><b>B</b></td><td><span class="ln"></span></td><td>tempo <span class="ln"></span></td></tr>
+          <tr><td>20h33</td><td><b>A</b></td><td><span class="ln"></span></td><td>tempo <span class="ln"></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cols c-2" style="margin-top:12px">
+      <div>
+        <h3>Constantes de forno</h3>
+        <ul class="checks" style="grid-template-columns:1fr">
+          <li><span class="chk"></span>Mesma posição no piso, mesmo giro, mesmo tempo</li>
+          <li><span class="chk"></span>Aferir o piso antes de cada infornata, não só no início</li>
+          <li><span class="chk"></span>4 min entre pizzas para o piso recuperar</li>
+          <li><span class="chk"></span>Mesma gramatura de molho, pesada</li>
+          <li><span class="chk"></span>Mesmo pizzaiolo abrindo as três</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Na abertura, antes de enfornar</h3>
+        <p class="note">Metade da leitura do pré-fermento acontece com a massa ainda crua. Registre, para cada braço, se a bola resistiu ou cedeu, se o disco voltou depois de aberto e se o cornicione ficou cheio ou murcho.</p>
+        <div class="rec">
+          <label>A abertura<span class="ln"></span></label><label>B abertura<span class="ln"></span></label><label>C abertura<span class="ln"></span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Painel sensorial às cegas · uma folha por provador</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th style="width:26%">Atributo</th><th style="width:22%">Âncora 1 · 5</th><th class="num" style="width:17%">Amostra 1</th><th class="num" style="width:17%">Amostra 2</th><th class="num" style="width:18%">Amostra 3</th></tr></thead>
         <tbody>
           <tr><td>Acidez percebida</td><td class="note">neutra · cortante</td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td></tr>
           <tr><td>Aroma de fermentação</td><td class="note">farinha crua · cerveja e avelã</td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td></tr>
           <tr><td>Cor e doçura de crosta</td><td class="note">pálida · caramelizada</td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td></tr>
-          <tr><td>Extensibilidade na abertura</td><td class="note">resiste e volta · rasga sozinha</td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td></tr>
-          <tr><td>Alveolatura do cornicione</td><td class="note">fechada e regular · aberta e irregular</td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td></tr>
+          <tr><td>Alveolatura do cornicione</td><td class="note">fechada · aberta e irregular</td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td></tr>
           <tr><td>Crocância no 1º minuto</td><td class="note">mole · quebradiça</td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td></tr>
-          <tr><td>Sustentação da fatia aos 3 min</td><td class="note">dobra · firme</td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td></tr>
+          <tr><td>Sustentação aos 3 min</td><td class="note">dobra · firme</td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td></tr>
           <tr><td>Mastigabilidade</td><td class="note">borrachuda · dissolve</td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td></tr>
           <tr><td>Aroma em três palavras</td><td class="note">texto livre</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
-          <tr class="tot"><td colspan="2">Preferência geral, 1 a 5</td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td></tr>
+          <tr class="tot"><td colspan="2">Preferência geral</td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td><td><div class="scale"><i></i><i></i><i></i><i></i><i></i></div></td></tr>
         </tbody>
       </table>
     </div>
-    <p class="note" style="margin-top:8px">Provador: <span class="ln" style="min-width:180px"></span> &nbsp; Data: <span class="ln" style="min-width:110px"></span></p>
-  </div>
-
-  <div class="cols c-2">
-    <div class="block">
-      <h2>Como ler o resultado</h2>
-      <p>A leitura esperada é um gradiente limpo: A mais ácida, mais estruturada e de alvéolo maior; C mais doce, mais extensível e de miolo mais regular; B entre as duas.</p>
-      <p><b>Se o gradiente não aparecer, não conclua nada sobre hidratação ainda.</b> Cheque primeiro se as três saíram da câmara no mesmo pH. Diferença de maturação explica mais resultado estranho do que diferença de hidratação, e é o erro mais comum neste tipo de ensaio.</p>
-      <p class="note">Se duas amostras empatarem em sabor, decida pela operação: tempo de mistura da massa final, previsibilidade da janela de ponto e facilidade de encaixe na semana.</p>
-    </div>
-    <div class="block">
-      <h2>Decisão</h2>
-      <div class="fields" style="grid-template-columns:1fr">
-        <label>vai para o cardápio<span class="ln"></span></label>
-        <label>repete com ajuste<span class="ln"></span></label>
-        <label>descartada<span class="ln"></span></label>
-      </div>
-      <h3 style="margin-top:12px">Próximo ajuste a testar</h3>
-      <div class="writebox tall"></div>
-    </div>
+    <p class="note" style="margin-top:8px">Provador: <span class="ln" style="min-width:180px"></span> &nbsp; Mínimo de três provadores, cada um preenche sem comentar em voz alta.</p>
   </div>
 
   <div class="block tear">
     <h3>Destacável · chave da prova cega</h3>
     <p style="margin-top:4px">Preencher antes de servir, dobrar e só abrir depois que todas as fichas estiverem preenchidas.</p>
     <div class="rec" style="margin-top:8px">
-      <label>Amostra 1 = braço<span class="ln"></span></label>
-      <label>Amostra 2 = braço<span class="ln"></span></label>
-      <label>Amostra 3 = braço<span class="ln"></span></label>
-      <label>quem serviu<span class="ln"></span></label>
+      <label>Amostra 1 = braço<span class="ln"></span></label><label>Amostra 2 = braço<span class="ln"></span></label>
+      <label>Amostra 3 = braço<span class="ln"></span></label><label>quem serviu<span class="ln"></span></label>
     </div>
   </div>
 
-  <div class="foot"><span>Painel sensorial comparativo</span><span>Folha 4 de 5</span></div>
+  <div class="foot"><span>Forno e painel sensorial</span><span>Folha 7 de 8</span></div>
 </section>
 
-<!-- ================= FOLHA E ================= -->
+<!-- ============ FOLHA 7 · CONSOLIDAÇÃO ============ -->
 <section class="sheet">
   <div class="top">
     <div class="brand">
       <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
         <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
-        <rect x="9" y="12.4" width="22" height="3.2" fill="var(--paper)"></rect>
-        <rect x="18.4" y="12.4" width="3.2" height="18" fill="var(--paper)"></rect>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
       </svg>
       <span class="wordmark">QT Pizza Bar</span>
     </div>
-    <div class="docid">
-      <b>Resumo do ensaio</b>
-      Folha 5 de 5 · Consolidação
-    </div>
+    <div class="docid"><b>Consolidação</b>Folha 8 de 8 · Resumo e decisão</div>
   </div>
 
   <div class="block">
@@ -1100,54 +872,65 @@
   <div class="block">
     <div class="tw">
       <table>
-        <thead>
-          <tr><th style="width:28%">&nbsp;</th><th style="width:24%">A · Fredda</th><th style="width:24%">B · Morbida</th><th style="width:24%">C · Umida</th></tr>
-        </thead>
+        <thead><tr class="armhead"><th style="width:26%">&nbsp;</th><th style="width:24%">A · Fredda</th><th style="width:24%">B · Morbida</th><th style="width:26%">C · Umida</th></tr></thead>
         <tbody>
           <tr><td>Hidratação da biga</td><td><b>45%</b></td><td><b>55%</b></td><td><b>65%</b></td></tr>
-          <tr><td>Água na biga</td><td>450 g</td><td>550 g</td><td>650 g</td></tr>
-          <tr><td>Água no rinfresco</td><td>300 g</td><td>200 g</td><td>100 g com o sal</td></tr>
-          <tr><td>Fermento fresco</td><td>10 g</td><td>10 g</td><td>10 g</td></tr>
+          <tr><td>Fermento fresco</td><td><b>1,00% · 10,0 g</b></td><td><b>0,90% · 9,0 g</b></td><td><b>0,55% · 5,5 g</b></td></tr>
+          <tr><td>W indicado em produção</td><td><b>330 a 360</b></td><td><b>300 a 330</b></td><td><b>290 a 320</b></td></tr>
+          <tr><td>Água biga / rinfresco</td><td>450 / 300 g</td><td>550 / 200 g</td><td>650 / 100 g com o sal</td></tr>
           <tr><td>Mistura da biga</td><td>3 a 4 min</td><td>4 a 5 min</td><td>4 a 5 min</td></tr>
           <tr><td>Aspecto</td><td>farofa grossa</td><td>massa grosseira</td><td>massa mole</td></tr>
           <tr><td>Arranque a 20 °C</td><td>1h30</td><td>1h00</td><td>0h45</td></tr>
-          <tr><td>Câmara a 4 °C, previsão</td><td>~48 h</td><td>~30 h</td><td>~18 h</td></tr>
-          <tr><td>Início das checagens</td><td>40 h, a cada 4 h</td><td>24 h, a cada 3 h</td><td>14 h, a cada 2 h</td></tr>
+          <tr><td>Câmara a 4 °C</td><td>47h40</td><td>26h00</td><td>19h20</td></tr>
           <tr><td>Risveglio a 21 °C</td><td>3h00</td><td>2h00</td><td>1h00</td></tr>
           <tr><td>Sinal de ponto dominante</td><td>cúpula cedida</td><td>cúpula cede cedo</td><td>pH, sem cúpula</td></tr>
           <tr><td>Previsão de perfil</td><td>acético, força, alvéolo grande</td><td>intermediário</td><td>lático, extensível, alvéolo fino</td></tr>
           <tr><td>Risco principal</td><td>não dissolve, ponto branco</td><td>virar massa lisa na mistura</td><td>janela curta, passa do ponto</td></tr>
           <tr class="tot"><td>Tempo real em câmara</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
           <tr><td>pH real na saída</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
-          <tr><td>Nota de preferência</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+          <tr><td>Tempo de mistura da massa final</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+          <tr><td>Média de preferência do painel</td><td><span class="ln"></span></td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
   <div class="cols c-2">
-    <div class="block invert">
-      <h3>O princípio por trás do ensaio</h3>
-      <p>Hidratação e temperatura do pré-fermento controlam a razão entre acético e lático. A firmeza controla quanto glúten você pré-condiciona antes de a massa final existir. Todo o resto é consequência dessas duas alavancas.</p>
+    <div class="block">
+      <h2>Como ler o resultado</h2>
+      <p>A leitura esperada é um gradiente limpo: A mais ácida, mais estruturada, alvéolo maior. C mais doce, mais extensível, miolo mais regular. B entre as duas.</p>
+      <p><b>Se o gradiente não aparecer, não conclua nada sobre hidratação ainda.</b> Confira primeiro se as três saíram no mesmo pH. Diferença de maturação explica mais resultado estranho do que diferença de hidratação, e é o erro mais comum neste tipo de ensaio.</p>
+      <p class="note">Empate em sabor se decide pela operação: tempo de mistura da massa final, largura da janela de ponto e encaixe na semana.</p>
     </div>
     <div class="block">
-      <h2>Se der certo, os próximos ensaios</h2>
+      <h2>Decisão</h2>
+      <div class="fields" style="grid-template-columns:1fr">
+        <label>vai para o cardápio<span class="ln"></span></label>
+        <label>repete com ajuste<span class="ln"></span></label>
+        <label>descartada<span class="ln"></span></label>
+      </div>
+      <h3 style="margin-top:12px">Próximos ensaios</h3>
       <ul class="checks" style="grid-template-columns:1fr">
-        <li><span class="chk"></span>Repetir o braço vencedor a 55% e 60% para achar o ponto ótimo fino</li>
-        <li><span class="chk"></span>Mesmo braço com biga em 50% da farinha, em vez de 100%</li>
-        <li><span class="chk"></span>Massa velha a 20% com o sal descontado, contra o braço vencedor</li>
-        <li><span class="chk"></span>Braço vencedor com farinha integral, corrigindo a hidratação para cima</li>
-        <li><span class="chk"></span>Iso-tempo: as três com 24 h de câmara, para ver a diferença de maturação</li>
+        <li><span class="chk"></span>Vencedor a 50% e 60% para achar o ponto fino</li>
+        <li><span class="chk"></span>Vencedor com biga em 50% da farinha, não 100%</li>
+        <li><span class="chk"></span>Massa velha a 20%, com o sal descontado</li>
+        <li><span class="chk"></span>Vencedor com integral, corrigindo a hidratação</li>
+        <li><span class="chk"></span>Iso-tempo: as três com 24 h de câmara</li>
       </ul>
     </div>
   </div>
 
+  <div class="block invert">
+    <h3>O princípio por trás do ensaio</h3>
+    <p>Hidratação e temperatura do pré-fermento controlam a razão entre acético e lático. A firmeza controla quanto glúten você condiciona antes de a massa final existir. Todo o resto é consequência dessas duas alavancas.</p>
+  </div>
+
   <div class="block">
-    <h2>Observações gerais do ensaio</h2>
+    <h2>Observações gerais</h2>
     <div class="writebox tall"></div>
   </div>
 
-  <div class="foot"><span>QT Pizza Bar · mangia QT fa bene</span><span>Folha 5 de 5</span></div>
+  <div class="foot"><span>QT Pizza Bar · mangia QT fa bene</span><span>Folha 8 de 8</span></div>
 </section>
 
 </div>
