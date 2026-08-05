@@ -1,0 +1,305 @@
+<title>QT · Cronograma mestre · revisão 2</title>
+
+<style>
+  :root{
+    --ground:#EFECEC; --paper:#F8F6F6; --ink:#1A1E1E; --muted:#7E8484; --faint:#A0A5A5;
+    --rule:#C4C8C7; --hair:#DAD7D6; --field:#FFFFFF; --block:#1A1E1E; --blockink:#EFECEC; --shade:#E4E1E0;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ground:#1A1E1E; --paper:#202524; --ink:#EFECEC; --muted:#9BA1A1; --faint:#767C7C;
+      --rule:#3E4544; --hair:#2C3231; --field:#171B1B; --block:#EFECEC; --blockink:#1A1E1E; --shade:#262B2A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#1A1E1E; --paper:#202524; --ink:#EFECEC; --muted:#9BA1A1; --faint:#767C7C;
+    --rule:#3E4544; --hair:#2C3231; --field:#171B1B; --block:#EFECEC; --blockink:#1A1E1E; --shade:#262B2A;
+  }
+  :root[data-theme="light"]{
+    --ground:#EFECEC; --paper:#F8F6F6; --ink:#1A1E1E; --muted:#7E8484; --faint:#A0A5A5;
+    --rule:#C4C8C7; --hair:#DAD7D6; --field:#FFFFFF; --block:#1A1E1E; --blockink:#EFECEC; --shade:#E4E1E0;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size:11.5px; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    font-variant-numeric:tabular-nums;
+  }
+
+  .wrap{ max-width:840px; margin:0 auto; padding:32px 16px 64px; display:flex; flex-direction:column; gap:28px; }
+  .sheet{ background:var(--paper); border:1px solid var(--hair); padding:28px 30px 32px; display:flex; flex-direction:column; gap:20px; }
+
+  /* cabeçalho */
+  .top{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; border-bottom:2px solid var(--ink); padding-bottom:9px; }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .mark{ width:26px; height:26px; display:block; color:var(--ink); flex:none; }
+  .wordmark{ font-weight:700; font-size:12.5px; letter-spacing:.3em; text-transform:uppercase; line-height:1; }
+  .docid{ text-align:right; font-size:8.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; line-height:1.7; color:var(--muted); }
+  .docid b{ color:var(--ink); display:block; }
+
+  /* títulos */
+  .eyebrow{ font-size:9px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+  h1{ font-size:25px; font-weight:700; letter-spacing:-.005em; line-height:1.12; margin:0; text-wrap:balance; }
+  h2{ font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin:0 0 9px; padding-bottom:5px; border-bottom:1px solid var(--ink); }
+  h3{ font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin:0 0 6px; color:var(--muted); }
+  p{ margin:0 0 8px; max-width:68ch; }
+  p:last-child{ margin-bottom:0; }
+  .lede{ font-size:12.5px; line-height:1.55; }
+  .note{ color:var(--muted); font-size:10.5px; }
+
+  /* blocos */
+  .block{ break-inside:avoid; }
+  .cols{ display:grid; gap:20px; }
+  .c-2{ grid-template-columns:1fr 1fr; }
+  .c-38{ grid-template-columns:35fr 65fr; }
+  .c-3{ grid-template-columns:1fr 1fr 1fr; }
+  @media (max-width:640px){ .cols{ grid-template-columns:1fr; } }
+
+  /* identificação */
+  .idrow{ display:flex; align-items:stretch; gap:18px; }
+  .code{ background:var(--block); color:var(--blockink); width:104px; flex:none; padding:12px 12px 11px; display:flex; flex-direction:column; justify-content:space-between; }
+  .code .k{ font-size:8.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; opacity:.75; }
+  .code .v{ font-size:38px; font-weight:700; line-height:.9; letter-spacing:-.03em; }
+  .code .v small{ font-size:16px; font-weight:700; letter-spacing:0; }
+  .idmeta{ flex:1; display:flex; flex-direction:column; gap:6px; justify-content:center; }
+
+  /* tabelas */
+  table{ width:100%; border-collapse:collapse; font-size:11px; }
+  .tw{ overflow-x:auto; }
+  th{ text-align:left; font-size:8.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); padding:0 8px 5px 0; border-bottom:1px solid var(--rule); }
+  td{ padding:5px 8px 5px 0; border-bottom:1px solid var(--hair); vertical-align:top; }
+  td:last-child, th:last-child{ padding-right:0; }
+  .num{ text-align:right; white-space:nowrap; }
+  tr.tot td{ border-top:1.5px solid var(--ink); border-bottom:none; font-weight:700; padding-top:6px; }
+  .sub td{ font-size:8.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink); background:var(--shade); padding:4px 8px 4px 6px; border-bottom:1px solid var(--rule); }
+  .armhead th{ color:var(--ink); font-size:9.5px; }
+
+  /* campos */
+  .ln{ display:inline-block; flex:1; min-width:30px; border-bottom:1px solid var(--rule); height:1.15em; }
+  .rec{ display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:6px; }
+  .rec label{ display:flex; align-items:flex-end; gap:6px; flex:1 1 118px; font-size:8.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .fields{ display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); gap:9px 18px; }
+  .fields label{ display:flex; align-items:flex-end; gap:6px; font-size:8.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .writebox{ border:1px solid var(--rule); background:var(--field); min-height:54px; margin-top:6px; }
+  .writebox.tall{ min-height:80px; }
+
+  /* checkbox e escala */
+  .chk{ display:inline-block; width:9px; height:9px; border:1px solid var(--ink); background:var(--field); margin-right:6px; flex:none; position:relative; top:1px; }
+  .chk.r{ margin-right:0; margin-left:6px; }
+  ul.checks{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:4px 18px; font-size:10.5px; }
+  ul.checks li{ display:flex; align-items:flex-start; }
+  .scale{ display:flex; gap:3px; justify-content:center; }
+  .scale i{ width:11px; height:11px; border:1px solid var(--rule); background:var(--field); display:block; }
+
+  /* linha do tempo */
+  ol.tl{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+  ol.tl li{ display:grid; grid-template-columns:56px 1fr; gap:0 14px; padding:0 0 10px; position:relative; }
+  ol.tl li::before{ content:""; position:absolute; left:61px; top:12px; bottom:0; width:1px; background:var(--rule); }
+  ol.tl li:last-child{ padding-bottom:0; }
+  ol.tl li:last-child::before{ display:none; }
+  .tl-t{ text-align:right; font-size:10px; font-weight:700; padding-top:1px; position:relative; }
+  .tl-t::after{ content:""; position:absolute; right:-10px; top:5px; width:7px; height:7px; background:var(--ink); }
+  .tl-b{ padding-left:8px; }
+  .tl-b b{ font-size:11.5px; font-weight:700; display:block; }
+  .tl-b p{ font-size:10.5px; color:var(--muted); margin:1px 0 0; }
+
+  /* avisos */
+  .callout{ border-left:4px solid var(--ink); padding:8px 0 8px 12px; font-size:10.5px; }
+  .invert{ background:var(--block); color:var(--blockink); padding:12px 14px; }
+  .invert h3{ color:var(--blockink); opacity:.7; }
+  .invert p{ color:var(--blockink); }
+
+  .kv{ display:flex; flex-direction:column; gap:3px; font-size:10.5px; }
+  .kv div{ display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid var(--hair); padding-bottom:2px; }
+  .kv span:first-child{ color:var(--muted); }
+  .kv span:last-child{ font-weight:700; text-align:right; }
+
+  .foot{ border-top:1px solid var(--rule); padding-top:8px; display:flex; justify-content:space-between; gap:12px; font-size:8.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); }
+  .tear{ border:1px dashed var(--rule); padding:10px 12px; font-size:10.5px; }
+
+  ol.rules{ margin:0; padding-left:17px; font-size:10.5px; }
+  ol.rules li{ margin-bottom:6px; padding-left:2px; }
+  ol.rules li:last-child{ margin-bottom:0; }
+
+  /* impressão */
+  @media print{
+    :root{
+      --ground:#FFFFFF; --paper:#FFFFFF; --ink:#000000; --muted:#555B5B; --faint:#8A9090;
+      --rule:#9AA0A0; --hair:#C8CCCC; --field:#FFFFFF; --block:#000000; --blockink:#FFFFFF; --shade:#EDEBEA;
+    }
+    @page{ size:A4 portrait; margin:9mm 11mm; }
+    body{ background:#fff; font-size:8.2pt; line-height:1.34; }
+    .wrap{ max-width:none; padding:0; gap:0; }
+    .sheet{ border:none; padding:0; gap:11px; }
+    .sheet + .sheet{ break-before:page; }
+    .block{ break-inside:avoid; }
+    .code, .invert, .sub td, .tl-t::after, .armhead th{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+    /* densidade de bancada: uma folha do caderno = uma página A4 */
+    .top{ padding-bottom:6px; }
+    .mark{ width:24px; height:24px; }
+    .wordmark{ font-size:10.5px; }
+    .docid{ font-size:7.5px; line-height:1.55; }
+    h1{ font-size:19px; }
+    h2{ font-size:9.5px; margin-bottom:6px; padding-bottom:3px; }
+    h3{ font-size:9px; margin-bottom:4px; }
+    p{ margin-bottom:5px; }
+    .lede{ font-size:10.5px; line-height:1.42; }
+    .note{ font-size:9px; }
+    .eyebrow{ font-size:8px; }
+    .cols{ gap:14px; }
+    .idrow{ gap:14px; }
+    .code{ width:88px; padding:9px 10px 8px; }
+    .code .v{ font-size:30px; }
+    .code .v small{ font-size:13px; }
+    .code .k{ font-size:7.5px; }
+    table{ font-size:9.2px; }
+    th{ font-size:7.5px; padding-bottom:3px; }
+    td{ padding:2.8px 7px 2.8px 0; }
+    .sub td{ font-size:7.5px; padding:2.4px 7px 2.4px 5px; }
+    .armhead th{ font-size:8.5px; }
+    tr.tot td{ padding-top:4px; }
+    .rec{ gap:4px 12px; margin-top:4px; }
+    .rec label{ font-size:7.5px; flex-basis:100px; }
+    .fields{ gap:6px 14px; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); }
+    .fields label{ font-size:7.5px; }
+    .writebox{ min-height:38px; margin-top:4px; }
+    .writebox.tall{ min-height:56px; }
+    ul.checks{ font-size:9px; gap:2px 14px; }
+    .chk{ width:8px; height:8px; margin-right:5px; }
+    .chk.r{ margin-left:5px; }
+    .scale i{ width:9.5px; height:9.5px; }
+    ol.tl li{ grid-template-columns:48px 1fr; padding-bottom:5.5px; gap:0 11px; }
+    ol.tl li::before{ left:53px; top:10px; }
+    .tl-t{ font-size:8.8px; }
+    .tl-t::after{ width:6px; height:6px; right:-9px; top:4px; }
+    .tl-b b{ font-size:9.8px; }
+    .tl-b p{ font-size:8.8px; }
+    ol.rules{ font-size:9px; padding-left:15px; }
+    ol.rules li{ margin-bottom:4px; }
+    .callout{ font-size:9px; padding:5px 0 5px 10px; }
+    .invert{ padding:9px 11px; }
+    .kv{ font-size:9px; }
+    .tear{ padding:8px 10px; font-size:9px; }
+    .foot{ font-size:7.5px; padding-top:6px; }
+  }
+</style>
+
+<div class="wrap">
+<!-- ============ FOLHA 2 · CRONOGRAMA ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Cronograma mestre · revisão 2</b>Folha 3 de 8 · Só B e C · forno quinta 6/8, 22h00</div>
+  </div>
+
+  <div class="block">
+    <div class="eyebrow">Braço A fora do ensaio · massa final em câmara a 18 °C, receita QT</div>
+    <h1>Cronograma revisado, dois braços</h1>
+    <p class="lede">Ancorado nas suas duas misturas de quarta 5/8, às 14h30 e às 22h15, e no forno de quinta 6/8 às 22h00. Hidratação final de 75% nos dois braços. As fases frias encurtaram para caber, e tudo que mudou está declarado abaixo.</p>
+  </div>
+
+  <div class="block">
+    <h2>Linha mestra · marque cada etapa cumprida</h2>
+    <div class="tw">
+      <table>
+        <thead><tr class="armhead"><th style="width:23%">Etapa</th><th style="width:13%">Alvo</th><th style="width:23%">B · Morbida 55%</th><th style="width:23%">C · Umida 65%</th><th style="width:18%">Anotação</th></tr></thead>
+        <tbody>
+          <tr><td>Mistura da biga</td><td class="note">v1, curta</td><td><b>Qua 14h30</b> <span class="chk r"></span></td><td><b>Qua 22h15</b> <span class="chk r"></span></td><td><span class="ln"></span></td></tr>
+          <tr><td>Arranque</td><td class="note">20 °C</td><td>1h00, até 15h30 <span class="chk r"></span></td><td>0h45, até 23h00 <span class="chk r"></span></td><td><span class="ln"></span></td></tr>
+          <tr><td>Entra na câmara</td><td class="note">4 °C</td><td>Qua 15h30 <span class="chk r"></span></td><td>Qua 23h00 <span class="chk r"></span></td><td>altura cx <span class="ln"></span></td></tr>
+          <tr><td>Checagem 1</td><td class="note">pH</td><td>Qua 23h00 · 7h30</td><td>Qui 07h00 · 8h00</td><td>pH <span class="ln"></span></td></tr>
+          <tr><td>Checagem 2</td><td class="note">pH</td><td>Qui 08h00 · 16h30</td><td>Qui 12h00 · 13h00</td><td>pH <span class="ln"></span></td></tr>
+          <tr><td><b>Sai da câmara</b></td><td class="note">pH 5,0–5,2</td><td><b>Qui 11h00</b> · 19h30 <span class="chk r"></span></td><td><b>Qui 14h00</b> · 15h00 <span class="chk r"></span></td><td>pH <span class="ln"></span></td></tr>
+          <tr><td>Risveglio</td><td class="note">21 °C</td><td>3h00 <span class="chk r"></span></td><td>2h00 <span class="chk r"></span></td><td>T ao fim <span class="ln"></span></td></tr>
+          <tr><td><b>Rinfresco</b></td><td class="note">TA 24–26 °C</td><td><b>Qui 14h00</b> <span class="chk r"></span></td><td><b>Qui 16h00</b> <span class="chk r"></span></td><td>TA <span class="ln"></span></td></tr>
+          <tr><td>Puntata</td><td class="note">22–24 °C</td><td>2h55, até 17h15</td><td>0h55, até 17h15</td><td><span class="ln"></span></td></tr>
+          <tr><td>Staglio · 6 × 290 g</td><td class="note">—</td><td><b>Qui 17h15</b> <span class="chk r"></span></td><td><b>Qui 17h15</b> <span class="chk r"></span></td><td><span class="ln"></span></td></tr>
+          <tr><td>Appretto</td><td class="note">18 °C</td><td>4h45 <span class="chk r"></span></td><td>4h45 <span class="chk r"></span></td><td>T câmara <span class="ln"></span></td></tr>
+          <tr><td>Forno estabilizado</td><td class="note">—</td><td colspan="2" style="text-align:center">Qui 21h45, pizza sacrificial <span class="chk r"></span></td><td>T piso <span class="ln"></span></td></tr>
+          <tr class="tot"><td>Infornata</td><td class="note">marinara</td><td>Qui 22h00</td><td>Qui 22h04</td><td><span class="ln"></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>O que mudou em relação ao desenho original</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th style="width:34%">&nbsp;</th><th style="width:33%">Original</th><th style="width:33%">Revisão 2</th></tr></thead>
+          <tbody>
+            <tr><td>Câmara B</td><td>26h00</td><td><b>19h30</b></td></tr>
+            <tr><td>Câmara C</td><td>19h20</td><td><b>15h00</b></td></tr>
+            <tr><td>Risveglio B</td><td>2h00</td><td><b>3h00</b></td></tr>
+            <tr><td>Risveglio C</td><td>1h00</td><td><b>2h00</b></td></tr>
+            <tr><td>Massa final</td><td>20 °C</td><td><b>18 °C, câmara</b></td></tr>
+            <tr><td>Appretto</td><td>6h15 / 6h00</td><td><b>4h45 nos dois</b></td></tr>
+            <tr><td>Fermento e hidratação</td><td>0,9% / 0,55% · 75%</td><td>inalterados</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:8px"><b>O risveglio mais longo recupera o pH, não o platô.</b> Uma hora a 21 °C vale muitas horas a 4 °C para a levedura, então as duas chegam ao ponto. O que não volta é a maturação enzimática e a acidificação que só o tempo frio dá. As duas perdem profundidade aromática em proporção parecida, e é por isso que a comparação entre B e C continua de pé.</p>
+    </div>
+
+    <div class="block">
+      <h2>As duas decisões desta revisão</h2>
+      <ol class="rules">
+        <li><b>Appretto igual, puntata diferente.</b> Seus horários dão 8h para B e 6h para C depois do rinfresco. O appretto é onde a bola estrutura e onde o alvéolo se define, então appretto diferente entre os braços seria confundidor. As duas fazem staglio às 17h15 e 4h45 de appretto, e as duas horas de diferença ficam na puntata, que perdoa muito mais.</li>
+        <li><b>Puntata a 22 a 24 °C, appretto a 18 °C.</b> 4h45 a 18 °C é curto para 75% de hidratação. Aquecer a puntata põe a massa em movimento antes de ela entrar na câmara e recupera o tempo sem mexer no appretto.</li>
+      </ol>
+      <div class="callout" style="margin-top:10px"><b>Se as bolas não estiverem prontas às 22h, atrase o forno.</b> Não encurte o appretto para bater o horário, senão a única variável que você mediu deixa de ser a hidratação.</div>
+      <div class="callout" style="margin-top:8px"><b>Sem o braço A você perde uma ponta da curva.</b> Anote os dados da biga a 50% que você já faz na folha de consolidação, na coluna A, como referência. Sem esse terceiro ponto você compara 55 contra 65 sem âncora.</div>
+    </div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>Regras de deriva</h2>
+      <ol class="rules">
+        <li><b>Chegou cedo ao ponto.</b> Baixe para 2 °C e desça a caixa para a prateleira mais fria. Segurar biga madura no frio é a manobra mais barata que existe.</li>
+        <li><b>Chegou muito cedo.</b> Encurte o risveglio e mantenha o rinfresco na hora marcada. Nesta revisão o risveglio é o amortecedor, porque os horários de rinfresco estão travados.</li>
+        <li><b>Está atrasada.</b> Suba o risveglio de 21 °C para 24 a 26 °C. Cada 3 °C a mais corta perto de um terço do tempo.</li>
+        <li><b>Passou do ponto, ou uma chegou e a outra não.</b> Passada, não tente salvar, registre a hora exata. Descompassadas, segure a pronta a 2 °C e espere: comparar em pontos diferentes é pior que atrasar o forno.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h2>Checagens</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th style="width:38%">&nbsp;</th><th class="num" style="width:31%">B · 55%</th><th class="num" style="width:31%">C · 65%</th></tr></thead>
+          <tbody>
+            <tr class="sub"><td colspan="3">Checagem 1</td></tr>
+            <tr><td>Hora real</td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr><td>pH em suspensão</td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr><td>T núcleo</td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr class="sub"><td colspan="3">Checagem 2</td></tr>
+            <tr><td>Hora real</td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr><td>pH em suspensão</td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr><td>Aroma</td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr class="sub"><td colspan="3">Saída da câmara</td></tr>
+            <tr><td>Hora real</td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr><td>pH em suspensão</td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+            <tr><td>Tempo total de frio</td><td><span class="ln"></span></td><td><span class="ln"></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:6px">pH sempre em suspensão de 10 g em 100 mL de água destilada a 20 °C, nunca espeto na massa.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Revisão 2 · quarta 5/8 e quinta 6/8 · substitui a folha 3 original</span><span>Folha 3 de 8</span></div>
+</section>
+</div>
