@@ -34,17 +34,18 @@ hair = Side(style="thin", color="BFC4C3")
 b_bottom = Border(bottom=hair)
 b_box = Border(left=hair, right=hair, top=hair, bottom=hair)
 
-# Durações por braço, em horas. Vêm do caderno QT-ensaio-pre-fermentos rev. 2.
+# Durações por braço, em MINUTOS inteiros, para não acumular erro de
+# arredondamento na cadeia. Vêm do caderno QT-ensaio-pre-fermentos rev. 2.
 PAR = [
-    ("Mistura da biga",                 None,  None),
-    ("Arranque a 20 °C",                1.00,  0.75),
-    ("Câmara a 4 °C",                  19.50, 15.00),
-    ("Risveglio a 21 °C",               3.00,  2.00),
-    ("Mistura do rinfresco",            0.3333, 0.3333),
-    ("Puntata a 22 a 24 °C",            2.9167, 0.9167),
-    ("Appretto a 18 °C",                4.75,  4.75),
-    ("Checagem 1, horas de câmara",     7.50,  8.00),
-    ("Checagem 2, horas de câmara",     16.50, 13.00),
+    ("Mistura da biga",               None, None),
+    ("Arranque a 20 °C",                60,   45),
+    ("Câmara a 4 °C",                 1170,  900),
+    ("Risveglio a 21 °C",              180,  120),
+    ("Mistura do rinfresco",            20,   20),
+    ("Puntata a 22 a 24 °C",           175,   55),
+    ("Appretto a 18 °C",               285,  285),
+    ("Checagem 1, horas de câmara",    450,  480),
+    ("Checagem 2, horas de câmara",    990,  780),
 ]
 OBS = [
     "editável, dispara todo o resto",
@@ -107,7 +108,7 @@ for k, (label, vb, vc) in enumerate(PAR):
             cell.value = datetime(2026, 8, 5, 14, 30) if col == 2 else datetime(2026, 8, 5, 22, 15)
             cell.number_format = DT
         else:
-            cell.value = val / 24.0
+            cell.value = val / 1440.0
             cell.number_format = DUR
         cell.font, cell.fill, cell.border = f_in, fill_in, b_box
         cell.alignment = Alignment(horizontal="center")
@@ -189,6 +190,9 @@ for k, (label, fx, fmt, fnt) in enumerate(conv):
         cell.border = b_box
 ws.cell(row=51, column=4,
         value="copie o valor para a célula B11 ou C11 e o cronograma se realinha").font = f_note
+ws.cell(row=53, column=1,
+        value="Quando os dois braços fecham no mesmo minuto está certo. Os 4 minutos entre as infornatas na "
+              "folha 3 são a ordem de entrada no forno, não diferença de cronograma.").font = f_note
 
 # ---------------- exemplo ----------------
 ws["A54"] = "EXEMPLO DE PREENCHIMENTO DAS COLUNAS CINZA"
