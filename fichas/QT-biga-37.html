@@ -1,0 +1,438 @@
+<title>QT · Biga a 37% · Dá para fazer?</title>
+
+<style>
+  :root{
+    --ground:#EFECEC; --paper:#F8F6F6; --ink:#1A1E1E; --muted:#7E8484; --faint:#A0A5A5;
+    --rule:#C4C8C7; --hair:#DAD7D6; --field:#FFFFFF; --block:#1A1E1E; --blockink:#EFECEC; --shade:#E4E1E0;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ground:#1A1E1E; --paper:#202524; --ink:#EFECEC; --muted:#9BA1A1; --faint:#767C7C;
+      --rule:#3E4544; --hair:#2C3231; --field:#171B1B; --block:#EFECEC; --blockink:#1A1E1E; --shade:#262B2A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#1A1E1E; --paper:#202524; --ink:#EFECEC; --muted:#9BA1A1; --faint:#767C7C;
+    --rule:#3E4544; --hair:#2C3231; --field:#171B1B; --block:#EFECEC; --blockink:#1A1E1E; --shade:#262B2A;
+  }
+  :root[data-theme="light"]{
+    --ground:#EFECEC; --paper:#F8F6F6; --ink:#1A1E1E; --muted:#7E8484; --faint:#A0A5A5;
+    --rule:#C4C8C7; --hair:#DAD7D6; --field:#FFFFFF; --block:#1A1E1E; --blockink:#EFECEC; --shade:#E4E1E0;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size:11.5px; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    font-variant-numeric:tabular-nums;
+  }
+
+  .wrap{ max-width:840px; margin:0 auto; padding:32px 16px 64px; display:flex; flex-direction:column; gap:28px; }
+  .sheet{ background:var(--paper); border:1px solid var(--hair); padding:28px 30px 32px; display:flex; flex-direction:column; gap:20px; }
+
+  /* cabeçalho */
+  .top{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; border-bottom:2px solid var(--ink); padding-bottom:9px; }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .mark{ width:26px; height:26px; display:block; color:var(--ink); flex:none; }
+  .wordmark{ font-weight:700; font-size:12.5px; letter-spacing:.3em; text-transform:uppercase; line-height:1; }
+  .docid{ text-align:right; font-size:8.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; line-height:1.7; color:var(--muted); }
+  .docid b{ color:var(--ink); display:block; }
+
+  /* títulos */
+  .eyebrow{ font-size:9px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+  h1{ font-size:25px; font-weight:700; letter-spacing:-.005em; line-height:1.12; margin:0; text-wrap:balance; }
+  h2{ font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin:0 0 9px; padding-bottom:5px; border-bottom:1px solid var(--ink); }
+  h3{ font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin:0 0 6px; color:var(--muted); }
+  p{ margin:0 0 8px; max-width:68ch; }
+  p:last-child{ margin-bottom:0; }
+  .lede{ font-size:12.5px; line-height:1.55; }
+  .note{ color:var(--muted); font-size:10.5px; }
+
+  /* blocos */
+  .block{ break-inside:avoid; }
+  .cols{ display:grid; gap:20px; }
+  .c-2{ grid-template-columns:1fr 1fr; }
+  .c-38{ grid-template-columns:35fr 65fr; }
+  .c-3{ grid-template-columns:1fr 1fr 1fr; }
+  @media (max-width:640px){ .cols{ grid-template-columns:1fr; } }
+
+  /* identificação */
+  .idrow{ display:flex; align-items:stretch; gap:18px; }
+  .code{ background:var(--block); color:var(--blockink); width:104px; flex:none; padding:12px 12px 11px; display:flex; flex-direction:column; justify-content:space-between; }
+  .code .k{ font-size:8.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; opacity:.75; }
+  .code .v{ font-size:38px; font-weight:700; line-height:.9; letter-spacing:-.03em; }
+  .code .v small{ font-size:16px; font-weight:700; letter-spacing:0; }
+  .idmeta{ flex:1; display:flex; flex-direction:column; gap:6px; justify-content:center; }
+
+  /* tabelas */
+  table{ width:100%; border-collapse:collapse; font-size:11px; }
+  .tw{ overflow-x:auto; }
+  th{ text-align:left; font-size:8.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); padding:0 8px 5px 0; border-bottom:1px solid var(--rule); }
+  td{ padding:5px 8px 5px 0; border-bottom:1px solid var(--hair); vertical-align:top; }
+  td:last-child, th:last-child{ padding-right:0; }
+  .num{ text-align:right; white-space:nowrap; }
+  tr.tot td{ border-top:1.5px solid var(--ink); border-bottom:none; font-weight:700; padding-top:6px; }
+  .sub td{ font-size:8.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink); background:var(--shade); padding:4px 8px 4px 6px; border-bottom:1px solid var(--rule); }
+  .armhead th{ color:var(--ink); font-size:9.5px; }
+
+  /* campos */
+  .ln{ display:inline-block; flex:1; min-width:30px; border-bottom:1px solid var(--rule); height:1.15em; }
+  .rec{ display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:6px; }
+  .rec label{ display:flex; align-items:flex-end; gap:6px; flex:1 1 118px; font-size:8.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .fields{ display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); gap:9px 18px; }
+  .fields label{ display:flex; align-items:flex-end; gap:6px; font-size:8.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .writebox{ border:1px solid var(--rule); background:var(--field); min-height:54px; margin-top:6px; }
+  .writebox.tall{ min-height:80px; }
+
+  /* checkbox e escala */
+  .chk{ display:inline-block; width:9px; height:9px; border:1px solid var(--ink); background:var(--field); margin-right:6px; flex:none; position:relative; top:1px; }
+  .chk.r{ margin-right:0; margin-left:6px; }
+  ul.checks{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:4px 18px; font-size:10.5px; }
+  ul.checks li{ display:flex; align-items:flex-start; }
+  .scale{ display:flex; gap:3px; justify-content:center; }
+  .scale i{ width:11px; height:11px; border:1px solid var(--rule); background:var(--field); display:block; }
+
+  /* linha do tempo */
+  ol.tl{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+  ol.tl li{ display:grid; grid-template-columns:56px 1fr; gap:0 14px; padding:0 0 10px; position:relative; }
+  ol.tl li::before{ content:""; position:absolute; left:61px; top:12px; bottom:0; width:1px; background:var(--rule); }
+  ol.tl li:last-child{ padding-bottom:0; }
+  ol.tl li:last-child::before{ display:none; }
+  .tl-t{ text-align:right; font-size:10px; font-weight:700; padding-top:1px; position:relative; }
+  .tl-t::after{ content:""; position:absolute; right:-10px; top:5px; width:7px; height:7px; background:var(--ink); }
+  .tl-b{ padding-left:8px; }
+  .tl-b b{ font-size:11.5px; font-weight:700; display:block; }
+  .tl-b p{ font-size:10.5px; color:var(--muted); margin:1px 0 0; }
+
+  /* avisos */
+  .callout{ border-left:4px solid var(--ink); padding:8px 0 8px 12px; font-size:10.5px; }
+  .invert{ background:var(--block); color:var(--blockink); padding:12px 14px; }
+  .invert h3{ color:var(--blockink); opacity:.7; }
+  .invert p{ color:var(--blockink); }
+
+  .kv{ display:flex; flex-direction:column; gap:3px; font-size:10.5px; }
+  .kv div{ display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid var(--hair); padding-bottom:2px; }
+  .kv span:first-child{ color:var(--muted); }
+  .kv span:last-child{ font-weight:700; text-align:right; }
+
+  .foot{ border-top:1px solid var(--rule); padding-top:8px; display:flex; justify-content:space-between; gap:12px; font-size:8.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); }
+  .tear{ border:1px dashed var(--rule); padding:10px 12px; font-size:10.5px; }
+
+  ol.rules{ margin:0; padding-left:17px; font-size:10.5px; }
+  ol.rules li{ margin-bottom:6px; padding-left:2px; }
+  ol.rules li:last-child{ margin-bottom:0; }
+
+  /* impressão */
+  @media print{
+    :root{
+      --ground:#FFFFFF; --paper:#FFFFFF; --ink:#000000; --muted:#555B5B; --faint:#8A9090;
+      --rule:#9AA0A0; --hair:#C8CCCC; --field:#FFFFFF; --block:#000000; --blockink:#FFFFFF; --shade:#EDEBEA;
+    }
+    @page{ size:A4 portrait; margin:9mm 11mm; }
+    body{ background:#fff; font-size:8.2pt; line-height:1.34; }
+    .wrap{ max-width:none; padding:0; gap:0; }
+    .sheet{ border:none; padding:0; gap:11px; }
+    .sheet + .sheet{ break-before:page; }
+    .block{ break-inside:avoid; }
+    .code, .invert, .sub td, .tl-t::after, .armhead th{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+    /* densidade de bancada: uma folha do caderno = uma página A4 */
+    .top{ padding-bottom:6px; }
+    .mark{ width:24px; height:24px; }
+    .wordmark{ font-size:10.5px; }
+    .docid{ font-size:7.5px; line-height:1.55; }
+    h1{ font-size:19px; }
+    h2{ font-size:9.5px; margin-bottom:6px; padding-bottom:3px; }
+    h3{ font-size:9px; margin-bottom:4px; }
+    p{ margin-bottom:5px; }
+    .lede{ font-size:10.5px; line-height:1.42; }
+    .note{ font-size:9px; }
+    .eyebrow{ font-size:8px; }
+    .cols{ gap:14px; }
+    .idrow{ gap:14px; }
+    .code{ width:88px; padding:9px 10px 8px; }
+    .code .v{ font-size:30px; }
+    .code .v small{ font-size:13px; }
+    .code .k{ font-size:7.5px; }
+    table{ font-size:9.2px; }
+    th{ font-size:7.5px; padding-bottom:3px; }
+    td{ padding:2.8px 7px 2.8px 0; }
+    .sub td{ font-size:7.5px; padding:2.4px 7px 2.4px 5px; }
+    .armhead th{ font-size:8.5px; }
+    tr.tot td{ padding-top:4px; }
+    .rec{ gap:4px 12px; margin-top:4px; }
+    .rec label{ font-size:7.5px; flex-basis:100px; }
+    .fields{ gap:6px 14px; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); }
+    .fields label{ font-size:7.5px; }
+    .writebox{ min-height:38px; margin-top:4px; }
+    .writebox.tall{ min-height:56px; }
+    ul.checks{ font-size:9px; gap:2px 14px; }
+    .chk{ width:8px; height:8px; margin-right:5px; }
+    .chk.r{ margin-left:5px; }
+    .scale i{ width:9.5px; height:9.5px; }
+    ol.tl li{ grid-template-columns:48px 1fr; padding-bottom:5.5px; gap:0 11px; }
+    ol.tl li::before{ left:53px; top:10px; }
+    .tl-t{ font-size:8.8px; }
+    .tl-t::after{ width:6px; height:6px; right:-9px; top:4px; }
+    .tl-b b{ font-size:9.8px; }
+    .tl-b p{ font-size:8.8px; }
+    ol.rules{ font-size:9px; padding-left:15px; }
+    ol.rules li{ margin-bottom:4px; }
+    .callout{ font-size:9px; padding:5px 0 5px 10px; }
+    .invert{ padding:9px 11px; }
+    .kv{ font-size:9px; }
+    .tear{ padding:8px 10px; font-size:9px; }
+    .foot{ font-size:7.5px; padding-top:6px; }
+  }
+</style>
+
+<div class="wrap">
+
+<!-- ============ FOLHA 1 · A RESPOSTA ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Curiosidade · Biga a 37%</b>Folha 1 de 2 · A resposta</div>
+  </div>
+
+  <div class="idrow block">
+    <div class="code"><span class="k">piso prático<br>da biga</span><span class="v">35<small>%</small></span></div>
+    <div class="idmeta">
+      <div class="eyebrow">A pergunta: dá para fazer uma biga com 37% de hidratação</div>
+      <h1>Dá, e o chão está logo ali embaixo</h1>
+      <p class="note">Abaixo de uns 35% a farinha não molha por inteiro com mistura normal, e o que sai da masseira é farinha com grumos, não biga. 37% está dois pontos acima desse chão. É experimento honesto, não é receita.</p>
+    </div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>Para onde vai a água</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th style="width:42%">Em 100 g de farinha</th><th class="num" style="width:26%">Pesa</th><th class="num" style="width:32%">Pede de água</th></tr></thead>
+          <tbody>
+            <tr><td>Amido íntegro</td><td class="num">62 g</td><td class="num">27 g</td></tr>
+            <tr><td>Amido danificado</td><td class="num">7 g</td><td class="num">14 g</td></tr>
+            <tr><td>Proteína</td><td class="num">13 g</td><td class="num">26 g</td></tr>
+            <tr><td>Pentosanas</td><td class="num">2 g</td><td class="num">20 g</td></tr>
+            <tr class="tot"><td>Demanda total</td><td class="num">&nbsp;</td><td class="num">87 g</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 style="margin-top:12px">Quanto dessa demanda é atendida</h3>
+      <div class="kv">
+        <div><span>A 37%, com os 14 g da farinha</span><span>51 g, ou 59%</span></div>
+        <div><span>A 44%</span><span>67%</span></div>
+        <div><span>A 50%</span><span>74%</span></div>
+        <div><span>Massa final a 62%</span><span>87%</span></div>
+      </div>
+      <p class="note" style="margin-top:6px">Ordens de grandeza de farinha de trigo comum, não constantes da sua. Repare que nem a massa final satura a farinha, e é por isso que autólise funciona e que massa pronta continua absorvendo. A 37% a questão não é saturar. É se sobra água livre para molhar tudo por igual.</p>
+    </div>
+
+    <div class="block">
+      <h2>37 contra 44 e 50</h2>
+      <div class="tw">
+        <table>
+          <thead><tr class="armhead"><th style="width:30%">&nbsp;</th><th style="width:24%">50% · a sua</th><th style="width:22%">44% · canônica</th><th style="width:24%">37%</th></tr></thead>
+          <tbody>
+            <tr><td>Sai da masseira como</td><td>massa grosseira</td><td>esfarelado</td><td>areia úmida</td></tr>
+            <tr><td>Cúpula para ler</td><td>sim</td><td>discreta</td><td>quase nenhuma</td></tr>
+            <tr><td>Glúten formado na biga</td><td>parcial</td><td>pouco</td><td>quase nada</td></tr>
+            <tr><td>Velocidade</td><td>acelera</td><td>referência</td><td>freia forte</td></tr>
+            <tr><td>Gradiente núcleo e borda</td><td>alto</td><td>médio</td><td>baixo</td></tr>
+            <tr><td>Proteólise</td><td>maior</td><td>referência</td><td>menor</td></tr>
+            <tr><td>Janela de ponto</td><td>estreita</td><td>média</td><td>larga</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 style="margin-top:12px">Onde esse número já existe</h3>
+      <div class="kv">
+        <div><span>Massa de macarrão extrudada</span><span>30 a 32%</span></div>
+        <div><span>Biga a 37%</span><span>a sua pergunta</span></div>
+        <div><span>Biga canônica</span><span>44 a 45%</span></div>
+        <div><span>Lievito madre sólido</span><span>45 a 50%</span></div>
+      </div>
+      <p class="note" style="margin-top:6px">37% cai entre a biga e a extrudada, mais perto do lado que só fecha com máquina de verdade.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>As seis coisas que mudam de fato</h2>
+    <ol class="tl">
+      <li><span class="tl-t">1</span><div class="tl-b"><b>A água fica onde caiu</b><p>Não existe fase aquosa contínua a 37%, então a água não migra sozinha do jeito que você está acostumado. Sem um descanso no meio da mistura, sobra farinha seca dentro do bloco, e farinha seca na biga vira farinha crua na pizza.</p></div></li>
+      <li><span class="tl-t">2</span><div class="tl-b"><b>O glúten fica de fora do rateio</b><p>Pentosana e amido danificado pegam água primeiro e seguram com força. A proteína é a última da fila. A biga sai praticamente sem rede, o que é aceitável, porque quem constrói a rede é o rinfresco. O que você perde é a vantagem de chegar nele com meio caminho andado.</p></div></li>
+      <li><span class="tl-t">3</span><div class="tl-b"><b>A fermentação desacelera</b><p>Menos água significa difusão mais lenta de açúcar, de metabólito e de ácido. Mesmo fermento, mesma temperatura, ponto mais tarde. Conte de 30 a 50% a mais de tempo, e trate isso como hipótese a calibrar, não como constante.</p></div></li>
+      <li><span class="tl-t">4</span><div class="tl-b"><b>A cúpula some</b><p>Sem rede não há filme para segurar gás. O bloco quase não cresce e o sinal visual que você usa para ler maturação deixa de existir. Sobram o nariz e o pH em suspensão, e nada mais.</p></div></li>
+      <li><span class="tl-t">5</span><div class="tl-b"><b>O núcleo para de disparar</b><p>Bloco esfarelado não compacta, tem canal de ar por dentro e troca calor com a sala. O auto-aquecimento que explicou o seu 4,9 a 50% praticamente desaparece. É a maior vantagem da hidratação baixa e ela é sua em particular, não é genérica.</p></div></li>
+      <li><span class="tl-t">6</span><div class="tl-b"><b>O pH chega mais alto no mesmo ponto</b><p>Massa mais seca produz menos ácido por hora. A faixa de 5,0 a 5,2 que você calibrou a 50% não se transfere. A 37% você teria que recalibrar a janela pelo nariz e pelo forno antes de voltar a confiar no número.</p></div></li>
+    </ol>
+  </div>
+
+  <div class="block invert">
+    <h3>A resposta curta</h3>
+    <p>Dá para fazer, com dois cuidados que a 50% você não precisa ter: dissolver todo o fermento na água e dar um descanso no meio da mistura. O que quase ninguém fala é o preço. A 37% você entrega a cúpula, entrega o glúten pré-formado e entrega a curva de pH que já custou uma batida para calibrar. Sobram o aroma e o freio. <b>E quase todo o freio você já consegue a 44 ou 45, com os três sinais ainda funcionando.</b></p>
+    <p style="margin-top:6px">Então: se o que você quer é frear a biga, desça até 44. Se o que você quer é saber onde fica o limite e como a sua farinha se comporta lá embaixo, aí vale bater uma a 37 de propósito. São perguntas diferentes e a folha 2 é para a segunda.</p>
+  </div>
+
+  <div class="foot"><span>Curiosidade · biga a 37% · resposta e limite</span><span>Folha 1 de 2</span></div>
+</section>
+
+<!-- ============ FOLHA 2 · O ENSAIO ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Como fazer, se for fazer</b>Folha 2 de 2 · Método e verificação</div>
+  </div>
+
+  <div class="block">
+    <div class="eyebrow">Só o que muda em relação à batida que você já faz</div>
+    <h1>O ensaio a 37%</h1>
+  </div>
+
+  <div class="block">
+    <div class="tw">
+      <table>
+        <thead><tr class="armhead"><th style="width:30%">Etapa</th><th style="width:64%">Por quê</th><th style="width:6%">Ok</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>Todo o fermento dissolvido em toda a água, sem exceção</b></td>
+            <td>A água é o único veículo que existe aqui. Fermento polvilhado por cima não chega a lugar nenhum e a biga fermenta em manchas, com pedaços maduros ao lado de pedaços crus.</td>
+            <td><span class="chk"></span></td>
+          </tr>
+          <tr>
+            <td><b>Água em fio, sobre a farinha em movimento, ao longo de 60 a 90 s</b></td>
+            <td>Despejar num ponto só cria um núcleo encharcado e uma periferia seca, e a 37% isso não se corrige depois, porque a água não migra por conta própria.</td>
+            <td><span class="chk"></span></td>
+          </tr>
+          <tr>
+            <td><b>Misturar 3 min na primeira velocidade e parar</b></td>
+            <td>Vai parecer areia úmida e não massa. Está certo. Insistir na masseira aquece o lote e não junta nada, porque não é energia que falta, é água.</td>
+            <td><span class="chk"></span></td>
+          </tr>
+          <tr>
+            <td><b>Descanso de 15 a 20 min, tampado, e mais 1 a 2 min de mistura</b></td>
+            <td>Este passo só existe a 37% e é ele que faz a coisa toda funcionar. Quem distribui a água aqui é o tempo parado, não a masseira. Sem esse descanso, o resto da folha não fecha.</td>
+            <td><span class="chk"></span></td>
+          </tr>
+          <tr>
+            <td><b>Teste do punhado antes de encaixotar</b></td>
+            <td>Aperte um punhado na mão. Se ele segura e não solta pó, a farinha está molhada. Se solta, suba 1 ponto de água e repita, porque nem toda farinha aceita 37 e a sua tem a última palavra.</td>
+            <td><span class="chk"></span></td>
+          </tr>
+          <tr>
+            <td><b>Caixa larga e rasa, no máximo 10 cm, esfarelado e sem prensar</b></td>
+            <td>A 37% o esfarelado deixa de ser inconveniente e vira o ganho: é ele que ventila o bloco e mata o auto-aquecimento. Prensar joga fora a única vantagem que a hidratação baixa te dá.</td>
+            <td><span class="chk"></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>As duas contas que mudam</h2>
+      <h3>A água perde alavanca térmica</h3>
+      <div class="kv">
+        <div><span>Peso da água na massa térmica, a 37%</span><span>48%</span></div>
+        <div><span>A 50%</span><span>55%</span></div>
+        <div><span>A 62%</span><span>60%</span></div>
+        <div><span>1 °C na água move a saída, a 37%</span><span>0,48 °C</span></div>
+      </div>
+      <p class="note" style="margin-bottom:8px">A fórmula das três temperaturas foi calibrada para massa perto de 60%, onde a água manda mais. A 37% ela erra para o lado quente. Use como primeiro tiro, meça a saída no espeto e corrija na batida seguinte, que é o que você já ia fazer de qualquer jeito.</p>
+      <h3>A água que volta no rinfresco</h3>
+      <div class="kv">
+        <div><span>Biga com 1000 g de farinha a 37%</span><span>370 g</span></div>
+        <div><span>Alvo da massa final</span><span>62%, ou 620 g</span></div>
+        <div><span>A acrescentar no rinfresco</span><span>250 g</span></div>
+        <div><span>Se a biga fosse a 50%</span><span>120 g</span></div>
+      </div>
+      <p class="note" style="margin-top:6px">Mais que o dobro de água para entrar. Ela entra bem, porque farelo seco é sedento, mas a batida fica mais longa e a massa final sai mais tenaz, já que o glúten começa do zero. Alongue a puntata em vez de forçar a masseira.</p>
+    </div>
+
+    <div class="block">
+      <h2>Ponto de partida da primeira batida</h2>
+      <p class="note" style="margin-bottom:6px">Saindo do seu último lote e corrigindo o que muda:</p>
+      <div class="kv">
+        <div><span>Fermento fresco a 50%, já corrigido</span><span>0,6%</span></div>
+        <div><span>Correção pelo freio da hidratação</span><span>× 1,4</span></div>
+        <div><span>Correção pelo fim do auto-aquecimento</span><span>× 1,3</span></div>
+        <div><span>Ponto de partida a 37%</span><span>1,0 a 1,1%</span></div>
+      </div>
+      <p class="note" style="margin-top:6px; margin-bottom:8px">Cai em cima da dose canônica de 1,0%, e não por acaso. Os dois freios que você tinha somado a 50% eram compensação de um bloco que corria sozinho. A 37% o bloco para de correr e a receita volta ao centro.</p>
+      <div class="kv">
+        <div><span>Água</span><span>calculada para saída de 18 a 19 °C</span></div>
+        <div><span>Ambiente</span><span>17 °C, o mesmo de sempre</span></div>
+        <div><span>Tempo previsto</span><span>19 a 24 h</span></div>
+        <div><span>pH esperado em suspensão</span><span>5,1 a 5,3</span></div>
+      </div>
+      <div class="callout" style="margin-top:10px"><b>O eletrodo direto na massa está fora.</b> A 50% ele já dava ruído por contato ruim. A 37% não é ruído, é leitura sem contato nenhum. Suspensão de 10 g em 100 mL, mesma proporção e mesma temperatura de sempre, senão a série não se compara com ela mesma.</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>O que olhar, já que a cúpula não serve mais</h2>
+    <ul class="checks">
+      <li><span class="chk"></span>Nenhuma farinha seca no fundo da caixa</li>
+      <li><span class="chk"></span>Punhado apertado segura e não solta pó</li>
+      <li><span class="chk"></span>Aroma de álcool, avelã e iogurte leve</li>
+      <li><span class="chk"></span>Grumo aberto ao meio com alvéolo fino e parelho</li>
+      <li><span class="chk"></span>Núcleo e borda dentro de 0,05 de pH</li>
+      <li><span class="chk"></span>Sem cheiro de acetona</li>
+      <li><span class="chk"></span>T de núcleo colada na T da sala</li>
+      <li><span class="chk"></span>Massa final relaxa na puntata</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h2>Registro da batida a 37%</h2>
+    <div class="fields">
+      <label>data e hora da batida<span class="ln"></span></label>
+      <label>hidratação real<span class="ln"></span></label>
+      <label>fermento %<span class="ln"></span></label>
+      <label>T farinha<span class="ln"></span></label>
+      <label>T sala<span class="ln"></span></label>
+      <label>T água calculada<span class="ln"></span></label>
+      <label>T saída real<span class="ln"></span></label>
+      <label>descanso no meio<span class="ln"></span></label>
+      <label>T núcleo 4 h<span class="ln"></span></label>
+      <label>T núcleo 12 h<span class="ln"></span></label>
+      <label>pH suspensão núcleo<span class="ln"></span></label>
+      <label>pH suspensão borda<span class="ln"></span></label>
+      <label>aroma<span class="ln"></span></label>
+      <label>água somada no rinfresco<span class="ln"></span></label>
+      <label>decisão<span class="ln"></span></label>
+    </div>
+  </div>
+
+  <div class="block invert">
+    <h3>O que essa batida responde de verdade</h3>
+    <p>Ela não responde se 37% é melhor, porque uma batida nunca responde isso. Responde três coisas que você não sabe hoje: se a sua farinha aceita 37, quanto o freio vale em horas na sua sala, e como fica a massa final com o glúten começando do zero no rinfresco. As três seguem úteis mesmo que a pizza saia pior, e é por isso que vale bater uma, sozinha e com todo o resto igual. <b>37% não é um ajuste da sua biga, é outra biga.</b></p>
+  </div>
+
+  <div class="block">
+    <h2>Como a biga a 37% assou</h2>
+    <div class="writebox tall"></div>
+  </div>
+
+  <div class="foot"><span>QT Pizza Bar · ensaio a 37%</span><span>Folha 2 de 2</span></div>
+</section>
+
+</div>
