@@ -4,6 +4,14 @@
 Reimplementa em Python a cadeia que as fórmulas descrevem, resolvendo as
 referências lidas do próprio arquivo, e compara o resultado com os horários
 já validados na folha 3 do caderno. Falha com AssertionError se divergir.
+
+Por que não usamos o recalc.py da skill xlsx: o LibreOffice deste ambiente
+não carrega arquivo xlsx nenhum gerado pelo openpyxl, nem uma planilha de
+três células, e devolve "source file could not be loaded". O recalc fica
+preso na abertura e estoura o timeout. Não perca tempo tentando de novo,
+aumentar o timeout não resolve. Consequência prática: o arquivo sai sem
+valores em cache, o que só afeta ferramenta lendo o arquivo. Excel e Google
+Sheets recalculam ao abrir.
 """
 import re
 from datetime import datetime, timedelta
