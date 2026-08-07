@@ -1,0 +1,598 @@
+<title>QT · Alcachofra e Alho Negro · A pizza pelo Foodpairing</title>
+
+<style>
+  :root{
+    --ground:#EFECEC; --paper:#F8F6F6; --ink:#1A1E1E; --muted:#7E8484; --faint:#A0A5A5;
+    --rule:#C4C8C7; --hair:#DAD7D6; --field:#FFFFFF; --block:#1A1E1E; --blockink:#EFECEC; --shade:#E4E1E0;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ground:#1A1E1E; --paper:#202524; --ink:#EFECEC; --muted:#9BA1A1; --faint:#767C7C;
+      --rule:#3E4544; --hair:#2C3231; --field:#171B1B; --block:#EFECEC; --blockink:#1A1E1E; --shade:#262B2A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#1A1E1E; --paper:#202524; --ink:#EFECEC; --muted:#9BA1A1; --faint:#767C7C;
+    --rule:#3E4544; --hair:#2C3231; --field:#171B1B; --block:#EFECEC; --blockink:#1A1E1E; --shade:#262B2A;
+  }
+  :root[data-theme="light"]{
+    --ground:#EFECEC; --paper:#F8F6F6; --ink:#1A1E1E; --muted:#7E8484; --faint:#A0A5A5;
+    --rule:#C4C8C7; --hair:#DAD7D6; --field:#FFFFFF; --block:#1A1E1E; --blockink:#EFECEC; --shade:#E4E1E0;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size:11.5px; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    font-variant-numeric:tabular-nums;
+  }
+
+  .wrap{ max-width:840px; margin:0 auto; padding:32px 16px 64px; display:flex; flex-direction:column; gap:28px; }
+  .sheet{ background:var(--paper); border:1px solid var(--hair); padding:28px 30px 32px; display:flex; flex-direction:column; gap:20px; }
+
+  /* cabeçalho */
+  .top{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; border-bottom:2px solid var(--ink); padding-bottom:9px; }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .mark{ width:26px; height:26px; display:block; color:var(--ink); flex:none; }
+  .wordmark{ font-weight:700; font-size:12.5px; letter-spacing:.3em; text-transform:uppercase; line-height:1; }
+  .docid{ text-align:right; font-size:8.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; line-height:1.7; color:var(--muted); }
+  .docid b{ color:var(--ink); display:block; }
+
+  /* títulos */
+  .eyebrow{ font-size:9px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+  h1{ font-size:25px; font-weight:700; letter-spacing:-.005em; line-height:1.12; margin:0; text-wrap:balance; }
+  h2{ font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin:0 0 9px; padding-bottom:5px; border-bottom:1px solid var(--ink); }
+  h3{ font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin:0 0 6px; color:var(--muted); }
+  p{ margin:0 0 8px; max-width:68ch; }
+  p:last-child{ margin-bottom:0; }
+  .lede{ font-size:12.5px; line-height:1.55; }
+  .note{ color:var(--muted); font-size:10.5px; }
+
+  /* blocos */
+  .block{ break-inside:avoid; }
+  .cols{ display:grid; gap:20px; }
+  .c-2{ grid-template-columns:1fr 1fr; }
+  .c-38{ grid-template-columns:35fr 65fr; }
+  .c-3{ grid-template-columns:1fr 1fr 1fr; }
+  @media (max-width:640px){ .cols{ grid-template-columns:1fr; } }
+
+  /* identificação */
+  .idrow{ display:flex; align-items:stretch; gap:18px; }
+  .code{ background:var(--block); color:var(--blockink); width:104px; flex:none; padding:12px 12px 11px; display:flex; flex-direction:column; justify-content:space-between; }
+  .code .k{ font-size:8.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; opacity:.75; }
+  .code .v{ font-size:38px; font-weight:700; line-height:.9; letter-spacing:-.03em; }
+  .code .v small{ font-size:16px; font-weight:700; letter-spacing:0; }
+  .idmeta{ flex:1; display:flex; flex-direction:column; gap:6px; justify-content:center; }
+
+  /* tabelas */
+  table{ width:100%; border-collapse:collapse; font-size:11px; }
+  .tw{ overflow-x:auto; }
+  th{ text-align:left; font-size:8.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); padding:0 8px 5px 0; border-bottom:1px solid var(--rule); }
+  td{ padding:5px 8px 5px 0; border-bottom:1px solid var(--hair); vertical-align:top; }
+  td:last-child, th:last-child{ padding-right:0; }
+  .num{ text-align:right; white-space:nowrap; }
+  tr.tot td{ border-top:1.5px solid var(--ink); border-bottom:none; font-weight:700; padding-top:6px; }
+  .sub td{ font-size:8.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink); background:var(--shade); padding:4px 8px 4px 6px; border-bottom:1px solid var(--rule); }
+  .armhead th{ color:var(--ink); font-size:9.5px; }
+
+  /* campos */
+  .ln{ display:inline-block; flex:1; min-width:30px; border-bottom:1px solid var(--rule); height:1.15em; }
+  .rec{ display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:6px; }
+  .rec label{ display:flex; align-items:flex-end; gap:6px; flex:1 1 118px; font-size:8.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .fields{ display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); gap:9px 18px; }
+  .fields label{ display:flex; align-items:flex-end; gap:6px; font-size:8.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .writebox{ border:1px solid var(--rule); background:var(--field); min-height:54px; margin-top:6px; }
+  .writebox.tall{ min-height:80px; }
+
+  /* checkbox e escala */
+  .chk{ display:inline-block; width:9px; height:9px; border:1px solid var(--ink); background:var(--field); margin-right:6px; flex:none; position:relative; top:1px; }
+  .chk.r{ margin-right:0; margin-left:6px; }
+  ul.checks{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:4px 18px; font-size:10.5px; }
+  ul.checks li{ display:flex; align-items:flex-start; }
+  .scale{ display:flex; gap:3px; justify-content:center; }
+  .scale i{ width:11px; height:11px; border:1px solid var(--rule); background:var(--field); display:block; }
+
+  /* linha do tempo */
+  ol.tl{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+  ol.tl li{ display:grid; grid-template-columns:56px 1fr; gap:0 14px; padding:0 0 10px; position:relative; }
+  ol.tl li::before{ content:""; position:absolute; left:61px; top:12px; bottom:0; width:1px; background:var(--rule); }
+  ol.tl li:last-child{ padding-bottom:0; }
+  ol.tl li:last-child::before{ display:none; }
+  .tl-t{ text-align:right; font-size:10px; font-weight:700; padding-top:1px; position:relative; }
+  .tl-t::after{ content:""; position:absolute; right:-10px; top:5px; width:7px; height:7px; background:var(--ink); }
+  .tl-b{ padding-left:8px; }
+  .tl-b b{ font-size:11.5px; font-weight:700; display:block; }
+  .tl-b p{ font-size:10.5px; color:var(--muted); margin:1px 0 0; }
+
+  /* avisos */
+  .callout{ border-left:4px solid var(--ink); padding:8px 0 8px 12px; font-size:10.5px; }
+  .invert{ background:var(--block); color:var(--blockink); padding:12px 14px; }
+  .invert h3{ color:var(--blockink); opacity:.7; }
+  .invert p{ color:var(--blockink); }
+
+  .kv{ display:flex; flex-direction:column; gap:3px; font-size:10.5px; }
+  .kv div{ display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid var(--hair); padding-bottom:2px; }
+  .kv span:first-child{ color:var(--muted); }
+  .kv span:last-child{ font-weight:700; text-align:right; }
+
+  .foot{ border-top:1px solid var(--rule); padding-top:8px; display:flex; justify-content:space-between; gap:12px; font-size:8.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); }
+  .tear{ border:1px dashed var(--rule); padding:10px 12px; font-size:10.5px; }
+
+  ol.rules{ margin:0; padding-left:17px; font-size:10.5px; }
+  ol.rules li{ margin-bottom:6px; padding-left:2px; }
+  ol.rules li:last-child{ margin-bottom:0; }
+
+  /* impressão */
+  @media print{
+    :root{
+      --ground:#FFFFFF; --paper:#FFFFFF; --ink:#000000; --muted:#555B5B; --faint:#8A9090;
+      --rule:#9AA0A0; --hair:#C8CCCC; --field:#FFFFFF; --block:#000000; --blockink:#FFFFFF; --shade:#EDEBEA;
+    }
+    @page{ size:A4 portrait; margin:9mm 11mm; }
+    body{ background:#fff; font-size:8.2pt; line-height:1.34; }
+    .wrap{ max-width:none; padding:0; gap:0; }
+    .sheet{ border:none; padding:0; gap:11px; }
+    .sheet + .sheet{ break-before:page; }
+    .block{ break-inside:avoid; }
+    .code, .invert, .sub td, .tl-t::after, .armhead th{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+    /* densidade de bancada: uma folha do caderno = uma página A4 */
+    .top{ padding-bottom:6px; }
+    .mark{ width:24px; height:24px; }
+    .wordmark{ font-size:10.5px; }
+    .docid{ font-size:7.5px; line-height:1.55; }
+    h1{ font-size:19px; }
+    h2{ font-size:9.5px; margin-bottom:6px; padding-bottom:3px; }
+    h3{ font-size:9px; margin-bottom:4px; }
+    p{ margin-bottom:5px; }
+    .lede{ font-size:10.5px; line-height:1.42; }
+    .note{ font-size:9px; }
+    .eyebrow{ font-size:8px; }
+    .cols{ gap:14px; }
+    .idrow{ gap:14px; }
+    .code{ width:88px; padding:9px 10px 8px; }
+    .code .v{ font-size:30px; }
+    .code .v small{ font-size:13px; }
+    .code .k{ font-size:7.5px; }
+    table{ font-size:9.2px; }
+    th{ font-size:7.5px; padding-bottom:3px; }
+    td{ padding:2.8px 7px 2.8px 0; }
+    .sub td{ font-size:7.5px; padding:2.4px 7px 2.4px 5px; }
+    .armhead th{ font-size:8.5px; }
+    tr.tot td{ padding-top:4px; }
+    .rec{ gap:4px 12px; margin-top:4px; }
+    .rec label{ font-size:7.5px; flex-basis:100px; }
+    .fields{ gap:6px 14px; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); }
+    .fields label{ font-size:7.5px; }
+    .writebox{ min-height:38px; margin-top:4px; }
+    .writebox.tall{ min-height:56px; }
+    ul.checks{ font-size:9px; gap:2px 14px; }
+    .chk{ width:8px; height:8px; margin-right:5px; }
+    .chk.r{ margin-left:5px; }
+    .scale i{ width:9.5px; height:9.5px; }
+    ol.tl li{ grid-template-columns:48px 1fr; padding-bottom:5.5px; gap:0 11px; }
+    ol.tl li::before{ left:53px; top:10px; }
+    .tl-t{ font-size:8.8px; }
+    .tl-t::after{ width:6px; height:6px; right:-9px; top:4px; }
+    .tl-b b{ font-size:9.8px; }
+    .tl-b p{ font-size:8.8px; }
+    ol.rules{ font-size:9px; padding-left:15px; }
+    ol.rules li{ margin-bottom:4px; }
+    .callout{ font-size:9px; padding:5px 0 5px 10px; }
+    .invert{ padding:9px 11px; }
+    .kv{ font-size:9px; }
+    .tear{ padding:8px 10px; font-size:9px; }
+    .foot{ font-size:7.5px; padding-top:6px; }
+  }
+</style>
+
+<div class="wrap">
+
+<!-- ============ FOLHA 1 · A COMPOSIÇÃO ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Alcachofra e Alho Negro</b>Folha 1 de 5 · A composição</div>
+  </div>
+
+  <div class="idrow block">
+    <div class="code"><span class="k">pontes<br>aromáticas</span><span class="v">32</span></div>
+    <div class="idmeta">
+      <div class="eyebrow">Cinco peças · cinco pares impressos · nenhuma peça órfã</div>
+      <h1>A massa é o ingrediente mais conectado da pizza</h1>
+      <p class="note">Foi ela que escolheu o resto. A crosta de biga tem 12 dos 14 tipos de aroma e 112 pontes no livro, mais do que qualquer cobertura que se pense em cima dela. Partindo dela e deixando o grafo decidir, a pizza que sai não é a margherita.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Como esta pizza foi escolhida</h2>
+    <p>Fixando o que uma pizza obrigatoriamente tem, crosta, molho e queijo, sobrou perguntar quais <b>duas</b> coberturas maximizam a soma de pontes dentro do conjunto. Foram testadas todas as combinações possíveis de dois acréscimos nos 9.480 pares da base, com uma restrição: <b>nenhuma peça pode ficar órfã</b>, ou seja, cada um dos cinco ingredientes precisa ter ao menos uma ponte impressa com outro do prato. Sobraram 540 conjuntos conectados.</p>
+    <p>O topo do ranking bruto é caranguejo com alcachofra, 37 pontes, e alcachofra com arroz integral, 35. A química não sabe o que é pizza, e o filtro do bom senso é meu, não da base. <b>O primeiro conjunto do ranking em que as cinco peças são cobertura de pizza de verdade é este, com 32 pontes.</b></p>
+  </div>
+
+  <div class="block">
+    <h2>As cinco peças</h2>
+    <div class="tw"><table>
+      <tr class="armhead"><th>Peça</th><th>Como entra na pizza</th><th class="num">Pontes</th></tr>
+      <tr><td><b>Crosta de biga</b><br><span class="note">ciabatta, p. 200</span></td><td>O disco assado. A ciabatta é o pão de biga do livro, e é o análogo mais honesto que a base tem da nossa massa.</td><td class="num">22</td></tr>
+      <tr><td><b>Molho de tomate cozido</b><br><span class="note">suco de tomate pasteurizado, p. 200</span></td><td>Pelati reduzido, não tomate cru batido. Ver o quadro abaixo.</td><td class="num">21</td></tr>
+      <tr><td><b>Purê de alho negro</b><br><span class="note">p. 112</span></td><td>Em pontos, não em camada. É a peça que amarra a crosta ao molho.</td><td class="num">14</td></tr>
+      <tr><td><b>Alcachofra cozida</b><br><span class="note">p. 327</span></td><td>Em lascas, pré-cozida. É a única peça que fala com a muçarela.</td><td class="num">10</td></tr>
+      <tr><td><b>Muçarela de búfala</b><br><span class="note">p. 327</span></td><td>Escorrida. É a peça mais fraca do grafo, e a folha 5 diz por que ela fica.</td><td class="num">3</td></tr>
+    </table></div>
+    <p class="note" style="margin-top:7px">A coluna soma as pontes daquela peça com as outras quatro. Cada ponte conta nas duas peças que liga, então a coluna soma 70 e não 32.</p>
+  </div>
+
+  <div class="cols c-38">
+    <div class="block invert">
+      <h3>O achado</h3>
+      <p style="font-size:11.5px"><b>Só o tomate cozido faz ponte com a crosta.</b></p>
+      <p style="font-size:10.5px;margin-top:6px">Tomate cru: 0. Em lata: 0. Purê: 0. Cereja: 0. Italiano: 0.</p>
+      <p style="font-size:10.5px;margin-top:6px">Suco de tomate pasteurizado: <b>8 pontes</b>.</p>
+    </div>
+    <div class="block">
+      <h2>O que isso quer e não quer dizer</h2>
+      <p>Das seis formas de tomate que a base guarda, uma só aparece na mesma grade que a ciabatta, e aparece com oito pontes, que é o par mais forte da pizza inteira. A forma que faz isso é a que passou por calor.</p>
+      <p><b>Não</b> significa que tomate cru não combina com massa de pizza. O livro imprime dez parceiros por grade, o grafo é esparso, e silêncio é falta de dado, nunca negação. O que o dado autoriza é mais estreito e ainda assim muda a bancada: <b>a única rota impressa entre o tomate e esta crosta passa pelo tomate tratado com calor</b>. Puxe o molho para o lado cozido e reduzido, em vez do pelati cru amassado à mão.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Alcachofra e Alho Negro · 5 peças · 32 pontes · 5 pares impressos</span><span>Folha 1 de 5</span></div>
+</section>
+
+
+<!-- ============ FOLHA 2 · PONTES E GOSTOS ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Pontes e gostos</b>Folha 2 de 5 · Por onde as peças se encontram</div>
+  </div>
+
+  <div class="block">
+    <h2>Os cinco pares impressos</h2>
+    <div class="tw"><table>
+      <tr class="armhead"><th>Par</th><th class="num">Pontes</th><th>Tipos de aroma compartilhados</th><th class="num">Pág.</th></tr>
+      <tr><td>crosta de biga <b>×</b> molho de tomate cozido</td><td class="num"><b>8</b></td><td>Frutado, Floral, Verde, Vegetal, Caramelado, Torrado, Picante, Queijo</td><td class="num">200</td></tr>
+      <tr><td>crosta de biga <b>×</b> purê de alho negro</td><td class="num"><b>8</b></td><td>Floral, Verde, Vegetal, Caramelado, Torrado, Amadeirado, Picante, Queijo</td><td class="num">112</td></tr>
+      <tr><td>molho de tomate cozido <b>×</b> alcachofra cozida</td><td class="num"><b>7</b></td><td>Floral, Verde, Vegetal, Caramelado, Torrado, Picante, Queijo</td><td class="num">327</td></tr>
+      <tr><td>molho de tomate cozido <b>×</b> purê de alho negro</td><td class="num"><b>6</b></td><td>Floral, Verde, Vegetal, Caramelado, Picante, Queijo</td><td class="num">112</td></tr>
+      <tr><td>muçarela de búfala <b>×</b> alcachofra cozida</td><td class="num"><b>3</b></td><td>Frutado, Floral, Queijo</td><td class="num">327</td></tr>
+      <tr class="tot"><td>cinco pares de dez possíveis</td><td class="num">32</td><td>Floral e Queijo atravessam os cinco</td><td class="num"></td></tr>
+    </table></div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block callout">
+      <h3>Como ler a coluna dos tipos</h3>
+      <p>A base guarda o <b>tipo</b> de aroma, que é a coluna do livro, e não a molécula. "Verde" abriga pepino, gorduroso, grama, verde, flocos de aveia e ceroso, que são coisas diferentes. Escolher um dos seis seria adivinhar a molécula, e a base não diz qual é.</p>
+      <p style="margin-top:6px">O que o ponto grande afirma é que as duas peças <b>dividem uma molécula específica daquele tipo</b>. Não é escala de intensidade, é a ponte.</p>
+    </div>
+    <div class="block">
+      <h2>O eixo que atravessa tudo</h2>
+      <p><b>Floral e Queijo aparecem em cinco dos cinco pares.</b> Caramelado, Verde, Vegetal e Picante aparecem em quatro.</p>
+      <p>Não é uma pizza que se sustenta por um vínculo isolado entre dois ingredientes: é um bloco em que a mesma família de aromas volta em cada aresta. É o que o livro chama de sobretom, profundidade sem barulho, e é o motivo de estas cinco peças não brigarem apesar de o alho negro ser um ingrediente difícil.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Os gostos, e o risco do prato</h2>
+    <div class="tw"><table>
+      <tr class="armhead"><th>Peça</th><th>Gosto básico</th><th>Papel no equilíbrio</th></tr>
+      <tr><td>Crosta de biga</td><td>amargo, ligeiramente doce</td><td>traz corpo e o primeiro amargor</td></tr>
+      <tr><td>Molho de tomate cozido</td><td><b>doce, azedo, umami</b></td><td>o único contrapeso do prato inteiro</td></tr>
+      <tr><td>Muçarela de búfala</td><td>levemente doce, azedo</td><td>gordura e volume macio</td></tr>
+      <tr><td>Alcachofra cozida</td><td>amargo, levemente doce</td><td>segundo amargor, e o vegetal</td></tr>
+      <tr><td>Purê de alho negro</td><td>amargo, adstringente</td><td>terceiro amargor, e o mais intenso</td></tr>
+      <tr><td>Sal da massa e azeite</td><td>salgado, gordura</td><td>fecham os seis gostos do Briscione</td></tr>
+    </table></div>
+    <p class="note" style="margin-top:7px">Camada de gosto do Briscione, <i>The Flavor Matrix</i>. O <i>manjericão</i> não aparece porque ele não cobre erva nem especiaria; silêncio ali é normal, não falha.</p>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block invert">
+      <h3>O tomate é estrutural</h3>
+      <p style="font-size:10.5px">Três das cinco peças trazem amargo. No grafo de gostos do Briscione o amargo é o nó mais isolado dos sete e <b>só aparece como equilibrante, nunca como complementar</b>. Ele tem dois parceiros: doce e umami.</p>
+      <p style="font-size:10.5px;margin-top:6px">O tomate é a única peça que traz os dois. Ele não é o molho por tradição: é o contrapeso de um conjunto que sem ele penderia inteiro para o amargo. <b>Molho fraco, pizza áspera.</b></p>
+    </div>
+    <div class="block">
+      <h2>Onde as fontes discordam</h2>
+      <p><b>Sal contra amargor.</b> A tabela do Foodpairing diz que o sal <i>reduz</i> o amargor, e é com ela que justifico os 2,7% na folha 3. O Briscione não desenha aresta nenhuma entre salgado e amargo; o que ele diz é adjacente, que o sal acorda as papilas e aumenta a percepção geral. As duas leituras ficam registradas, e ausência no diagrama dele não é negação.</p>
+      <p><b>Sal e doce.</b> O Foodpairing lê como equilíbrio; o Briscione lê como acentuação mútua e chama o par de melhor exemplo que tem. Mesmo par, rótulos opostos.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>5 pares impressos · Floral e Queijo em todos · três peças amargas</span><span>Folha 2 de 5</span></div>
+</section>
+
+
+<!-- ============ FOLHA 3 · A MASSA ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>A massa</b>Folha 3 de 5 · Biga 37% · 75% · 2,7%</div>
+  </div>
+
+  <div class="idrow block">
+    <div class="code"><span class="k">a farinha do<br>rinfresco vê</span><span class="v">93<small>%</small></span></div>
+    <div class="idmeta">
+      <div class="eyebrow">Consequência aritmética de biga a 37% com 75% de hidratação total</div>
+      <h1>Quase toda a água entra depois</h1>
+      <p class="note">A biga leva 37% da farinha e só 1.665 g de água. Os outros 5.835 g caem sobre 6.300 g de farinha no rinfresco, e essa parte da massa enxerga 92,6% de hidratação até a biga se incorporar. É isso que decide a ordem de adição e o porquê do sal alto.</p>
+    </div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>Fórmula · 10 kg de farinha</h2>
+      <div class="tw"><table>
+        <tr class="armhead"><th>Ingrediente</th><th class="num">%</th><th class="num">gramas</th></tr>
+        <tr class="sub"><td colspan="3">Biga · 16 a 18 h · sem geladeira</td></tr>
+        <tr><td>Farinha</td><td class="num">37,0</td><td class="num">3.700</td></tr>
+        <tr><td>Água</td><td class="num">45,0*</td><td class="num">1.665</td></tr>
+        <tr><td>Fermento fresco</td><td class="num">0,60*</td><td class="num">22</td></tr>
+        <tr><td><i>massa da biga</i></td><td class="num"></td><td class="num"><i>5.387</i></td></tr>
+        <tr class="sub"><td colspan="3">Rinfresco · sem fermento novo</td></tr>
+        <tr><td>Farinha</td><td class="num">63,0</td><td class="num">6.300</td></tr>
+        <tr><td>Água</td><td class="num">58,4</td><td class="num">5.835</td></tr>
+        <tr><td>Sal</td><td class="num">2,70</td><td class="num">270</td></tr>
+        <tr><td>Biga inteira</td><td class="num"></td><td class="num">5.387</td></tr>
+        <tr class="tot"><td>Massa total</td><td class="num">177,9</td><td class="num">17.792</td></tr>
+      </table></div>
+      <p class="note" style="margin-top:7px">Percentuais sobre a farinha total, exceto os marcados com <b>*</b>, que são sobre a farinha da biga. Para 1 kg, divida por 10. Rende <b>71 bolas de 250 g</b> ou 63 de 280 g.</p>
+    </div>
+
+    <div class="block">
+      <h2>Confere</h2>
+      <div class="kv">
+        <div><span>Hidratação total</span><span>75,0%</span></div>
+        <div><span>Sal sobre a farinha</span><span>2,70%</span></div>
+        <div><span>Sal sobre a massa pronta</span><span>1,52%</span></div>
+        <div><span>Salinidade da água</span><span>3,6%</span></div>
+        <div><span>Fermento s/ farinha total</span><span>0,22%</span></div>
+        <div><span>Farinha pré-fermentada</span><span>37%</span></div>
+        <div><span>Hidratação do rinfresco</span><span>92,6%</span></div>
+      </div>
+      <h3 style="margin-top:12px">Por que 45% na biga</h3>
+      <p class="note">Você não fixou esse número, então é escolha minha, e ela é apertada. Quanto mais seca a biga, mais água sobra para o rinfresco, e o rinfresco já está no limite: a 42% ele veria 94,4%, a 50% veria 89,7%. Fiquei em 45% porque é faixa canônica, alarga a janela de ponto e é o plano B que a ficha do diagnóstico anterior já deixou anotado. <b>Se a massa não fechar na bancada, suba a biga para 50%</b> antes de mexer em qualquer outra coisa.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Os 2,7% de sal estão fazendo três trabalhos</h2>
+    <div class="cols c-3">
+      <div><h3>Freia a fermentação</h3><p class="note">É a alavanca que compensa não ter geladeira. Hidratação alta acelera, e 75% acelera bastante. O sal alto é o contrapeso que mantém a janela do appretto administrável na sala.</p></div>
+      <div><h3>Aperta o glúten</h3><p class="note">A 92,6% de hidratação aparente no rinfresco, a massa só fecha porque o sal entra cedo. Aqui ele não é tempero, é estrutura.</p></div>
+      <div><h3>Derruba o amargor</h3><p class="note">Três das cinco peças da pizza são amargas. O sal da massa é o que impede o conjunto de pender para esse lado, na leitura do Foodpairing. Ver a folha 2.</p></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Ordem de adição no rinfresco</h2>
+    <ol class="rules">
+      <li>Biga com <b>80% da água</b> na masseira, em velocidade baixa, até o bloco desmanchar e virar creme. Se a farinha entrar antes disso, sobram pedaços de biga na massa pronta.</li>
+      <li>Farinha restante. Misture só até unir.</li>
+      <li><b>Sal</b>, ainda com a massa dura. Ele precisa entrar antes da última água, senão a massa não fecha.</li>
+      <li>Os <b>20% de água restantes em fio</b>, com a massa já em liga. Segure 3 a 5 pontos se a biga tiver vindo ácida, porque biga ácida absorve pior do que parece.</li>
+      <li>Fora da masseira a <b>23 °C</b>, medidos no espeto e não estimados.</li>
+    </ol>
+  </div>
+
+  <div class="foot"><span>Biga 37% a 45% · hidratação 75% · sal 2,7% · 17.792 g</span><span>Folha 3 de 5</span></div>
+</section>
+
+
+<!-- ============ FOLHA 4 · SEM GELADEIRA ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Sem geladeira</b>Folha 4 de 5 · Temperatura, fermento e relógio</div>
+  </div>
+
+  <div class="block">
+    <h2>O problema real de não usar geladeira</h2>
+    <p>A biga canônica quer 18 °C de temperatura de massa. A fórmula de água da ficha anterior, com fricção 3, é <b>(3 × TA alvo) − T farinha − T sala − 3</b>. Com a cozinha e a farinha a 24 °C, ela pede água a <b>3 °C</b>. Com tudo a 26 °C, pede <b>−1 °C</b>. Não existe.</p>
+    <p>Então a escolha é declarada e não escondida. Ou você usa água gelada de verdade, com gelo na pesagem, e aí a geladeira saiu da maturação mas não da cozinha, ou aceita que a biga vai maturar na temperatura que a sala tem. <b>A segunda rota funciona</b>, e o preço é que o fermento deixa de ser um número fixo na ficha e passa a depender do termômetro.</p>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>Fermento da biga pela temperatura do núcleo</h2>
+      <div class="tw"><table>
+        <tr class="armhead"><th>Núcleo do bloco</th><th class="num">Fermento fresco*</th><th class="num">g em 3.700 g</th></tr>
+        <tr><td>18 °C</td><td class="num">0,70%</td><td class="num">26</td></tr>
+        <tr><td>20 °C</td><td class="num">0,60%</td><td class="num">22</td></tr>
+        <tr><td>22 °C</td><td class="num">0,51%</td><td class="num">19</td></tr>
+        <tr><td>24 °C</td><td class="num">0,44%</td><td class="num">16</td></tr>
+        <tr><td>26 °C</td><td class="num">0,38%</td><td class="num">14</td></tr>
+        <tr><td>28 °C</td><td class="num">0,32%</td><td class="num">12</td></tr>
+      </table></div>
+      <p class="note" style="margin-top:7px">* sobre a farinha da biga, para <b>16 a 18 h</b>. Ancorada no seu próprio lote medido, 0,6% a ~20 °C efetivos, e na regra que a sua ficha já usa, de ~8% de velocidade por grau entre 15 e 30 °C.</p>
+    </div>
+    <div class="block callout">
+      <h3>Leia a linha certa</h3>
+      <p>A tabela é indexada pela <b>temperatura do núcleo do bloco</b>, medida com espeto, e não pela temperatura da sala. Foi essa confusão que produziu o pH 4,9 do lote de terça: a sala marcava 17 °C e a massa nunca esteve a 17 °C.</p>
+      <p style="margin-top:6px">Massa fermentando é exotérmica e bloco de biga conduz calor mal. Bloco de <b>no máximo 10 cm</b>, caixa larga e rasa, sem empilhar, e meça o núcleo às 4 h. Sem isso a tabela mente.</p>
+    </div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>Linha do tempo · ciclo de 24 h</h2>
+      <ol class="tl">
+        <li><div class="tl-t">14h00</div><div class="tl-b"><b>Bate a biga</b><p>Mistura curta, 4 a 5 min, grosseira e esfarelada. Não busque liga. Bloco de 10 cm.</p></div></li>
+        <li><div class="tl-t">18h00</div><div class="tl-b"><b>Mede o núcleo</b><p>É esse número que valida a dose de fermento que você usou.</p></div></li>
+        <li><div class="tl-t">06h00</div><div class="tl-b"><b>Biga pronta, 16 h</b><p>pH em suspensão de 5,0 a 5,2. Álcool, avelã e iogurte leve no nariz.</p></div></li>
+        <li><div class="tl-t">06h30</div><div class="tl-b"><b>Rinfresco</b><p>Ordem da folha 3. Saída a 23 °C.</p></div></li>
+        <li><div class="tl-t">08h00</div><div class="tl-b"><b>Puntata, 1h30</b><p>Coberta, na sala. Uma dobra em bolha no meio se a massa pedir.</p></div></li>
+        <li><div class="tl-t">08h15</div><div class="tl-b"><b>Staglio</b><p>Bolas de 250 g, fechamento firme. A 75% a bola precisa de tensão de superfície.</p></div></li>
+        <li><div class="tl-t">14h00</div><div class="tl-b"><b>Appretto, 4 a 6 h</b><p>Pela bola, nunca pelo relógio. Sem geladeira a janela é estreita.</p></div></li>
+      </ol>
+    </div>
+    <div class="block">
+      <h2>As duas contas de água</h2>
+      <h3>Biga · fricção 3 · TA alvo 18 °C</h3>
+      <p class="note" style="font-size:11px;margin-bottom:9px"><b>(3 × 18) − T farinha − T sala − 3</b></p>
+      <h3>Rinfresco · fricção 8 · TA alvo 23 °C</h3>
+      <p class="note" style="font-size:11px;margin-bottom:9px"><b>(4 × 23) − T farinha − T sala − T biga − 8</b><br>Quatro fatores, porque a biga entra como massa e traz temperatura própria.</p>
+      <div class="tw"><table>
+        <tr class="armhead"><th>Farinha e sala</th><th>Biga</th><th class="num">Água do rinfresco</th></tr>
+        <tr><td>22 °C</td><td>20 °C</td><td class="num">20 °C</td></tr>
+        <tr><td>24 °C</td><td>20 °C</td><td class="num">16 °C</td></tr>
+        <tr><td>24 °C</td><td>24 °C</td><td class="num">12 °C</td></tr>
+        <tr><td>26 °C</td><td>24 °C</td><td class="num">8 °C</td></tr>
+        <tr><td>28 °C</td><td>24 °C</td><td class="num">4 °C</td></tr>
+      </table></div>
+      <p class="note" style="margin-top:7px">Calibre a sua fricção antes de confiar no 8: bata uma vez, meça a saída e resolva a fórmula ao contrário. Em massa a 75% ela costuma ser mais baixa que em massa seca.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Registro do lote</h2>
+    <div class="fields">
+      <label>data da batida <span class="ln"></span></label>
+      <label>T farinha <span class="ln"></span></label>
+      <label>T sala <span class="ln"></span></label>
+      <label>fermento % <span class="ln"></span></label>
+      <label>T água biga <span class="ln"></span></label>
+      <label>TA saída biga <span class="ln"></span></label>
+      <label>T núcleo 4 h <span class="ln"></span></label>
+      <label>T núcleo 12 h <span class="ln"></span></label>
+      <label>horas de biga <span class="ln"></span></label>
+      <label>pH suspensão <span class="ln"></span></label>
+      <label>T água rinfresco <span class="ln"></span></label>
+      <label>TA saída final <span class="ln"></span></label>
+      <label>appretto (h) <span class="ln"></span></label>
+      <label>T sala appretto <span class="ln"></span></label>
+      <label>decisão <span class="ln"></span></label>
+    </div>
+  </div>
+
+  <div class="foot"><span>Sem geladeira · fermento pelo termômetro · ciclo 24 h</span><span>Folha 4 de 5</span></div>
+</section>
+
+
+<!-- ============ FOLHA 5 · EXECUÇÃO ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Execução</b>Folha 5 de 5 · Montagem, forno e ressalvas</div>
+  </div>
+
+  <div class="idrow block">
+    <div class="code"><span class="k">a pectina<br>cede a</span><span class="v">84<small>°C</small></span></div>
+    <div class="idmeta">
+      <div class="eyebrow">O número que decide a alcachofra · Kenji, The Food Lab</div>
+      <h1>Abaixo de 84 °C ela não amacia nunca</h1>
+      <p class="note">Não é questão de tempo. Abaixo desse ponto a pectina não se degrada e a alcachofra fica dura por mais que fique no fogo. Ela precisa passar disso <b>antes</b> de ir para a pizza, porque 90 segundos de forno não cozinham vegetal.</p>
+    </div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>Preparo de cada peça</h2>
+      <div class="tw"><table>
+        <tr class="armhead"><th>Peça</th><th>O que fazer, e por quê</th></tr>
+        <tr><td><b>Molho</b></td><td>Pelati reduzido no fogo até perder a água solta, sal, nada mais. O calor é o que abre a ponte de 8 com a crosta. Frio na montagem.</td></tr>
+        <tr><td><b>Alcachofra</b></td><td>Cozinhar até passar de <b>84 °C</b> no miolo, escorrer, secar e lascar.</td></tr>
+        <tr><td><b>Alho negro</b></td><td>Purê afinado com um fio de azeite, em <b>pontos</b> espaçados. É a peça mais forte do grafo e a mais amarga; excesso domina tudo.</td></tr>
+        <tr><td><b>Búfala</b></td><td>Rasgada à mão e <b>escorrida antes</b>, sobre grade. Superfície molhada é o assassino nº 1 da crosta, e búfala é quase toda água.</td></tr>
+        <tr><td><b>Azeite</b></td><td>Depois do forno, cru. O livro não imprime ponte dele com nenhuma das cinco, o que é falta de dado e não veto: ele entra por gordura e por boca.</td></tr>
+      </table></div>
+    </div>
+    <div class="block">
+      <h2>Forno</h2>
+      <p><b>Nenhum dos três livros dá temperatura de forno de pizza.</b> O Kenji tem 57 alvos de receita e pizza não é um deles. Os números abaixo são ofício, e estão marcados como tal para você não citá-los como se fossem medidos.</p>
+      <div class="kv">
+        <div><span>Piso</span><span>430 a 450 °C</span></div>
+        <div><span>Cúpula</span><span>~480 °C</span></div>
+        <div><span>Tempo</span><span>60 a 90 s</span></div>
+      </div>
+      <h3 style="margin-top:12px">O que os livros dão</h3>
+      <p class="note">Maillard corre rápido a partir de <b>150 a 180 °C</b>, e a superfície só passa dos 100 °C depois que toda a umidade superficial evaporou. <span style="opacity:.75">Kenji.</span></p>
+      <p class="note" style="margin-top:5px">O Foodpairing põe o Torrado em <b>140 °C</b>. Os dois cabem juntos, mas se citar um número, diga de quem ele é.</p>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Checklist de composição do livro</h2>
+    <div class="tw"><table>
+      <tr class="armhead"><th style="width:20%">Item</th><th>Situação desta pizza</th><th style="width:11%">Passa</th></tr>
+      <tr><td><b>1 · Ponte aromática</b></td><td>Cinco pares impressos, 32 pontes, nenhuma peça órfã.</td><td>sim</td></tr>
+      <tr><td><b>2 · Dois gostos</b></td><td>Os seis do Briscione estão na mesa. Detalhe na folha 2.</td><td>sim</td></tr>
+      <tr><td><b>3 · Textura</b></td><td>Crocante do cornicione e da lasca de alcachofra; macio da búfala e do molho.</td><td>sim</td></tr>
+      <tr><td><b>4 · Teto de cinco</b></td><td>Cinco peças de peso aromático. Sal e azeite são tempero. <b>Não cabe uma sexta.</b></td><td>no limite</td></tr>
+      <tr><td><b>5 · Público</b></td><td>Alho negro quase ninguém comeu. É pizza de assinatura, e melhora na segunda visita.</td><td>atenção</td></tr>
+      <tr><td><b>6 · Sobretom</b></td><td>Floral e Queijo em todas as arestas dão profundidade sem cacofonia.</td><td>sim</td></tr>
+      <tr><td><b>7 · Sabe executar</b></td><td>Sim, com duas condições: alcachofra acima de 84 °C, e búfala escorrida.</td><td>sim</td></tr>
+      <tr><td><b>8 · Servir quente</b></td><td>Prove na temperatura em que serve.</td><td>sim</td></tr>
+    </table></div>
+  </div>
+
+  <div class="block">
+    <h2>Se der errado, comece por aqui</h2>
+    <div class="tw"><table>
+      <tr class="armhead"><th style="width:26%">Sintoma</th><th>Causa mais provável</th><th style="width:13%">Fonte</th></tr>
+      <tr><td>Base pálida, sem pintado</td><td>Superfície molhada, búfala não escorrida ou molho aguado. Enquanto houver água a superfície não passa de 100 °C e Maillard não roda.</td><td>Kenji</td></tr>
+      <tr><td>Alcachofra dura</td><td>Não passou de 84 °C antes. Tempo no forno não resolve.</td><td>Kenji</td></tr>
+      <tr><td>Amarga demais</td><td>Alho negro em camada em vez de pontos, ou molho de menos.</td><td>Briscione</td></tr>
+      <tr><td>Massa rasga ao abrir</td><td>Appretto passado. Sem geladeira a janela é estreita; julgue pela bola.</td><td>bancada</td></tr>
+      <tr><td>Biga com cheiro de acetona</td><td>Passou do ponto. Fiapos ao puxar e cúpula sem alvéolo confirmam.</td><td>ficha anterior</td></tr>
+    </table></div>
+  </div>
+
+  <div class="block tear">
+    <h3 style="margin-bottom:5px">Ressalvas honestas</h3>
+    <p style="font-size:10.5px;margin-bottom:4px"><b>A ciabatta não é a sua massa.</b> É o pão de biga que o livro analisou, e serve de análogo. A base não tem "massa de pizza", e nada aqui foi medido no seu disco.</p>
+    <p style="font-size:10.5px;margin-bottom:4px"><b>A búfala é a peça fraca.</b> Uma ponte só, com a alcachofra. Se trocar a alcachofra, a búfala vira órfã.</p>
+    <p style="font-size:10.5px;margin-bottom:4px"><b>Manjericão não entra, e o motivo é fraco.</b> Ele não tem ponte impressa com nenhuma das cinco, mas isso é o grafo esparso falando, não o livro negando. Se quiser manjericão, tire outra coisa.</p>
+    <p style="font-size:10.5px;margin-bottom:4px"><b>O filtro culinário é meu.</b> O topo do ranking bruto trazia caranguejo e arroz integral. Eu cortei, e o corte é opinião.</p>
+    <p style="font-size:10.5px"><b>Ponto de partida, não veredito.</b> O livro cita Blumenthal dizendo que compartilhar compostos está longe de garantir que dois ingredientes funcionem juntos. Quem decide é o paladar de quem assa.</p>
+  </div>
+
+  <div class="block">
+    <h2>Como esta pizza assou</h2>
+    <div class="writebox"></div>
+  </div>
+
+  <div class="foot"><span>QT Pizza Bar · Alcachofra e Alho Negro · execução</span><span>Folha 5 de 5</span></div>
+</section>
+
+</div>
