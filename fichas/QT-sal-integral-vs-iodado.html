@@ -1,0 +1,442 @@
+<title>QT · Sal integral ou sal iodado na massa</title>
+
+<style>
+  :root{
+    --ground:#EFECEC; --paper:#F8F6F6; --ink:#1A1E1E; --muted:#7E8484; --faint:#A0A5A5;
+    --rule:#C4C8C7; --hair:#DAD7D6; --field:#FFFFFF; --block:#1A1E1E; --blockink:#EFECEC; --shade:#E4E1E0;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ground:#1A1E1E; --paper:#202524; --ink:#EFECEC; --muted:#9BA1A1; --faint:#767C7C;
+      --rule:#3E4544; --hair:#2C3231; --field:#171B1B; --block:#EFECEC; --blockink:#1A1E1E; --shade:#262B2A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#1A1E1E; --paper:#202524; --ink:#EFECEC; --muted:#9BA1A1; --faint:#767C7C;
+    --rule:#3E4544; --hair:#2C3231; --field:#171B1B; --block:#EFECEC; --blockink:#1A1E1E; --shade:#262B2A;
+  }
+  :root[data-theme="light"]{
+    --ground:#EFECEC; --paper:#F8F6F6; --ink:#1A1E1E; --muted:#7E8484; --faint:#A0A5A5;
+    --rule:#C4C8C7; --hair:#DAD7D6; --field:#FFFFFF; --block:#1A1E1E; --blockink:#EFECEC; --shade:#E4E1E0;
+  }
+
+  *{ box-sizing:border-box; }
+
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size:11.5px; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    font-variant-numeric:tabular-nums;
+  }
+
+  .wrap{ max-width:840px; margin:0 auto; padding:32px 16px 64px; display:flex; flex-direction:column; gap:28px; }
+  .sheet{ background:var(--paper); border:1px solid var(--hair); padding:28px 30px 32px; display:flex; flex-direction:column; gap:20px; }
+
+  /* cabeçalho */
+  .top{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; border-bottom:2px solid var(--ink); padding-bottom:9px; }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .mark{ width:26px; height:26px; display:block; color:var(--ink); flex:none; }
+  .wordmark{ font-weight:700; font-size:12.5px; letter-spacing:.3em; text-transform:uppercase; line-height:1; }
+  .docid{ text-align:right; font-size:8.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; line-height:1.7; color:var(--muted); }
+  .docid b{ color:var(--ink); display:block; }
+
+  /* títulos */
+  .eyebrow{ font-size:9px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); }
+  h1{ font-size:25px; font-weight:700; letter-spacing:-.005em; line-height:1.12; margin:0; text-wrap:balance; }
+  h2{ font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; margin:0 0 9px; padding-bottom:5px; border-bottom:1px solid var(--ink); }
+  h3{ font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin:0 0 6px; color:var(--muted); }
+  p{ margin:0 0 8px; max-width:68ch; }
+  p:last-child{ margin-bottom:0; }
+  .lede{ font-size:12.5px; line-height:1.55; }
+  .note{ color:var(--muted); font-size:10.5px; }
+
+  /* blocos */
+  .block{ break-inside:avoid; }
+  .cols{ display:grid; gap:20px; }
+  .c-2{ grid-template-columns:1fr 1fr; }
+  .c-38{ grid-template-columns:35fr 65fr; }
+  .c-3{ grid-template-columns:1fr 1fr 1fr; }
+  @media (max-width:640px){ .cols{ grid-template-columns:1fr; } }
+
+  /* identificação */
+  .idrow{ display:flex; align-items:stretch; gap:18px; }
+  .code{ background:var(--block); color:var(--blockink); width:104px; flex:none; padding:12px 12px 11px; display:flex; flex-direction:column; justify-content:space-between; }
+  .code .k{ font-size:8.5px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; opacity:.75; }
+  .code .v{ font-size:38px; font-weight:700; line-height:.9; letter-spacing:-.03em; }
+  .code .v small{ font-size:16px; font-weight:700; letter-spacing:0; }
+  .idmeta{ flex:1; display:flex; flex-direction:column; gap:6px; justify-content:center; }
+
+  /* tabelas */
+  table{ width:100%; border-collapse:collapse; font-size:11px; }
+  .tw{ overflow-x:auto; }
+  th{ text-align:left; font-size:8.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); padding:0 8px 5px 0; border-bottom:1px solid var(--rule); }
+  td{ padding:5px 8px 5px 0; border-bottom:1px solid var(--hair); vertical-align:top; }
+  td:last-child, th:last-child{ padding-right:0; }
+  .num{ text-align:right; white-space:nowrap; }
+  tr.tot td{ border-top:1.5px solid var(--ink); border-bottom:none; font-weight:700; padding-top:6px; }
+  .sub td{ font-size:8.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink); background:var(--shade); padding:4px 8px 4px 6px; border-bottom:1px solid var(--rule); }
+  .armhead th{ color:var(--ink); font-size:9.5px; }
+
+  /* campos */
+  .ln{ display:inline-block; flex:1; min-width:30px; border-bottom:1px solid var(--rule); height:1.15em; }
+  .rec{ display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:6px; }
+  .rec label{ display:flex; align-items:flex-end; gap:6px; flex:1 1 118px; font-size:8.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .fields{ display:grid; grid-template-columns:repeat(auto-fill,minmax(148px,1fr)); gap:9px 18px; }
+  .fields label{ display:flex; align-items:flex-end; gap:6px; font-size:8.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .writebox{ border:1px solid var(--rule); background:var(--field); min-height:54px; margin-top:6px; }
+  .writebox.tall{ min-height:80px; }
+
+  /* checkbox e escala */
+  .chk{ display:inline-block; width:9px; height:9px; border:1px solid var(--ink); background:var(--field); margin-right:6px; flex:none; position:relative; top:1px; }
+  .chk.r{ margin-right:0; margin-left:6px; }
+  ul.checks{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:4px 18px; font-size:10.5px; }
+  ul.checks li{ display:flex; align-items:flex-start; }
+  .scale{ display:flex; gap:3px; justify-content:center; }
+  .scale i{ width:11px; height:11px; border:1px solid var(--rule); background:var(--field); display:block; }
+
+  /* linha do tempo */
+  ol.tl{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+  ol.tl li{ display:grid; grid-template-columns:56px 1fr; gap:0 14px; padding:0 0 10px; position:relative; }
+  ol.tl li::before{ content:""; position:absolute; left:61px; top:12px; bottom:0; width:1px; background:var(--rule); }
+  ol.tl li:last-child{ padding-bottom:0; }
+  ol.tl li:last-child::before{ display:none; }
+  .tl-t{ text-align:right; font-size:10px; font-weight:700; padding-top:1px; position:relative; }
+  .tl-t::after{ content:""; position:absolute; right:-10px; top:5px; width:7px; height:7px; background:var(--ink); }
+  .tl-b{ padding-left:8px; }
+  .tl-b b{ font-size:11.5px; font-weight:700; display:block; }
+  .tl-b p{ font-size:10.5px; color:var(--muted); margin:1px 0 0; }
+
+  /* avisos */
+  .callout{ border-left:4px solid var(--ink); padding:8px 0 8px 12px; font-size:10.5px; }
+  .invert{ background:var(--block); color:var(--blockink); padding:12px 14px; }
+  .invert h3{ color:var(--blockink); opacity:.7; }
+  .invert p{ color:var(--blockink); }
+
+  .kv{ display:flex; flex-direction:column; gap:3px; font-size:10.5px; }
+  .kv div{ display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid var(--hair); padding-bottom:2px; }
+  .kv span:first-child{ color:var(--muted); }
+  .kv span:last-child{ font-weight:700; text-align:right; }
+
+  .foot{ border-top:1px solid var(--rule); padding-top:8px; display:flex; justify-content:space-between; gap:12px; font-size:8.5px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); }
+  .tear{ border:1px dashed var(--rule); padding:10px 12px; font-size:10.5px; }
+
+  ol.rules{ margin:0; padding-left:17px; font-size:10.5px; }
+  ol.rules li{ margin-bottom:6px; padding-left:2px; }
+  ol.rules li:last-child{ margin-bottom:0; }
+
+  /* impressão */
+  @media print{
+    :root{
+      --ground:#FFFFFF; --paper:#FFFFFF; --ink:#000000; --muted:#555B5B; --faint:#8A9090;
+      --rule:#9AA0A0; --hair:#C8CCCC; --field:#FFFFFF; --block:#000000; --blockink:#FFFFFF; --shade:#EDEBEA;
+    }
+    @page{ size:A4 portrait; margin:9mm 11mm; }
+    body{ background:#fff; font-size:8.2pt; line-height:1.34; }
+    .wrap{ max-width:none; padding:0; gap:0; }
+    .sheet{ border:none; padding:0; gap:11px; }
+    .sheet + .sheet{ break-before:page; }
+    .block{ break-inside:avoid; }
+    .code, .invert, .sub td, .tl-t::after, .armhead th{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+    /* densidade de bancada: uma folha do caderno = uma página A4 */
+    .top{ padding-bottom:6px; }
+    .mark{ width:24px; height:24px; }
+    .wordmark{ font-size:10.5px; }
+    .docid{ font-size:7.5px; line-height:1.55; }
+    h1{ font-size:19px; }
+    h2{ font-size:9.5px; margin-bottom:6px; padding-bottom:3px; }
+    h3{ font-size:9px; margin-bottom:4px; }
+    p{ margin-bottom:5px; }
+    .lede{ font-size:10.5px; line-height:1.42; }
+    .note{ font-size:9px; }
+    .eyebrow{ font-size:8px; }
+    .cols{ gap:14px; }
+    .idrow{ gap:14px; }
+    .code{ width:88px; padding:9px 10px 8px; }
+    .code .v{ font-size:30px; }
+    .code .v small{ font-size:13px; }
+    .code .k{ font-size:7.5px; }
+    table{ font-size:9.2px; }
+    th{ font-size:7.5px; padding-bottom:3px; }
+    td{ padding:2.8px 7px 2.8px 0; }
+    .sub td{ font-size:7.5px; padding:2.4px 7px 2.4px 5px; }
+    .armhead th{ font-size:8.5px; }
+    tr.tot td{ padding-top:4px; }
+    .rec{ gap:4px 12px; margin-top:4px; }
+    .rec label{ font-size:7.5px; flex-basis:100px; }
+    .fields{ gap:6px 14px; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); }
+    .fields label{ font-size:7.5px; }
+    .writebox{ min-height:38px; margin-top:4px; }
+    .writebox.tall{ min-height:56px; }
+    ul.checks{ font-size:9px; gap:2px 14px; }
+    .chk{ width:8px; height:8px; margin-right:5px; }
+    .chk.r{ margin-left:5px; }
+    .scale i{ width:9.5px; height:9.5px; }
+    ol.tl li{ grid-template-columns:48px 1fr; padding-bottom:5.5px; gap:0 11px; }
+    ol.tl li::before{ left:53px; top:10px; }
+    .tl-t{ font-size:8.8px; }
+    .tl-t::after{ width:6px; height:6px; right:-9px; top:4px; }
+    .tl-b b{ font-size:9.8px; }
+    .tl-b p{ font-size:8.8px; }
+    ol.rules{ font-size:9px; padding-left:15px; }
+    ol.rules li{ margin-bottom:4px; }
+    .callout{ font-size:9px; padding:5px 0 5px 10px; }
+    .invert{ padding:9px 11px; }
+    .kv{ font-size:9px; }
+    .tear{ padding:8px 10px; font-size:9px; }
+    .foot{ font-size:7.5px; padding-top:6px; }
+  }
+</style>
+
+<div class="wrap">
+
+<!-- ============ A CONTA DO IODO ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>Sal integral ou sal iodado</b>Folha 1 de 3 &middot; A conta do iodo</div>
+  </div>
+
+  <div class="idrow block">
+    <div class="code"><span class="k">ppm de iodo<br>na água da massa</span><span class="v">2,1</span></div>
+    <div class="idmeta">
+      <div class="eyebrow">Massa de referência &middot; 1 kg de farinha &middot; 60% de hidratação &middot; sal a 2,8% &middot; teto legal de iodação</div>
+      <h1>Dentro da massa não há benefício a colher</h1>
+      <p class="note">O iodo entra em quantidade pequena demais para atrapalhar o fermento, os minerais do integral somem na variação da própria água, e no Brasil a escolha quase nunca chega a existir, porque sal para consumo humano é iodado por lei nas duas versões.</p>
+    </div>
+  </div>
+
+  <div class="cols c-38">
+    <div class="block">
+      <h2>A regra vale para os dois</h2>
+      <div class="kv">
+        <div><span>Lei 6.150/1974</span><span>iodação obrigatória</span></div>
+        <div><span>RDC 23/2013</span><span>15 a 45 mg de iodo/kg</span></div>
+        <div><span>Faixa anterior</span><span>20 a 60 mg/kg</span></div>
+        <div><span>Motivo da redução</span><span>população acima do recomendado</span></div>
+        <div><span>Forma química usada</span><span>iodato de potássio</span></div>
+        <div><span>Frase no rótulo</span><span>obrigatória</span></div>
+      </div>
+      <p class="note" style="margin-top:6px">Sal marinho integral vendido como alimento entra na mesma regra. Iodar não descaracteriza o produto como integral, porque é exigência sanitária e não etapa de refino.</p>
+    </div>
+    <div class="block">
+      <h2>O que você compra quando troca</h2>
+      <p>Na prática, sair do refinado para o marinho integral costuma ser trocar um sal iodado barato por um sal iodado caro. O iodo continua ali, na mesma faixa de 15 a 45 mg por quilo, porque a lei não distingue um do outro.</p>
+      <p>Sal de fato sem iodo aparece em três lugares, e nenhum deles é o que a pergunta tem em mente. Flor de sal e sais de finalização, que escapam da categoria pelo uso. Sal grosso industrial de abrandador de água, que não é alimento e não tem controle de pureza para consumo. E produto irregular, que existe, e cuja rotulagem como integral é o alvo mais comum de fraude nessa prateleira.</p>
+      <div class="callout" style="margin-top:8px"><b>Confira o rótulo do sal que você já usa antes de discutir benefício.</b> Se ele traz a frase da iodação, e ele traz, a pergunta deixa de ser integral contra iodado e passa a ser integral contra refinado, que é outra conversa e está nas folhas 2 e 3.</div>
+    </div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>A conta do iodo</h2>
+      <div class="tw">
+        <table>
+          <thead><tr><th style="width:60%">Massa de referência</th><th class="num" style="width:40%">Valor</th></tr></thead>
+          <tbody>
+            <tr class="sub"><td colspan="2">Formulação</td></tr>
+            <tr><td>Farinha</td><td class="num">1.000 g</td></tr>
+            <tr><td>Água, 60%</td><td class="num">600 g</td></tr>
+            <tr><td>Sal, 2,8%</td><td class="num">28 g</td></tr>
+            <tr><td>Massa total</td><td class="num">1.631 g</td></tr>
+            <tr class="sub"><td colspan="2">Iodo, no teto legal de 45 mg/kg</td></tr>
+            <tr><td>Iodo na batida inteira</td><td class="num">1,26 mg</td></tr>
+            <tr><td>Iodo na massa</td><td class="num">0,77 ppm</td></tr>
+            <tr><td>Iodo na fase aquosa</td><td class="num">2,1 ppm</td></tr>
+            <tr class="sub"><td colspan="2">Comparação dentro da mesma água</td></tr>
+            <tr><td>NaCl na fase aquosa</td><td class="num">46.700 ppm</td></tr>
+            <tr class="tot"><td>Sal para cada parte de iodo</td><td class="num">22.000 : 1</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:6px">No piso da faixa, 15 mg/kg, tudo isso cai para um terço. O antiumectante tem o mesmo destino: ferrocianeto de sódio tem teto de 20 mg/kg no sal, o que dá 0,56 mg na batida inteira e 0,34 ppm na massa pronta.</p>
+    </div>
+
+    <div class="block">
+      <h2>Por que 2 ppm não fazem nada</h2>
+      <ol class="rules">
+        <li><b>A forma química não é iodo livre.</b> A fortificação usa iodato de potássio, um ânion oxidado e estável. Quem tem ação biocida é o iodo elementar. Numa massa cheia de matéria orgânica redutora, o pouco que poderia se converter é consumido muito antes de encontrar uma célula de levedura.</li>
+        <li><b>A dose está fora de escala.</b> Iodo em uso sanitizante trabalha na casa de 12 a 25 ppm, e ainda assim para desinfetar superfície limpa, não para conter dezenas de milhões de células por grama num meio farto de açúcar e nutriente.</li>
+        <li><b>O freio de verdade já está na fórmula.</b> Os mesmos 28 g deixam a fase aquosa a 4,7% de NaCl. Esse é o freio osmótico que faz massa com sal fermentar mais devagar que massa sem sal, e ele está vinte e duas mil vezes mais concentrado que o iodo.</li>
+      </ol>
+      <div class="invert" style="margin-top:10px">
+        <h3>Consequência prática</h3>
+        <p>Se a fermentação está lenta ou irregular, as alavancas são temperatura da massa, percentual de fermento e percentual de sal, nessa ordem. Trocar de sal para destravar fermentação é mexer na terceira casa decimal enquanto a primeira está errada.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Sal &middot; a conta do iodo &middot; referência 1 kg de farinha / 60% / 2,8%</span><span>Folha 1 de 3</span></div>
+</section>
+
+<!-- ============ O QUE MUDA ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>O que muda de verdade</b>Folha 2 de 3 &middot; Diferenças mensuráveis e custo</div>
+  </div>
+
+  <div class="block">
+    <div class="eyebrow">Seis diferenças entre refinado e integral que dá para medir, e o iodo não é nenhuma delas</div>
+    <h1>As diferenças reais são de pureza e de constância</h1>
+  </div>
+
+  <div class="block">
+    <div class="tw">
+      <table>
+        <thead><tr class="armhead"><th style="width:19%">Diferença</th><th style="width:22%">Refinado</th><th style="width:24%">Integral</th><th style="width:35%">Efeito na massa</th></tr></thead>
+        <tbody>
+          <tr><td><b>Pureza</b></td><td>99,0 a 99,9% NaCl</td><td>95 a 98% NaCl</td><td>o mesmo peso entrega de 2 a 5% menos sal. Real, e corrigível pela conta abaixo.</td></tr>
+          <tr><td><b>Umidade</b></td><td>seco e estável</td><td>3 a 8% em flor de sal e sal cinza</td><td>empedra em cozinha quente e esconde ainda mais déficit de NaCl dentro do peso.</td></tr>
+          <tr><td><b>Minerais</b></td><td>traços</td><td>Mg, Ca, K e sulfatos</td><td>cerca de 170 mg/L de divalentes na fase aquosa, dentro da variação da própria água de abastecimento.</td></tr>
+          <tr><td><b>Granulometria</b></td><td>fino, dissolve na hora</td><td>de fino a grosso, conforme o lote</td><td>cristal que não dissolve vira ponto de queima no cornicione e falha local no glúten.</td></tr>
+          <tr><td><b>Densidade aparente</b></td><td>cerca de 1,2 g/mL</td><td>0,5 a 0,9 g/mL</td><td>indiferente para quem pesa, erro de até 60% para quem doseia por volume.</td></tr>
+          <tr><td><b>Constância de lote</b></td><td>alta</td><td>baixa, varia por safra e por salina</td><td>o único item da tabela que anda contra a repetibilidade, e anda forte.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>O ajuste que a troca exige</h2>
+      <p>Se o laudo diz 96% de NaCl com 3% de umidade, os seus 28 g entregam 26,9 g de sal de verdade contra 27,9 g do refinado. Você acha que está a 2,8% e está a 2,69%.</p>
+      <div class="kv">
+        <div><span>Fórmula</span><span>% novo = % atual &times; (NaCl refinado &divide; NaCl integral)</span></div>
+        <div><span>Exemplo</span><span>2,8 &times; (99,5 &divide; 96)</span></div>
+        <div><span>Percentual corrigido</span><span>2,9%</span></div>
+      </div>
+      <p class="note" style="margin-top:6px">Sem laudo do fornecedor essa conta não existe, e sem essa conta a troca é um corte silencioso de sal, que reaparece depois como fermentação adiantada e cornicione mais pálido. Peça %NaCl e umidade antes de comprar o primeiro saco.</p>
+    </div>
+
+    <div class="block">
+      <h2>A conta dos minerais</h2>
+      <p>O argumento nutricional é o mais fácil de derrubar, porque basta dividir.</p>
+      <div class="kv">
+        <div><span>Sais minerais na batida inteira</span><span>0,56 g</span></div>
+        <div><span>Num disco de 250 g</span><span>0,086 g</span></div>
+        <div><span>Magnésio nesse disco</span><span>10 a 20 mg</span></div>
+        <div><span>IDR de magnésio</span><span>260 mg</span></div>
+        <div><span>Sódio no mesmo disco</span><span>1,69 g</span></div>
+        <div><span>Limite diário da OMS</span><span>2,0 g de sódio</span></div>
+      </div>
+      <p class="note" style="margin-top:6px">Só a massa do disco já consome 84% do sódio do dia, sem molho nem queijo. Chegar à IDR de magnésio por esse caminho pediria mais de dez discos. Sal não é fonte de mineral em nenhuma das duas versões.</p>
+    </div>
+  </div>
+
+  <div class="cols c-38">
+    <div class="block">
+      <h2>Custo por disco</h2>
+      <div class="kv">
+        <div><span>Sal por disco de 250 g</span><span>4,29 g</span></div>
+        <div><span>Refinado, a R$ 2,50/kg</span><span>R$ 0,011</span></div>
+        <div><span>Integral, a R$ 25,00/kg</span><span>R$ 0,107</span></div>
+        <div><span>Diferença por disco</span><span>R$ 0,096</span></div>
+        <div><span>Em 2.000 discos</span><span>R$ 193</span></div>
+      </div>
+      <p class="note" style="margin-top:6px">Preços ilustrativos, troque pelos da última nota antes de levar isso para a ficha técnica.</p>
+    </div>
+    <div class="block invert">
+      <h3>O custo que não aparece na nota</h3>
+      <p>Os R$ 193 do mês são o menor dos custos e nunca foram a razão para não trocar. O caro é a última linha da tabela acima. Sal refinado sai da fábrica com a mesma pureza todo mês, e sal integral varia por safra, por salina e por lote, sem aviso e sem laudo na maioria dos fornecedores.</p>
+      <p style="margin-top:6px">Este caderno existe para tirar variação da massa, um parâmetro por vez. <b>Trocar de sal coloca uma variável nova e não medida bem no meio da fórmula, em troca de um efeito que ninguém consegue demonstrar no produto assado.</b></p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Sal &middot; pureza, minerais e custo</span><span>Folha 2 de 3</span></div>
+</section>
+
+<!-- ============ A DECISÃO ============ -->
+<section class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 20 L33.9 28 A16 16 0 1 1 33.9 12 Z" fill="currentColor"></path>
+        <rect x="7.6" y="11.4" width="24.8" height="4.6" fill="var(--paper)"></rect>
+        <rect x="17.7" y="11.4" width="4.6" height="20.2" fill="var(--paper)"></rect>
+      </svg>
+      <span class="wordmark">QT Pizza Bar</span>
+    </div>
+    <div class="docid"><b>A decisão</b>Folha 3 de 3 &middot; Onde o integral ganha e como testar</div>
+  </div>
+
+  <div class="block">
+    <div class="eyebrow">O lugar certo do sal integral na casa, e o que fazer se a vontade de trocar continuar</div>
+    <h1>O integral ganha na superfície, não dentro da massa</h1>
+  </div>
+
+  <div class="cols c-38">
+    <div class="block invert">
+      <h3>Onde o integral ganha de verdade</h3>
+      <p>Na finalização, e só nela. O que faz um floco de flor de sal valer o preço é o cristal chegar inteiro à boca e dissolver depois da mordida, num pulso de salinidade contra fundo doce ou gorduroso.</p>
+      <p style="margin-top:6px">Dissolvido na massa, esse cristal deixa de existir. Sobram Na&#8314; e Cl&#8315;, idênticos aos de qualquer outro sal. <b>É por isso que a flor de sal é insubstituível no Chocolate, Azeite e Flor de Sal e indiferente na masseira.</b></p>
+    </div>
+    <div class="block">
+      <h2>O que a troca não muda na massa</h2>
+      <ul class="checks">
+        <li><span class="chk"></span>velocidade de fermentação</li>
+        <li><span class="chk"></span>pH e curva de maturação</li>
+        <li><span class="chk"></span>força e extensibilidade</li>
+        <li><span class="chk"></span>cor e alveolatura do cornicione</li>
+        <li><span class="chk"></span>sabor da massa assada</li>
+        <li><span class="chk"></span>aporte de mineral na dieta</li>
+      </ul>
+      <p class="note" style="margin-top:8px">Nenhum desses itens tem efeito documentado nas doses envolvidas. Marque a caixa se o seu teste cego mostrar o contrário, e nesse caso o teste vale mais do que esta folha.</p>
+      <h3 style="margin-top:14px">E o lado nutricional do iodo?</h3>
+      <p>Largar o sal iodado na masseira também não cria problema de saúde pública. A iodação obrigatória nasceu do bócio endêmico, e a ANVISA reduziu a faixa de 20 a 60 para 15 a 45 mg/kg justamente porque a população brasileira apareceu acima do recomendado pela OMS.</p>
+      <p>Uma pizzaria não é vetor relevante de iodo na dieta de ninguém, e isso vale nos dois sentidos: o iodado não protege ninguém aqui, e largá-lo não prejudica ninguém. <b>Não há argumento sanitário de nenhum dos lados</b>, e é por isso que a decisão inteira cabe nas folhas 1 e 2.</p>
+    </div>
+  </div>
+
+  <div class="cols c-2">
+    <div class="block">
+      <h2>Se ainda assim quiser trocar</h2>
+      <ol class="rules">
+        <li><b>Peça o laudo</b> com percentual de NaCl e umidade, e recalcule o sal pela fórmula da folha 2 antes da primeira batida.</li>
+        <li><b>Compre moído fino.</b> Se só houver grosso, dissolva o sal em parte da água da fórmula, nunca jogue cristal seco na masseira.</li>
+        <li><b>Trave fornecedor, salina e lote</b> e registre o lote na ficha. Variação escondida é inimiga de todo o resto do caderno.</li>
+        <li><b>Uma alavanca por rodada.</b> Se o sal mudar junto com fermento ou temperatura, o resultado não vai dizer nada sobre o sal.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h2>Teste cego pareado</h2>
+      <p class="note" style="margin-bottom:6px">Dois discos da mesma batida, mesma fermentação, mesmo forno, só o sal mudando, com o percentual já corrigido. Sirva sem dizer qual é qual e conte os acertos. Abaixo de sete em dez, a mesa está chutando.</p>
+      <div class="fields">
+        <label>data<span class="ln"></span></label>
+        <label>sal A, %NaCl<span class="ln"></span></label>
+        <label>sal B, %NaCl<span class="ln"></span></label>
+        <label>% A corrigido<span class="ln"></span></label>
+        <label>% B corrigido<span class="ln"></span></label>
+        <label>provadores<span class="ln"></span></label>
+        <label>acertos<span class="ln"></span></label>
+        <label>decisão<span class="ln"></span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="block invert">
+    <h3>Veredito</h3>
+    <p>Dentro da massa o sal integral não traz benefício demonstrável, e traz dois custos. Cerca de 3% a menos de NaCl no mesmo peso, que você precisa corrigir na mão. E uma fonte nova de variação entre lotes, dentro de um caderno que existe justamente para eliminar variação. A história do iodo que mata o fermento não sobrevive a uma divisão. <b>Guarde o integral para a superfície, onde o cristal ainda existe quando chega na boca, e mantenha o refinado iodado na masseira.</b></p>
+  </div>
+
+  <p class="note"><b>Base legal.</b> Lei 6.150 de 3 de dezembro de 1974, iodação obrigatória do sal destinado ao consumo humano. RDC ANVISA nº 23 de 24 de abril de 2013, faixa de 15 a 45 mg de iodo por quilo e frase obrigatória de rotulagem, em substituição aos 20 a 60 mg/kg anteriores. Teto de 20 mg/kg para ferrocianeto de sódio como antiumectante em sal. Todo o resto é aritmética sobre a massa de referência da folha 1, e cada linha pode ser refeita.</p>
+
+  <div class="foot"><span>QT Pizza Bar &middot; sal integral ou sal iodado</span><span>Folha 3 de 3</span></div>
+</section>
+
+</div>
