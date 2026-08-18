@@ -1,7 +1,7 @@
 /**
  * Renderiza previz.html quadro a quadro e codifica o MP4 vertical.
  *
- *   node render.mjs <saida.mp4> [trilha.wav] [--fps 30] [--jobs 4]
+ *   node render.mjs <saida.mp4> [trilha.wav] [--html previz.html] [--fps 30] [--jobs 4]
  *
  * O previz expoe window.__render(t, frame), deterministico: cada quadro
  * depende so do tempo. Isso deixa o render reproduzivel e permite dividir
@@ -25,7 +25,7 @@ const SAIDA  = path.resolve(posicionais[0] || 'reel-previz.mp4');
 const TRILHA = posicionais[1] ? path.resolve(posicionais[1]) : null;
 const FPS    = Number(arg('--fps', 30));
 const JOBS   = Number(arg('--jobs', 4));
-const PREVIZ = 'file://' + path.resolve('previz.html');
+const PREVIZ = 'file://' + path.resolve(arg('--html','previz.html'));
 
 const tmp = mkdtempSync(path.join(tmpdir(), 'previz-'));
 const navegador = await chromium.launch();

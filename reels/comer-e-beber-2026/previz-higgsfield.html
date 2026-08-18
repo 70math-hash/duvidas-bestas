@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>QT · Previz Reel #002 (Higgsfield) — Comer &amp; Beber 2026</title>
+<style>
+  /* ---------------------------------------------------------------
+     QT PIZZA BAR · previz do Reel #002
+     Paleta de marca: Preto #1A1E1E · Cinza #A0A5A5 · Branco #EFECEC
+     Tipografia: Helvetica (fallback métrico: Liberation Sans / Arial)
+     A cena usa luz quente porque é "fotografia de ambiente" — a
+     interface (HUD, legenda, cards) fica estrita no preto/cinza/branco.
+     --------------------------------------------------------------- */
+  :root{
+    --preto:#1A1E1E; --cinza:#A0A5A5; --branco:#EFECEC;
+    --ambar:#D08A2E;
+    --sans:"Liberation Sans",Helvetica,Arial,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+  body{font-family:var(--sans);-webkit-font-smoothing:antialiased}
+
+  #stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--preto)}
+
+  /* ---------- CENA (o que a câmera vê) ---------- */
+  #camera{position:absolute;inset:0;transform-origin:50% 42%}
+  .scene{position:absolute;inset:0;opacity:0;visibility:hidden}
+  .scene.on{opacity:1;visibility:visible}
+  .fill{position:absolute;inset:0}
+
+  .ph{width:100%;height:100%;object-fit:cover;display:block}
+  #scrimtop{position:absolute;left:0;right:0;top:0;height:300px;pointer-events:none;
+    background:linear-gradient(to bottom, rgba(10,8,6,.80), rgba(10,8,6,0))}
+  #ctascrim{position:absolute;left:0;right:0;top:0;height:820px;opacity:0;pointer-events:none;
+    background:linear-gradient(to bottom, rgba(10,8,6,.86) 22%, rgba(10,8,6,0))}
+  #scrimbot{position:absolute;left:0;right:0;bottom:0;height:820px;pointer-events:none;
+    background:linear-gradient(to top, rgba(10,8,6,.86), rgba(10,8,6,0))}
+  #vignette{position:absolute;inset:0;background:
+    radial-gradient(120% 78% at 50% 40%, rgba(0,0,0,0) 38%, rgba(0,0,0,.55) 78%, rgba(0,0,0,.85) 100%)}
+  #grain{position:absolute;inset:-40px;opacity:.032;mix-blend-mode:overlay;
+    background-repeat:repeat;image-rendering:pixelated}
+
+  /* ---------- HUD superior ---------- */
+  #hud{position:absolute;left:0;right:0;top:0;padding:44px 56px 0}
+  #bar{display:flex;gap:5px;height:6px}
+  #bar .seg{flex:1;background:rgba(239,236,234,.22);position:relative;overflow:hidden}
+  #bar .seg i{position:absolute;inset:0;width:0;background:var(--branco);display:block}
+  #hudline{display:flex;align-items:center;gap:18px;margin-top:22px;
+    font-size:23px;letter-spacing:2.2px;text-transform:uppercase;color:rgba(239,236,234,.62)}
+  #tc{color:var(--branco);font-weight:700;font-variant-numeric:tabular-nums}
+  #shot{color:var(--branco);font-weight:700}
+  #hudline .sep{color:rgba(239,236,234,.3)}
+  #pace{margin-left:auto;font-weight:700;letter-spacing:1.6px;white-space:nowrap}
+  #pace.tight{color:var(--ambar)}
+  #pace .dot{display:inline-block;width:9px;height:9px;border-radius:50%;
+    background:currentColor;margin-right:9px;vertical-align:1px}
+
+  /* ---------- moldura de enquadramento ---------- */
+  #cutlabel{position:absolute;left:56px;top:212px;font-size:21px;letter-spacing:3px;
+    text-transform:uppercase;color:var(--preto);background:var(--branco);
+    padding:9px 16px;font-weight:700}
+
+  /* ---------- texto na tela do reel (CTA) ---------- */
+  #cta{position:absolute;left:0;right:0;top:206px;text-align:center;opacity:0}
+  #cta .rule{width:132px;height:3px;background:var(--branco);margin:0 auto 34px}
+  #cta .big{font-size:132px;font-weight:700;letter-spacing:3px;color:var(--branco);line-height:.98}
+  #cta .mid{font-size:47px;font-weight:700;letter-spacing:9px;color:var(--branco);margin-top:26px;text-transform:uppercase}
+  #cta .small{font-size:34px;letter-spacing:7px;color:rgba(239,236,234,.78);margin-top:24px;text-transform:uppercase}
+
+  /* ---------- direção + legenda automática ---------- */
+  #lower{position:absolute;left:0;right:0;bottom:250px;padding:0 62px}
+  #painel{background:rgba(18,14,10,.66);padding:28px 44px 34px}
+  #dir{font-size:22px;line-height:1.55;letter-spacing:3.4px;text-transform:uppercase;
+    color:rgba(239,236,234,.68);text-align:center;padding-bottom:22px;
+    border-bottom:2px solid rgba(239,236,234,.18);margin-bottom:26px}
+  #dir b{color:var(--branco);font-weight:700}
+  #capwrap{min-height:168px;display:flex;align-items:center;justify-content:center}
+  #cap{font-size:63px;font-weight:700;line-height:1.24;color:rgba(239,236,234,.42);
+    text-align:center;letter-spacing:.3px}
+  #cap .now{color:var(--branco)}
+
+  /* ---------- rodapé previz ---------- */
+  #mark{position:absolute;left:0;right:0;bottom:96px;text-align:center;
+    font-size:20px;letter-spacing:5px;text-transform:uppercase;color:rgba(239,236,234,.4)}
+
+  /* ---------- cartelas (slate / fim) ---------- */
+  .card{position:absolute;inset:0;background:var(--preto);color:var(--branco);
+    display:none;flex-direction:column;justify-content:center;padding:0 104px}
+  .card.on{display:flex}
+  .kicker{font-size:26px;letter-spacing:8px;text-transform:uppercase;color:var(--cinza)}
+  .h1{font-size:112px;font-weight:700;letter-spacing:1px;line-height:1.02;margin-top:34px}
+  .h2{font-size:44px;font-weight:700;letter-spacing:.4px;line-height:1.32;margin-top:30px;color:var(--branco)}
+  .body{font-size:34px;line-height:1.5;color:var(--cinza);margin-top:26px}
+  .hr{width:100%;height:2px;background:rgba(160,165,165,.42);margin:52px 0}
+  .meta{font-size:29px;letter-spacing:1.6px;line-height:1.9;color:var(--cinza);text-transform:uppercase}
+  .meta b{color:var(--branco);font-weight:700}
+  .tag{position:absolute;left:104px;bottom:120px;font-size:23px;letter-spacing:5px;
+    text-transform:uppercase;color:var(--cinza)}
+  ul.list{list-style:none;margin-top:22px}
+  ul.list li{font-size:37px;line-height:1.42;color:var(--branco);padding:22px 0 22px 44px;
+    position:relative;border-bottom:2px solid rgba(160,165,165,.24)}
+  ul.list li:last-child{border-bottom:0}
+  ul.list li:before{content:"";position:absolute;left:0;top:38px;width:22px;height:3px;background:var(--cinza)}
+  ul.list li span{display:block;font-size:27px;color:var(--cinza);margin-top:8px;letter-spacing:1.4px;text-transform:uppercase}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <div id="camera">
+    <!-- ===== CENAS: fotos geradas no Higgsfield (soul_2, 9:16, 2K) ===== -->
+    <div class="scene" id="s1"><img class="fill ph" src="frames-higgsfield/shot1.png" alt="HOOK · plano peito"></div>
+    <div class="scene" id="s2"><img class="fill ph" src="frames-higgsfield/shot2.png" alt="A história · plano peito"></div>
+    <div class="scene" id="s3"><img class="fill ph" src="frames-higgsfield/shot3.png" alt="Cutaway · forno aceso"></div>
+    <div class="scene" id="s4"><img class="fill ph" src="frames-higgsfield/shot4.png" alt="Cutaway · fornada saindo"></div>
+    <div class="scene" id="s5"><img class="fill ph" src="frames-higgsfield/shot5.png" alt="A virada · plano peito, tenso"></div>
+    <div class="scene" id="s6"><img class="fill ph" src="frames-higgsfield/shot6.png" alt="Cutaway · cliente rindo na mesa"></div>
+    <div class="scene" id="s7"><img class="fill ph" src="frames-higgsfield/shot7.png" alt="Cutaway · pizza chegando"></div>
+    <div class="scene" id="s8"><img class="fill ph" src="frames-higgsfield/shot8.png" alt="Cutaway · o time junto"></div>
+    <div class="scene" id="s9"><img class="fill ph" src="frames-higgsfield/shot9.png" alt="Pedido + fecho · sorrindo"></div>
+
+    <div id="vignette"></div>
+    <div id="grain"></div>
+  </div>
+
+  <!-- ============ INTERFACE ============ -->
+  <div id="scrimbot"></div>
+  <div id="scrimtop"></div>
+  <div id="ctascrim"></div>
+
+  <div id="cutlabel" style="display:none"></div>
+
+  <div id="cta">
+    <div class="rule"></div>
+    <div class="big">VOTE QT</div>
+    <div class="mid">Melhor Pizzaria</div>
+    <div class="small">Link na bio</div>
+  </div>
+
+  <div id="hud">
+    <div id="bar"></div>
+    <div id="hudline">
+      <span id="tc">00:00</span><span class="sep">·</span><span id="shot">HOOK</span>
+      <span id="pace"><span class="dot"></span><span id="pacev"></span></span>
+    </div>
+  </div>
+
+  <div id="lower">
+    <div id="painel">
+      <div id="dir"></div>
+      <div id="capwrap"><div id="cap"></div></div>
+    </div>
+  </div>
+
+  <div id="mark">Previz Higgsfield · @matheus__ramos · Reel 43s</div>
+
+  <!-- ============ CARTELAS ============ -->
+  <div class="card" id="slate">
+    <div class="kicker">QT Pizza Bar · Brief de Reel #002</div>
+    <div class="h1">Bora ganhar<br>em casa.</div>
+    <div class="body">Campanha de voto · Prêmio Comer &amp; Beber 2026<br>Categoria Melhor Pizzaria</div>
+    <div class="hr"></div>
+    <div class="meta">
+      Conta <b>@matheus__ramos</b><br>
+      Formato <b>43s · vertical · olho na lente · quase sem corte</b><br>
+      Local <b>Salão QT</b> · Gravar <b>18/08/2026</b>
+    </div>
+    <div class="tag">Previz — imagens geradas no Higgsfield, não é a filmagem final</div>
+  </div>
+
+  <div class="card" id="endcard">
+    <div class="kicker">O que sai desse brief</div>
+    <ul class="list">
+      <li>Reel 43s<span>Feed · lançamento da campanha · fixado no topo</span></li>
+      <li>Corte 15s<span>Stories · 1x por dia na reta final · sticker de link</span></li>
+      <li>4 cards de apoio<span>Stories · 1 por dia</span></li>
+      <li>Legenda automática ligada<span>85% assiste sem som</span></li>
+    </ul>
+    <div class="hr"></div>
+    <div class="h2">VOTE QT · MELHOR PIZZARIA<br>LINK NA BIO</div>
+    <div class="tag">QT Pizza Bar · mangia che te fa bene!</div>
+  </div>
+
+</div>
+
+<script>
+/* ==========================================================
+   ROTEIRO — extraído do brief (PDF), shot a shot
+   ========================================================== */
+const SLATE = 3.5;      // cartela de abertura
+const REEL  = 43;       // duração do reel
+const ENDC  = 4.5;      // cartela de fecho
+const TOTAL = SLATE + REEL + ENDC;
+
+const SHOTS = [
+  { id:'HOOK', t0:0, t1:3,
+    fala:"Nossa pizza já foi eleita uma das melhores do mundo. E é por isso mesmo que eu preciso te pedir uma coisa.",
+    dir:"<b>Plano peito</b>: do peito pra cima · <b>Olho na lente</b>: fala pra câmera, não pra sua imagem na tela · sem música",
+    cenas:[{t0:0,t1:3,el:'s1'}] },
+
+  { id:'A HISTÓRIA', t0:3, t1:12,
+    fala:"Faz 6 anos que a gente abriu a QT. Nesses 6 anos, ganhamos prêmio internacional, entramos no ranking mundial de pizza, coisa que eu nem sonhava. Mas teve um prêmio que sempre passou longe.",
+    dir:"<b>Cutaway</b>: a tomada do rosto continua rodando, você só cobre 1s com o forno e volta · música entra baixinha",
+    cenas:[{t0:3,t1:6.4,el:'s1'},
+           {t0:6.4,t1:7.4,el:'s3',cut:'Cutaway · forno aceso'},
+           {t0:7.4,t1:8.4,el:'s4',cut:'Cutaway · fornada saindo'},
+           {t0:8.4,t1:12,el:'s1'}] },
+
+  { id:'A VIRADA', t0:12, t1:22,
+    fala:"O prêmio da nossa própria cidade. E esse ano, pela primeira vez em 6 anos, a QT foi indicada ao Comer & Beber, na categoria Melhor Pizzaria. Lá fora quem decide é júri. Aqui, quem decide é você.",
+    dir:"<b>Sem corte</b>: é a mesma tomada rodando desde 00:00 · 10s direto no seu rosto, fala devagar · é o trecho que as pessoas compartilham",
+    cenas:[{t0:12,t1:22,el:'s1'}] },
+
+  { id:'O PORQUÊ', t0:22, t1:33,
+    fala:"Se em algum desses 6 anos a QT te fez feliz, numa comemoração, num rolê de sexta, numa fatia que você não esqueceu, é esse voto que traduz isso. Não é a gente pedindo troféu. É a nossa cidade dizendo qual é a pizza dela.",
+    dir:"<b>Voz por cima</b>: a imagem muda, você continua falando · três cutaways rápidos e fecha voltando em você",
+    cenas:[{t0:22,t1:24.6,el:'s1'},
+           {t0:24.6,t1:26.8,el:'s6',cut:'Cutaway · cliente rindo na mesa'},
+           {t0:26.8,t1:28.6,el:'s7',cut:'Cutaway · pizza chegando'},
+           {t0:28.6,t1:30.6,el:'s8',cut:'Cutaway · o time junto'},
+           {t0:30.6,t1:33,el:'s1'}] },
+
+  { id:'PEDIDO + FECHO', t0:33, t1:43,
+    fala:"Leva 30 segundos. Link na bio, Comer & Beber, categoria Melhor Pizzaria, e coloca a QT. Depois de conquistar o mundo, bora ganhar em casa.",
+    dir:"Plano peito, sorrindo · <b>único momento com texto na tela</b> no reel inteiro · música resolve suave",
+    cenas:[{t0:33,t1:43,el:'s9'}] },
+];
+
+/* ---------- timing de fala: distribui palavras dentro do shot ---------- */
+function prepara(shot){
+  const bruto = shot.fala.split(/\s+/);
+  const dur = shot.t1 - shot.t0;
+  // peso por palavra: tamanho + pausa extra depois de vírgula/ponto
+  const pesos = bruto.map(p=>{
+    let w = Math.max(2, p.replace(/[^\wÀ-ÿ]/g,'').length) + 2.2;
+    if(/[,;]$/.test(p)) w += 2.4;
+    if(/[.!?]$/.test(p)) w += 4.2;
+    return w;
+  });
+  const soma = pesos.reduce((a,b)=>a+b,0);
+  let acc = shot.t0;
+  shot.palavras = bruto.map((p,i)=>{
+    const d = dur * pesos[i]/soma;
+    const o = {txt:p, t0:acc, t1:acc+d};
+    acc += d; return o;
+  });
+  // agrupa em blocos de legenda (estilo legenda automática do Instagram)
+  const blocos = []; let cur = [];
+  const limite = 26;
+  for(const w of shot.palavras){
+    const tentativa = cur.map(x=>x.txt).join(' ') + ' ' + w.txt;
+    if(cur.length && tentativa.trim().length > limite){ blocos.push(cur); cur = []; }
+    cur.push(w);
+    if(/[.!?]$/.test(w.txt) && cur.length >= 3){ blocos.push(cur); cur = []; }
+  }
+  if(cur.length) blocos.push(cur);
+  shot.blocos = blocos;
+  // ritmo, em palavras por minuto
+  shot.ppm = Math.round(bruto.length / dur * 60);
+}
+SHOTS.forEach(prepara);
+
+/* ---------- ruído determinístico, usado pelo grão ---------- */
+function prng(seed){ let s = seed>>>0; return ()=> (s = (s*1664525 + 1013904223)>>>0) / 4294967296; }
+
+/* ---------- grão de filme ----------
+   Gera algumas texturas uma vez e alterna entre elas. Regerar a cada
+   quadro custava caro no render e o resultado na tela é o mesmo. */
+const GRAOS = (function(){
+  const cv = document.createElement('canvas');
+  cv.width = cv.height = 320;
+  const ctx = cv.getContext('2d');
+  const urls = [];
+  for(let k=0;k<10;k++){
+    const img = ctx.createImageData(320,320);
+    const r = prng(1000 + k*7919);
+    for(let i=0;i<img.data.length;i+=4){
+      const v = 110 + r()*140;
+      img.data[i]=img.data[i+1]=img.data[i+2]=v; img.data[i+3]=255;
+    }
+    ctx.putImageData(img,0,0);
+    urls.push(`url(${cv.toDataURL()})`);
+  }
+  return urls;
+})();
+let graoAtual = -1;
+function desenhaGrao(frame){
+  const k = frame % GRAOS.length;
+  if(k !== graoAtual){ graoAtual = k; document.getElementById('grain').style.backgroundImage = GRAOS[k]; }
+}
+
+/* ---------- barra de progresso ---------- */
+const barEl = document.getElementById('bar');
+barEl.innerHTML = SHOTS.map(s=>`<div class="seg" style="flex:${s.t1-s.t0}"><i></i></div>`).join('');
+const segs = [...barEl.querySelectorAll('.seg i')];
+
+const el = id => document.getElementById(id);
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+const easeOut = x => 1-Math.pow(1-clamp(x,0,1),3);
+const fmt = t => `00:${String(Math.floor(t)).padStart(2,'0')}`;
+
+/* ==========================================================
+   RENDER — tudo é função determinística de t
+   ========================================================== */
+function render(t, frame){
+  const emSlate = t < SLATE;
+  const emEnd   = t >= SLATE + REEL;
+  el('slate').classList.toggle('on', emSlate);
+  el('endcard').classList.toggle('on', emEnd);
+  const mostraReel = !emSlate && !emEnd;
+  for(const id of ['hud','lower','mark','cta','camera','cutlabel','scrimtop','scrimbot','ctascrim'])
+    el(id).style.visibility = mostraReel ? 'visible' : 'hidden';
+
+  if(emSlate){
+    const k = easeOut(t/1.1);
+    el('slate').style.opacity = clamp(t/0.45,0,1) * (t > SLATE-0.35 ? clamp((SLATE-t)/0.35,0,1) : 1);
+    el('slate').style.transform = `translateY(${(1-k)*22}px)`;
+    desenhaGrao(frame); return;
+  }
+  if(emEnd){
+    const te = t - (SLATE+REEL);
+    el('endcard').style.opacity = clamp(te/0.5,0,1) * clamp((ENDC-te)/0.6,0,1);
+    desenhaGrao(frame); return;
+  }
+
+  const r = t - SLATE;                                  // tempo dentro do reel
+  const shot = SHOTS.find(s => r >= s.t0 && r < s.t1) || SHOTS[SHOTS.length-1];
+  const idx  = SHOTS.indexOf(shot);
+  const prog = (r - shot.t0) / (shot.t1 - shot.t0);
+
+  // barra + HUD
+  segs.forEach((seg,i)=> seg.style.width =
+    (i < idx ? 100 : i > idx ? 0 : prog*100) + '%');
+  el('tc').textContent = fmt(r);
+  el('shot').textContent = shot.id;
+  const apertado = shot.ppm > 210;
+  el('pace').classList.toggle('tight', apertado);
+  el('pacev').textContent = shot.ppm + ' ppm' + (apertado ? ' · aperta' : '');
+
+  // cena ativa
+  const cena = shot.cenas.find(c => r >= c.t0 && r < c.t1) || shot.cenas[shot.cenas.length-1];
+  document.querySelectorAll('.scene').forEach(s => s.classList.toggle('on', s.id === cena.el));
+
+  // movimento de câmera: tripé firme, só um push-in lento por bloco de cena
+  const dentro = (r - cena.t0) / Math.max(0.4, cena.t1 - cena.t0);
+  // Numa tomada contínua o push-in acompanha o tempo do reel, não o do trecho:
+  // assim a aproximação é uma só, lenta, do começo ao fim, sem pulo no corte.
+  const rosto = ['s1','s5','s9'].includes(cena.el);
+  const push = rosto ? 1.015 + (r/REEL)*0.075 : 1.04 + dentro*0.07;
+  const drift = Math.sin(r*0.62)*1.6 + Math.sin(r*1.31)*0.7;   // micro respiração do tripé
+  el('camera').style.transform = `scale(${push.toFixed(4)}) translate(${drift.toFixed(2)}px, ${(Math.cos(r*0.5)*1.2).toFixed(2)}px)`;
+
+  // bokeh: deriva lenta
+  // etiqueta de cutaway
+  const cl = el('cutlabel');
+  if(cena.cut){ cl.style.display='block'; cl.textContent = cena.cut;
+    cl.style.opacity = clamp((r-cena.t0)/0.18,0,1).toFixed(2); }
+  else cl.style.display='none';
+
+  // direção do shot
+  el('dir').innerHTML = shot.dir;
+
+  // legenda automática: bloco atual, palavra atual destacada
+  const bloco = shot.blocos.find(b => r >= b[0].t0 && r < b[b.length-1].t1) ||
+                (r < shot.blocos[0][0].t0 ? shot.blocos[0] : shot.blocos[shot.blocos.length-1]);
+  el('cap').innerHTML = bloco.map(w =>
+    `<span class="${r >= w.t0 ? 'now' : ''}">${w.txt}</span>`
+  ).join(' ');
+
+  // CTA na tela — só no último shot, como manda o brief
+  const ctaEl = el('cta');
+  if(r >= 34.2){
+    const k = easeOut((r-34.2)/0.7);
+    const saindo = r > 42.2 ? clamp((43-r)/0.8,0,1) : 1;
+    ctaEl.style.opacity = (k*saindo).toFixed(3);
+    ctaEl.style.transform = `translateY(${((1-k)*26).toFixed(1)}px)`;
+  } else ctaEl.style.opacity = 0;
+  el('ctascrim').style.opacity = ctaEl.style.opacity;
+
+  // fade de entrada e saída do reel
+  const fadeIn = clamp(r/0.35,0,1), fadeOut = clamp((REEL-r)/0.5,0,1);
+  el('camera').style.opacity = (fadeIn*fadeOut).toFixed(3);
+
+  desenhaGrao(frame);
+}
+
+window.__render = render;
+window.__TOTAL = TOTAL;
+window.__META  = {SLATE, REEL, ENDC, shots: SHOTS.map(s=>({id:s.id,ppm:s.ppm,palavras:s.palavras.length,dur:s.t1-s.t0}))};
+render(0,0);
+</script>
+</body>
+</html>
